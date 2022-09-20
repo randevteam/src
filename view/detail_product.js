@@ -525,168 +525,201 @@ class DetailProduct extends React.Component {
             var condition = productInfo.condition;
             var description = productInfo.description.language;
             var title = productInfo.name.language;
-            var detailProduct = <View style={{ flex: 1 }}>
-                <View style={{ flex: 8, backgroundColor: 'white', paddingTop: '5%' }}>
-                    <ScrollView
-                        showsHorizontalScrollIndicator={false}
-                        showsVerticalScrollIndicator={false}
-                    >
-                        <View>
-                            <Image
-                                source={{ uri: ImgUrl }}
-                                style={{
-                                    height: 400,
-                                    width: '100%',
-                                    resizeMode: 'contain',
-                                }}
-                            />
-                            {this.show_promotion()}
-                            <View
-                                style={{
-                                    backgroundColor: primaryBackgroundColor,
-                                    paddingHorizontal: '5%',
-                                    justifyContent: this.state.specific_price ? 'space-between' : 'center',
-                                    alignItems: 'center',
-                                    position: 'absolute',
-                                    bottom: '30%',
-                                    left: '5%',
-                                    flexDirection: 'row',
-
-                                }}
-                            >
-                                <Text
-                                    style={{
-                                        textAlign: 'center',
-                                        fontSize: 25,
-                                        color: 'white',
-                                        textDecorationLine: this.state.specific_price ? 'line-through' : 'none'
-                                    }}
-                                >
-                                    {this.state.price}€
-                                </Text>
-                                {this.show_price_after_promo()}
-                            </View>
-                        </View>
-                        <View style={detail_product_styles.name_price}>
-                            <Text style={detail_product_styles.name}>
-                                {title.toUpperCase()}
-                            </Text>
-                            <View style={{ flexDirection: 'row' }}>
-                                <Text style={detail_product_styles.price}>
-                                    {this.state.price}€
-                                </Text>
-                                {combinationTplNew}
-                            </View>
-                        </View>
-                        <View style={detail_product_styles.description}>
-                            <Text style={detail_product_styles.description_text}>
-                                {description}
-                            </Text>
-                        </View>
-                        <Text style={detail_product_styles.similar_title}>Produits similaires</Text>
-                        {
-                            this.state.id_category
-                                ?
-                                (<SimilarProduct change_product={this.change_product} id_category={this.state.id_category} navigation={this.props.navigation} />)
-                                :
-                                (<View></View>)
-                        }
-                    </ScrollView>
-                    <TouchableOpacity style={detail_product_styles.share} onPress={() => this.shareto()}>
-                        <Icon
-                            type="entypo"
-                            name="share"
-                            size={25}
-                        />
-                    </TouchableOpacity>
-                    <View style={detail_product_styles.panel_add_number}>
-                        <TouchableOpacity style={detail_product_styles.plus_panel} onPress={() => { this.add_quantity() }}>
-                            <Icon
-                                name='plus'
-                                type='font-awesome'
-                                color='#FFFFFF'
-                                size={18}
-                                containerStyle={{
-                                    backgroundColor: '#efe4d0',
-                                    borderRadius: 50,
-                                }}
-
-                            />
-                        </TouchableOpacity>
-                        <View style={detail_product_styles.input_panel_container}>
-                            <View style={detail_product_styles.input_panel}>
-                                <TextInput
-                                    style={detail_product_styles.input_number}
-                                    keyboardType="numeric"
-                                    selectionColor='#713F18'
-                                    value={String(this.state.qtty)}
-                                    onChangeText={(qtt) => this.changeQuantity(qtt)}
-                                />
-                            </View>
-                        </View>
-                        <TouchableOpacity style={detail_product_styles.plus_panel} onPress={() => { this.remove_quantity() }}>
-                            <Icon
-                                name='minus'
-                                type='font-awesome'
-                                color='#FFFFFF'
-                                size={18}
-                                containerStyle={{
-                                    backgroundColor: '#efe4d0',
-                                    borderRadius: 50,
-                                }}
-
-                            />
-                        </TouchableOpacity>
+            var detailProduct = (
+              <View style={{ flex: 1 }}>
+                <View
+                  style={{
+                    flex: 8,
+                    backgroundColor: "white",
+                    paddingTop: "5%",
+                  }}
+                >
+                  <ScrollView
+                    showsHorizontalScrollIndicator={false}
+                    showsVerticalScrollIndicator={false}
+                  >
+                    <View>
+                      <Image
+                        source={{ uri: ImgUrl }}
+                        style={{
+                          height: 400,
+                          width: "100%",
+                          resizeMode: "contain",
+                        }}
+                      />
+                      {this.show_promotion()}
+                      <View
+                        style={{
+                          backgroundColor: primaryBackgroundColor,
+                          paddingHorizontal: "5%",
+                          justifyContent: this.state.specific_price
+                            ? "space-between"
+                            : "center",
+                          alignItems: "center",
+                          position: "absolute",
+                          bottom: "30%",
+                          left: "5%",
+                          flexDirection: "row",
+                        }}
+                      >
+                        <Text
+                          style={{
+                            textAlign: "center",
+                            fontSize: 25,
+                            color: "white",
+                            textDecorationLine: this.state.specific_price
+                              ? "line-through"
+                              : "none",
+                          }}
+                        >
+                          {this.state.price}€ TTC
+                        </Text>
+                        {this.show_price_after_promo()}
+                      </View>
                     </View>
+                    <View style={detail_product_styles.name_price}>
+                      <Text style={detail_product_styles.name}>
+                        {title.toUpperCase()}
+                      </Text>
+                      <View style={{ flexDirection: "row" }}>
+                        <Text style={detail_product_styles.price}>
+                          {this.state.price}€ TTC
+                        </Text>
+                        {combinationTplNew}
+                      </View>
+                    </View>
+                    <View style={detail_product_styles.description}>
+                      <Text style={detail_product_styles.description_text}>
+                        {description}
+                      </Text>
+                    </View>
+                    <Text style={detail_product_styles.similar_title}>
+                      Produits similaires
+                    </Text>
+                    {this.state.id_category ? (
+                      <SimilarProduct
+                        change_product={this.change_product}
+                        id_category={this.state.id_category}
+                        navigation={this.props.navigation}
+                      />
+                    ) : (
+                      <View></View>
+                    )}
+                  </ScrollView>
+                  <TouchableOpacity
+                    style={detail_product_styles.share}
+                    onPress={() => this.shareto()}
+                  >
+                    <Icon type="entypo" name="share" size={25} />
+                  </TouchableOpacity>
+                  <View style={detail_product_styles.panel_add_number}>
+                    <TouchableOpacity
+                      style={detail_product_styles.plus_panel}
+                      onPress={() => {
+                        this.add_quantity();
+                      }}
+                    >
+                      <Icon
+                        name="plus"
+                        type="font-awesome"
+                        color="#FFFFFF"
+                        size={18}
+                        containerStyle={{
+                          backgroundColor: "#efe4d0",
+                          borderRadius: 50,
+                        }}
+                      />
+                    </TouchableOpacity>
+                    <View style={detail_product_styles.input_panel_container}>
+                      <View style={detail_product_styles.input_panel}>
+                        <TextInput
+                          style={detail_product_styles.input_number}
+                          keyboardType="numeric"
+                          selectionColor="#713F18"
+                          value={String(this.state.qtty)}
+                          onChangeText={(qtt) => this.changeQuantity(qtt)}
+                        />
+                      </View>
+                    </View>
+                    <TouchableOpacity
+                      style={detail_product_styles.plus_panel}
+                      onPress={() => {
+                        this.remove_quantity();
+                      }}
+                    >
+                      <Icon
+                        name="minus"
+                        type="font-awesome"
+                        color="#FFFFFF"
+                        size={18}
+                        containerStyle={{
+                          backgroundColor: "#efe4d0",
+                          borderRadius: 50,
+                        }}
+                      />
+                    </TouchableOpacity>
+                  </View>
                 </View>
                 <View style={detail_product_styles.button_view}>
-                    {
-                        this.state.stock && this.state.stock != 0
-                            ?
-                            (
-                                <View style={detail_product_styles.button_view_content}>
-                                    <Button
-                                        buttonStyle={detail_product_styles.button}
-                                        title="Ajouter au panier"
-                                        onPress={() => {
-                                            this.addToCart();
-                                        }}
-                                    />
-                                    <Button
-                                        icon={<Icon name='credit-card' color='#713F18' size={20} style={{ marginRight: 5 }} />}
-                                        buttonStyle={detail_product_styles.button_outline}
-                                        titleStyle={detail_product_styles.title_style_button_outline}
-                                        title="Acheter"
-                                        type="outline"
-                                    />
-                                </View>
-                            )
-                            :
-                            (
-                                this.state.stock == null
-                                    ?
-                                    (
-                                        <View style={[detail_product_styles.button_view_content, { alignItems: 'center' }]}>
-                                            <Text>Veuillez choisir</Text>
-                                        </View>
-                                    )
-                                    : (
-                                        <View style={[detail_product_styles.button_view_content, { alignItems: 'center' }]}>
-                                            <View style={{ flexDirection: 'row' }}>
-                                                <Icon
-                                                    type="font-awesome"
-                                                    name="warning"
-                                                    size={16}
-                                                    color="#E0A80D"
-                                                />
-                                                <Text style={{ color: "#E0A80D" }}> Il n'y a plus de stock</Text>
-                                            </View>
-                                        </View>
-                                    )
-                            )
-                    }
+                  {this.state.stock && this.state.stock != 0 ? (
+                    <View style={detail_product_styles.button_view_content}>
+                      <Button
+                        buttonStyle={detail_product_styles.button}
+                        title="Ajouter au panier"
+                        onPress={() => {
+                          this.addToCart();
+                        }}
+                      />
+                      <Button
+                        icon={
+                          <Icon
+                            name="credit-card"
+                            color="#713F18"
+                            size={20}
+                            style={{ marginRight: 5 }}
+                          />
+                        }
+                        buttonStyle={detail_product_styles.button_outline}
+                        titleStyle={
+                          detail_product_styles.title_style_button_outline
+                        }
+                        title="Acheter"
+                        type="outline"
+                      />
+                    </View>
+                  ) : this.state.stock == null ? (
+                    <View
+                      style={[
+                        detail_product_styles.button_view_content,
+                        { alignItems: "center" },
+                      ]}
+                    >
+                      <Text>Veuillez choisir</Text>
+                    </View>
+                  ) : (
+                    <View
+                      style={[
+                        detail_product_styles.button_view_content,
+                        { alignItems: "center" },
+                      ]}
+                    >
+                      <View style={{ flexDirection: "row" }}>
+                        <Icon
+                          type="font-awesome"
+                          name="warning"
+                          size={16}
+                          color="#E0A80D"
+                        />
+                        <Text style={{ color: "#E0A80D" }}>
+                          {" "}
+                          Il n'y a plus de stock
+                        </Text>
+                      </View>
+                    </View>
+                  )}
                 </View>
-            </View>
+              </View>
+            );
         } else {
             var detailProduct = <ActivityIndicator style={{ paddingTop: 11 }} size="large" color={"#713F18"} />;
         }
