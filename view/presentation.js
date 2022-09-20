@@ -202,7 +202,7 @@ class Presentation extends React.Component {
   };
   variable = ''
   async componentDidMount() {
-    if((Cookie.get('https://www.passion-campagne.com/', 'PassionCamp').then((cookie) => this.fonction(cookie) ))==null){
+    if((Cookie.get('https://www.ow.randev.ovh/', 'PassionCamp').then((cookie) => this.fonction(cookie) ))==null){
       // this.setModalVisible(!this.state.modalVisible)
       
     }else{
