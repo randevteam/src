@@ -29,23 +29,36 @@ class CardSearch extends React.Component{
            if(item.id_manufacturer == selectedValue){
             //    console.log(selectedValue);
                 // console.log(item);
-            return(
-                <Card style={ card_search_styles.card }>
-                    <Text style={card_search_styles.condition}>{item.condition}</Text>
-                    <TouchableOpacity onPress={() => showDetail(item)}>
-                        <Image style={card_search_styles.img_product}
-                            source={{ uri: api_url + item.id_default_image + "/" + item.link_rewrite.language + ".jpg" }} />
-                    </TouchableOpacity>
-                    <Text style={card_search_styles.price}>€ {parseFloat(item.price).toFixed(2)} </Text>
-                    <Text 
-                        style={card_search_styles.name}
-                        numberOfLines={2}
-                        ellipsizeMode='tail'
-                    >
-                        {item.name.language}
-                    </Text>
-                </Card>
-            )
+            return (
+              <Card style={card_search_styles.card}>
+                <Text style={card_search_styles.condition}>
+                  {item.condition}
+                </Text>
+                <TouchableOpacity onPress={() => showDetail(item)}>
+                  <Image
+                    style={card_search_styles.img_product}
+                    source={{
+                      uri:
+                        api_url +
+                        item.id_default_image +
+                        "/" +
+                        item.link_rewrite.language +
+                        ".jpg",
+                    }}
+                  />
+                </TouchableOpacity>
+                <Text style={card_search_styles.price}>
+                  € {parseFloat(item.price * (1 + 20 / 100)).toFixed(2)}{" "}
+                </Text>
+                <Text
+                  style={card_search_styles.name}
+                  numberOfLines={2}
+                  ellipsizeMode="tail"
+                >
+                  {item.name.language}
+                </Text>
+              </Card>
+            );
            } else {
                 //console.log(selectedValue);
                 //console.log(item);
@@ -56,7 +69,7 @@ class CardSearch extends React.Component{
                     <Image style={card_search_styles.img_product}
                         source={{ uri: api_url + item.id_default_image + "/" + item.link_rewrite.language + ".jpg" }} />
                 </TouchableOpacity>
-                <Text style={card_search_styles.price}>€ {parseFloat(item.price).toFixed(2)} </Text>
+                <Text style={card_search_styles.price}>€ {parseFloat(item.price * (1 + 20 / 100)).toFixed(2)} </Text>
                 <Text 
                     style={card_search_styles.name}
                     numberOfLines={2}
@@ -77,7 +90,7 @@ class CardSearch extends React.Component{
                             <Image style={card_search_styles.img_product}
                                 source={{ uri: api_url + item.id_default_image + "/" + item.link_rewrite.language + ".jpg" }} />
                         </TouchableOpacity>
-                        <Text style={card_search_styles.price}>€ {parseFloat(item.price).toFixed(2)} </Text>
+                        <Text style={card_search_styles.price}>€ {parseFloat(item.price * (1 + 20 / 100)).toFixed(2)} </Text>
                         <Text 
                             style={card_search_styles.name}
                             numberOfLines={2}
