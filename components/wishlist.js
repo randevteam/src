@@ -1,0 +1,192 @@
+import React from 'react';
+
+import { View, Button, FlatList, Text, ActivityIndicator, ScrollView } from 'react-native';
+import { DotsLoader } from 'react-native-indicator';
+import { SearchBar, Icon } from 'react-native-elements';
+
+import { AuthContext } from '../helper/context/auth-context';
+import { api_get_wishlist, api_get_wishlist_categories, api_post_wishlist_ } from '../helper/api_url';
+
+
+import { fetch_url_get, fetch_url_post } from '../helper/function/common-function/fetch';
+import Wishlister from '../components/wishlist_lister';
+import { primaryColor, title_search_color } from '../helper/color';
+import ImageBackgroundGlobal from '../components/image_background_global';
+import { Chip, Badge } from 'react-native-paper';
+
+
+class Wishlist extends React.Component {
+
+    static contextType = AuthContext;
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            guest: null,
+            products: null,
+            isLoading: false,
+            IdCategories: null,
+            titre: null,
+            stringToSearch: null,
+            mode: false,
+            list: null,
+            chipsSelected: false,
+            index: null,
+            productsByCategories: null,
+            choise : false ,
+        }
+    }
+
+    updateSearch = (search) => {
+        this.setState({ search });
+    };
+
+    getGuest = async () => {
+        var guest = null;
+        guest = await this.context.getGuest();
+        if (guest) {
+            this.setState({
+                guest: guest
+            });
+            this.context.guest = guest;
+        }
+    }
+
+    getProduct = async () => {
+
+        var products = null;
+        products = await fetch_url_get(api_get_wishlist + this.context.customer.id.toString() );
+        this.setState({
+            products: products
+        });
+
+    }
+    getProductByid_wishlist = async (id_wishlist , i) => {
+        this.setState({ index: i })
+        this.setState({
+            choise : true
+        })
+        var url = api_post_wishlist_ + 'WishlistByCategories';
+        var products = null;
+        products = await fetch_url_post(url, {
+            id_wishlist: id_wishlist
+        });
+        if (products.product.lenght != 0 && this.state.choise ==  true ) {
+             this.setState({
+                productsByCategories : products
+            });
+        }
+    }
+    getWishlistCategories = async () => {
+        var list = await fetch_url_get(api_get_wishlist_categories + this.context.customer.id);
+        this.setState({
+            list: list.reverse()
+        });
+    }
+
+    displayLoading = () => {
+        if (this.state.isLoading) {
+            return (
+                <View style={{
+                    flex: 1,
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}>
+                    <DotsLoader color={primaryColor} betweenSpace={20} size={20} />
+                </View>
+            );
+        }
+    }
+
+    displayProduct = () => {
+        if (!this.state.choise) {
+            if (!this.state.isLoading && this.state.products) {
+                return (
+                    <Wishlister products={this.state.products.product} navigation={this.props.navigation} />
+                );
+            }
+        } else {
+            if (!this.state.isLoading && this.state.productsByCategories) {
+                return (
+                    <Wishlister products={this.state.productsByCategories.product} navigation={this.props.navigation} />
+                );
+            }
+        }
+        
+    }
+
+    displayTitre = (titre) => {
+        if (this.state.titre) {
+            return (
+                <Text style={{ color: '#000000', fontSize: 16 }}> {titre} </Text>
+            );
+        }
+    }
+
+    async componentDidMount() {
+        this.setState({
+            isLoading: true,
+        });
+
+
+        await this.getGuest();
+        await this.getProduct();
+        await this.getWishlistCategories()
+        this.setState({
+            isLoading: false,
+        });
+
+    }
+
+    componentDidUpdate(prevProps) {
+    }
+    selectChips = (i) => {
+        if (this.state.index == i) {
+            return true;
+        } else {
+            return false
+        }
+    }
+
+    listItem = () => {
+
+        if (this.state.list != null) {
+            return (
+                <View style={{ flexDirection: 'row' , marginLeft : 10 , marginBottom : 10 }}>
+                    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}   >
+                        {
+                            this.state.list.map((l, i) => {
+                            return (
+                                    <View key={i} style={{flexDirection: 'row', marginTop: 10}}>
+                                    <Chip selected={this.selectChips(i)} onPress={() => this.getProductByid_wishlist(l.id_wishlist ,  i )} mode='outlined' style={{marginRight: -15}}>{l.name} </Chip>
+                                        <Badge size={17} style={{ top: -20, right:0 }}>0</Badge>
+                                    </View>
+                            );
+                        })
+                    }
+                    </ScrollView>
+                </View>
+            );
+        } else {
+            return (
+                <ActivityIndicator />
+            );
+        }
+
+    }
+
+
+    render() {
+        return (
+            <View style={{ flex: 1, maxWidth: '100%', marginBottom: '2%' }}>
+                    {
+                        this.listItem()
+                    }
+                {this.displayLoading()}
+                {this.displayProduct()}
+            </View>
+        );
+    }
+}
+
+export default Wishlist;

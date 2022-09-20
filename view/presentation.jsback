@@ -1,0 +1,252 @@
+import React from 'react';
+
+import {View, ScrollView, Text, TouchableOpacity} from 'react-native';
+import {FAB} from 'react-native-paper';
+import {DotsLoader} from 'react-native-indicator';
+
+import {fetch_url_get} from '../helper/function/common-function/fetch';
+import {api_create_guest_url} from '../helper/api_url';
+import {AuthContext} from '../helper/context/auth-context';
+import {ConfigContext} from '../helper/context/config-context';
+import {
+  storeGuest,
+  removeGuest,
+  getGuest,
+  storeCustomer,
+  getCustomer,
+} from '../helper/storage/user-storage';
+import {login, register} from '../helper/function/user/user-auth';
+import styles from './style/presentation';
+import {Color} from '../helper/color';
+import SwiperComponent from '../components/presentation_pages';
+import {Button} from 'react-native-elements';
+
+class Presentation extends React.Component {
+  static contextType = AuthContext;
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: false,
+      updateState: 0,
+    };
+  }
+
+  navigate_to_view = () => {
+    this.props.navigation.reset({
+      index: 0,
+      routes: [{name: 'View'}],
+    });
+  };
+
+  continue_as_guest = async () => {
+    this.setState({
+      isLoading: true,
+    });
+    await getGuest().then(async data => {
+      if (data) {
+        this.context.guest = JSON.parse(data);
+        await removeGuest();
+        await storeGuest(JSON.parse(data));
+        this.navigate_to_view();
+        this.setState({
+          isLoading: false,
+        });
+      } else {
+        var guest = null;
+        guest = await fetch_url_get(api_create_guest_url);
+        if (guest) {
+          await storeGuest(guest.response);
+          this.context.guest = JSON.parse(guest.response);
+          this.navigate_to_view();
+          this.setState({
+            isLoading: false,
+          });
+        } else {
+          this.setState({
+            isLoading: false,
+          });
+          console.log('error ato1 ');
+        }
+      }
+    });
+  };
+
+  create_guest = async () => {
+    this.setState({
+      isLoading: true,
+    });
+    await getGuest().then(async data => {
+      if (data) {
+        this.context.guest = JSON.parse(data);
+        await removeGuest();
+        await storeGuest(JSON.parse(data));
+        this.setState({
+          isLoading: false,
+        });
+      } else {
+        var guest = null;
+        guest = await fetch_url_get(api_create_guest_url);
+        if (guest) {
+          await storeGuest(guest.response);
+          this.context.guest = JSON.parse(guest.response);
+          this.setState({
+            isLoading: false,
+          });
+        } else {
+          this.setState({
+            isLoading: false,
+          });
+          console.log('error ato 2');
+        }
+      }
+    });
+  };
+
+  isLoading = () => {
+    if (this.state.isLoading) {
+      return (
+        <View style={styles.continue_guest}>
+          <DotsLoader color={Color} betweenSpace={2} />
+        </View>
+      );
+    } else {
+      if (!this.context.customer) {
+        return (
+          <TouchableOpacity
+            onPress={() => this.continue_as_guest()}
+            style={styles.continue_guest}>
+            <Text style={styles.text_guest}>Continuez en tant qu'invité</Text>
+          </TouchableOpacity>
+        );
+      }
+    }
+  };
+
+  verify_if_guest_exist = async () => {
+    var check = null;
+    await getGuest().then(data => {
+      if (data) {
+        check = JSON.parse(data);
+      } else {
+        check = null;
+      }
+    });
+    return check;
+  };
+
+  verify_if_customer_exist = async () => {
+    var check = null;
+    await getCustomer().then(data => {
+      if (data) {
+        check = JSON.parse(data);
+      } else {
+        check = null;
+      }
+    });
+    return check;
+  };
+
+  async componentDidMount() {
+    try {
+      await this.create_guest().then(async () => {
+        try {
+          await this.verify_if_guest_exist().then(async data => {
+            if (data) {
+              this.context.guest = data;
+            }
+            try {
+              await this.verify_if_customer_exist().then(data => {
+                if (data) {
+                  this.context.customer = data;
+                }
+                this.setState({
+                  updateState: this.updateState + 1,
+                });
+              });
+            } catch (e) {
+              console.error('error verify customer');
+            }
+          });
+        } catch (e) {
+          console.error('error verify guest');
+        }
+      });
+    } catch (e) {
+      console.error('error create guest');
+    }
+  }
+
+  showDetail = (data) => {
+    this.props.navigation.navigate('Search', {
+      screen: 'Search',
+      params: {
+        data: {
+          IdCategorie: data.IdCategorie,
+          SousSousSousTitre: data.titre,
+        },
+      },
+    });
+  };
+
+  goToLogin = () => {
+    this.props.navigation.navigate('Login');
+  };
+
+  goToSignUp = () => {
+    this.props.navigation.navigate('SignUp');
+  };
+
+  render() {
+    return (
+      <View
+        style={{
+          flex: 1,
+        }}>
+        <SwiperComponent same_category={this.showDetail} />
+        <TouchableOpacity
+          activeOpacity={0.85}
+          style={styles.fab}
+          onPress={() => {
+            if (this.context.customer) {
+              this.navigate_to_view();
+            } else {
+              this.goToSignUp();
+            }
+          }}>
+          <Text style={{fontWeight: 'bold', color: 'grey'}}>
+            {!this.context.customer ? "S'enregistrer" : 'Continuer'}
+          </Text>
+        </TouchableOpacity>
+        {/* <FAB
+                    style={styles.fab}
+                    small
+                    onPress={() => { 
+                        if(this.context.customer){
+                            this.navigate_to_view();
+                        }else{
+                            this.goToSignUp();
+                        }
+                    }}
+                    label={ !this.context.customer ? "S'enregistrer" : 'Continuer' }
+                /> */}
+        {this.isLoading()}
+        {this.context.customer ? (
+          <View></View>
+        ) : (
+          <View style={styles.have_account}>
+            <Text
+              style={styles.text_guest}
+              onPress={() => {
+                this.goToLogin();
+              }}>
+              Vous avez un compte? Connectez vous
+            </Text>
+          </View>
+        )}
+      </View>
+    );
+  }
+}
+
+export default Presentation;

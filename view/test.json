@@ -1,0 +1,143 @@
+{
+    "product": [
+        {
+            "id": "977",
+            "id_manufacturer": "21",
+            "id_supplier": "21",
+            "id_category_default": "112",
+            "new": {},
+            "cache_default_attribute": "10102",
+            "id_default_image": "9419",
+            "id_default_combination": "10102",
+            "id_tax_rules_group": "1",
+            "position_in_category": "0",
+            "manufacturer_name": "Chiruca",
+            "quantity": "0",
+            "type": "simple",
+            "id_shop_default": "1",
+            "reference": "CH \/ 44751 01",
+            "supplier_reference": {},
+            "location": {},
+            "width": "0.000000",
+            "height": "0.000000",
+            "depth": "0.000000",
+            "weight": "0.000000",
+            "quantity_discount": "0",
+            "ean13": {},
+            "isbn": {},
+            "upc": {},
+            "cache_is_pack": "0",
+            "cache_has_attachments": "0",
+            "is_virtual": "0",
+            "state": "1",
+            "additional_delivery_times": "1",
+            "delivery_in_stock": {
+                "language": {
+                    "@attributes": {
+                        "id": "1"
+                    }
+                }
+            },
+            "delivery_out_stock": {
+                "language": {
+                    "@attributes": {
+                        "id": "1"
+                    }
+                }
+            },
+            "on_sale": "0",
+            "online_only": "0",
+            "ecotax": "0.000000",
+            "minimal_quantity": "1",
+            "low_stock_threshold": {},
+            "low_stock_alert": "0",
+            "price": "218.333333",
+            "wholesale_price": "0.000000",
+            "unity": {},
+            "unit_price_ratio": "0.000000",
+            "additional_shipping_cost": "0.00",
+            "customizable": "0",
+            "text_fields": "0",
+            "uploadable_files": "0",
+            "active": "1",
+            "redirect_type": "404",
+            "id_type_redirected": "0",
+            "available_for_order": "1",
+            "available_date": "0000-00-00",
+            "show_condition": "0",
+            "condition": "new",
+            "show_price": "1",
+            "indexed": "1",
+            "visibility": "both",
+            "advanced_stock_management": "0",
+            "date_add": "2012-10-23 23:18:35",
+            "date_upd": "2020-07-03 10:15:52",
+            "pack_stock_type": "3",
+            "meta_description": {
+                "language": {
+                    "@attributes": {
+                        "id": "1"
+                    }
+                }
+            },
+            "meta_keywords": {
+                "language": {
+                    "@attributes": {
+                        "id": "1"
+                    }
+                }
+            },
+            "meta_title": {
+                "language": {
+                    "@attributes": {
+                        "id": "1"
+                    }
+                }
+            },
+            "link_rewrite": {
+                "language": "chaussures-chiruca-chasse-bulldog-boa"
+            },
+            "name": {
+                "language": "Chaussures Chiruca chasse Bulldog BOA"
+            },
+            "description": {
+                "language":"
+Int\u00e9rieur: La membrane Gore-Tex<\/a>\u00ae<\/strong> repr\u00e9sente la meilleure mati\u00e8re en termes d'imperm\u00e9abilit\u00e9 et de respirabilit\u00e9<\/strong>.<\/p>\n
+
+Semelles: Con\u00e7ues en caoutchouc antid\u00e9rapant, tr\u00e8s r\u00e9sistant \u00e0 l'usure par frottement en Vibram\u00ae Hunting : les semelles VIBRAM\u00ae<\/strong> procurent une excellente adh\u00e9rence, une stabilit\u00e9 et un amorti tr\u00e8s performant, ainsi qu'une bonne r\u00e9sistance \u00e0 l'usure<\/strong>, pour que le chasseur b\u00e9n\u00e9ficie d'une s\u00e9curit\u00e9 et d'un confort accrus, \u00e0 chaque pas.<\/p>\n
+
+Lacets: La\u00e7age BOA\u00ae<\/strong> (la\u00e7age avec ajustement int\u00e9gral personnalis\u00e9, rapide et sans effort)<\/p>\n
+
+Cuir: La peau de nubuck s\u00e9lectionn\u00e9e pour CHIRUCA<\/a>\u00ae, provient d'animaux \u00e9lev\u00e9s dans les r\u00e8gles de l'art. Nubuck hydrofuge trait\u00e9 Scotchgard. Nappa hydrofuge et revers en nappa perfor\u00e9e. Renforts lat\u00e9raux.<\/p>\n
+
+Coloris disponible : kaki<\/p>\n
+
+En r\u00e9sum\u00e9 : Nubuck hydrofuge trait\u00e9 Scotchgard. Nappa hydrofuge. Revers en napa perfor\u00e9e. Doublure Gore-Tex\u00ae. La\u00e7age BOA\u00ae. Renforts lat\u00e9raux TPU. Semelle caoutchouc Vibram\u00ae Hunting. Coloris : Kaki ATTENTION: Pour tous les mod\u00e8les \u00e0 syst\u00e8me de fermeture BOA de chez Chiruca,<\/p>\n
+
+Pour les Chaussures Chiruca avec le syst\u00e8me de la\u00e7age BOA,\u00a0nous vous conseillons de\u00a0prendre une pointure de plus que ce que vous mettez habituellement.<\/p>\n
+
+Attention\u00a0: Ce syst\u00e8me de la\u00e7age est moins solide que des lacets, et n\u2019est donc pas adapt\u00e9 pour des marches intensives.<\/p>"},"description_short":{"language":"
+
+Ces chaussures Chiruca<\/a>\u00a0s'appellent Bulldog BOA. Elles sont fabriqu\u00e9es par la marque espagnole de renom avec des mati\u00e8res de qualit\u00e9 :\u00a0 des semelles Vibram et un syst\u00e8me de la\u00e7age facile par c\u00e2bles nomm\u00e9 BOA.<\/strong>\u00a0<\/p>"},"available_now":{"language":{"@attributes":{"id":"1"}}},"available_later":{"language":{"@attributes":{"id":"1"}}},"associations":{"categories":{"@attributes":{"nodeType":"category","api":"categories"},"category":{"id":"112"}},"images":{"@attributes":{"nodeType":"image","api":"images"},"image":[{"id":"9419"},{"id":"5755"},{"id":"5753"}]},"combinations":{"@attributes":{"nodeType":"combination","api":"combinations"},"combination":[{"id":"10100"},{"id":"10101"},{"id":"10102"},{"id":"10103"},{"id":"10104"},{"id":"10105"},{"id":"10106"},{"id":"10107"},{"id":"10108"},{"id":"10109"},{"id":"10110"}]},"product_option_values":{"@attributes":{"nodeType":"product_option_value","api":"product_option_values"},"product_option_value":[{"id":"57"},{"id":"58"},{"id":"59"},{"id":"60"},{"id":"61"},{"id":"62"},{"id":"66"},{"id":"64"},{"id":"65"},{"id":"67"},{"id":"68"}]},"product_features":{"@attributes":{"nodeType":"product_feature","api":"product_features"}},"tags":{"@attributes":{"nodeType":"tag","api":"tags"},"tag":[{"id":"509"},{"id":"510"},{"id":"850"},{"id":"851"}]},"stock_availables":{"@attributes":{"nodeType":"stock_available","api":"stock_availables"},"stock_available":[{"id":"156","id_product_attribute":"0"},{"id":"157","id_product_attribute":"10100"},{"id":"158","id_product_attribute":"10101"},{"id":"159","id_product_attribute":"10102"},{"id":"160","id_product_attribute":"10103"},{"id":"161","id_product_attribute":"10104"},{"id":"162","id_product_attribute":"10105"},{"id":"163","id_product_attribute":"10106"},{"id":"164","id_product_attribute":"10107"},{"id":"165","id_product_attribute":"10108"},{"id":"166","id_product_attribute":"10109"},{"id":"167","id_product_attribute":"10110"}]},"accessories":{"@attributes":{"nodeType":"product","api":"products"},"product":[{"id":"967"},{"id":"969"},{"id":"2236"},{"id":"2854"}]},"product_bundle":{"@attributes":{"nodeType":"product","api":"products"}}}},{"id":"2355","id_manufacturer":"16","id_supplier":"16","id_category_default":"112","new":{},"cache_default_attribute":"7900","id_default_image":"7250","id_default_combination":"7895","id_tax_rules_group":"1","position_in_category":"2","manufacturer_name":"H\u00e4rkila","quantity":"1","type":"simple","id_shop_default":"1","reference":"HA \/ 30 01 077 84-S","supplier_reference":{},"location":{},"width":"0.000000","height":"0.000000","depth":"0.000000","weight":"0.000000","quantity_discount":"0","ean13":{},"isbn":{},"upc":{},"cache_is_pack":"0","cache_has_attachments":"0","is_virtual":"0","state":"1","additional_delivery_times":"1","delivery_in_stock":{"language":{"@attributes":{"id":"1"}}},"delivery_out_stock":{"language":{"@attributes":{"id":"1"}}},"on_sale":"0","online_only":"0","ecotax":"0.000000","minimal_quantity":"1","low_stock_threshold":{},"low_stock_alert":"0","price":"249.166667","wholesale_price":"0.000000","unity":{},"unit_price_ratio":"0.000000","additional_shipping_cost":"0.00","customizable":"0","text_fields":"0","uploadable_files":"0","active":"1","redirect_type":"404","id_type_redirected":"0","available_for_order":"1","available_date":"0000-00-00","show_condition":"0","condition":"new","show_price":"1","indexed":"1","visibility":"both","advanced_stock_management":"0","date_add":"2013-08-14 10: 21: 24","date_upd":"2021-04-21 11: 44: 03","pack_stock_type":"3","meta_description":{"language":{"@attributes":{"id":"1"}}},"meta_keywords":{"language":{"@attributes":{"id":"1"}}},"meta_title":{"language":{"@attributes":{"id":"1"}}},"link_rewrite":{"language":"chaussures-big-game-boa-gtx8-harkila"},"name":{"language":"Chaussures Big Game BOA GTX8 H\u00e4rkila"},"description":{"language":"
+
+La particularit\u00e9 de cette chaussure Big Game est d'\u00eatre \u00e9quip\u00e9e du syst\u00e8me dit BOA. Celui-ci permet une fermeture et un serrage rapide et r\u00e9gulier par un c\u00e2ble.\u00a0<\/p>\n
+
+Avec ses semelles H\u00e4rkila<\/a> Sport Ortho, les Big Game GTX8 BOA sont \u00e9quip\u00e9es de semelles qui accrochent pour des environnements de for\u00eats, de plaines..<\/strong><\/p>\n
+
+A l'int\u00e9rieur, il y a une semelle H\u00e4rkila footbed Ortholite. <\/strong>Celle-ci permet une bonne \u00e9vacuation de la transpiration<\/strong> tout en stabilisant bien le pied et en prot\u00e9geant la vo\u00fbte\u00a0plantaire et le talon du pied par des coussinets de gel<\/b>.\u00a0<\/p>\n
+
+Ce mod\u00e8le de chaussures Big Game est fabriqu\u00e9 en cuir de nubuck<\/strong>.<\/p>\n
+
+Gr\u00e2ce au Gore-Tex<\/a> Perfomance confort, ces chaussures H\u00e4rkila sont imperm\u00e9ables et respirantes.<\/strong> Ce type de Gore-Tex est parfait pour une utilisation de toutes les saisons.<\/strong> \u00a0<\/p>\n
+
+Attention\u00a0: Ce syst\u00e8me de la\u00e7age est moins solide que des lacets, et n\u2019est donc pas adapt\u00e9 pour des marches intensives.<\/p>"},"description_short":{"language":"
+
+Cette paire de chaussures Big Game GTX8 BOA<\/strong> est comme toutes les Big Game de chez H\u00e4rkila<\/a> l\u00e9g\u00e8re, imperm\u00e9able, respirante, souple et stable. <\/strong>Le syst\u00e8me BOA<\/span> <\/a>facilite la fermeture de la chaussure par un m\u00e9canisme serrant par un c\u00e2ble la chaussures\u00a0en cuir\u00a0<\/strong> de mani\u00e8re r\u00e9guli\u00e8re<\/strong>.\u00a0<\/p>"},"available_now":{"language":{"@attributes":{"id":"1"}}},"available_later":{"language":{"@attributes":{"id":"1"}}},"associations":{"categories":{"@attributes":{"nodeType":"category","api":"categories"},"category":[{"id":"112"},{"id":"210"}]},"images":{"@attributes":{"nodeType":"image","api":"images"},"image":[{"id":"7250"},{"id":"7448"},{"id":"9978"},{"id":"9979"}]},"combinations":{"@attributes":{"nodeType":"combination","api":"combinations"},"combination":{"id":"7895"}},"product_option_values":{"@attributes":{"nodeType":"product_option_value","api":"product_option_values"},"product_option_value":{"id":"37"}},"product_features":{"@attributes":{"nodeType":"product_feature","api":"product_features"}},"tags":{"@attributes":{"nodeType":"tag","api":"tags"},"tag":[{"id":"354"},{"id":"355"},{"id":"358"},{"id":"359"},{"id":"853"},{"id":"1590"},{"id":"1901"},{"id":"1903"},{"id":"10677"},{"id":"10678"},{"id":"10679"},{"id":"10680"}]},"stock_availables":{"@attributes":{"nodeType":"stock_available","api":"stock_availables"},"stock_available":[{"id":"1350","id_product_attribute":"0"},{"id":"1361","id_product_attribute":"7895"}]},"accessories":{"@attributes":{"nodeType":"product","api":"products"},"product":{"id":"1507"}},"product_bundle":{"@attributes":{"nodeType":"product","api":"products"}}}},{"id":"4146","id_manufacturer":"19","id_supplier":"0","id_category_default":"112","new":{},"cache_default_attribute":"0","id_default_image":"13038","id_default_combination":{"@attributes":{"notFilterable":"true"}},"id_tax_rules_group":"1","position_in_category":"3","manufacturer_name":"Le Chameau","quantity":"0","type":"simple","id_shop_default":"1","reference":"LC \/ 2675","supplier_reference":{},"location":{},"width":"0.000000","height":"0.000000","depth":"0.000000","weight":"0.000000","quantity_discount":"0","ean13":{},"isbn":{},"upc":{},"cache_is_pack":"0","cache_has_attachments":"0","is_virtual":"0","state":"1","additional_delivery_times":"1","delivery_in_stock":{"language":{"@attributes":{"id":"1"}}},"delivery_out_stock":{"language":{"@attributes":{"id":"1"}}},"on_sale":"0","online_only":"0","ecotax":"0.000000","minimal_quantity":"1","low_stock_threshold":{},"low_stock_alert":"0","price":"23.333333","wholesale_price":"0.000000","unity":{},"unit_price_ratio":"0.000000","additional_shipping_cost":"0.00","customizable":"0","text_fields":"0","uploadable_files":"0","active":"1","redirect_type":"301-category","id_type_redirected":"0","available_for_order":"1","available_date":"0000-00-00","show_condition":"0","condition":"new","show_price":"1","indexed":"1","visibility":"both","advanced_stock_management":"0","date_add":"2019-10-26 13: 50: 21","date_upd":"2021-04-16 10: 22: 47","pack_stock_type":"3","meta_description":{"language":"Pour transporter vos chaussures facilement et proprement, ce sac \u00e0 chaussures Le Chameau sera parfait. Un filet d'a\u00e9ration permet d'\u00e9vacuer l'humidit\u00e9 de vos chaussures Le Chameau mouill\u00e9es."},"meta_keywords":{"language":{"@attributes":{"id":"1"}}},"meta_title":{"language":{"@attributes":{"id":"1"}}},"link_rewrite":{"language":"sac-chaussures-le-chameau"},"name":{"language":"Sac \u00e0 chaussures Le Chameau"},"description":{"language":"
+
+Pour transporter vos chaussures facilement et proprement, ce sac \u00e0 chaussures Le Chameau sera parfait gr\u00e2ce \u00e0 sa poign\u00e9e et \u00e0 sa bandouli\u00e8re. Un petit filet d'a\u00e9ration permet d'\u00e9vacuer l'humidit\u00e9 de vos chaussures mouill\u00e9es.\u00a0<\/p>\n
+
+Ce sac a diverses poches : une lat\u00e9rale, une en filet ainsi que qu'une poche pour un petit chauffe-bottes.\u00a0<\/p>\n
+
+La hauteur int\u00e9rieure de ce sac \u00e0 chaussures est de 31cm.\u00a0<\/p>"},"description_short":{"language":"
+
+Ce sac \u00e0 chaussures est sign\u00e9 Le Chameau. Il a un double zip d'ouverture. Une poignet et une bandouli\u00e8re sont pr\u00e9sents pour faciliter son transport, surtout quand vos chaussures et vos botillions sont tr\u00e8s sales.\u00a0<\/p>"},"available_now":{"language":{"@attributes":{"id":"1"}}},"available_later":{"language":{"@attributes":{"id":"1"}}},"associations":{"categories":{"@attributes":{"nodeType":"category","api":"categories"},"category":[{"id":"11"},{"id":"25"},{"id":"29"},{"id":"111"},{"id":"112"},{"id":"113"},{"id":"200"}]},"images":{"@attributes":{"nodeType":"image","api":"images"},"image":{"id":"13038"}},"combinations":{"@attributes":{"nodeType":"combination","api":"combinations"}},"product_option_values":{"@attributes":{"nodeType":"product_option_value","api":"product_option_values"}},"product_features":{"@attributes":{"nodeType":"product_feature","api":"product_features"},"product_feature":{"id":"1","id_feature_value":"1664"}},"tags":{"@attributes":{"nodeType":"tag","api":"tags"},"tag":[{"id":"2559"},{"id":"9085"},{"id":"9086"},{"id":"9087"}]},"stock_availables":{"@attributes":{"nodeType":"stock_available","api":"stock_availables"},"stock_available":{"id":"9148","id_product_attribute":"0"}},"accessories":{"@attributes":{"nodeType":"product","api":"products"},"product":[{"id":"3441"},{"id":"4030"},{"id":"4145"}]},"product_bundle":{"@attributes":{"nodeType":"product","api":"products"}}}}]}

@@ -1,0 +1,1 @@
+export const background = require('../ressources/presentation_page.jpg');
