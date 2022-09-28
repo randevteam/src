@@ -38,9 +38,9 @@ class Flatlistercategory extends Component {
 
   showDetail = (data) => {
 
-    console.log("==========444444=");
-    console.log(data.id);
-    console.log("===========44444=");
+    // console.log("==========444444=");
+    // console.log(data.id);
+    // console.log("===========44444=");
     
     // global.idCategory_main = data.id;
 

@@ -49,9 +49,9 @@ class CardProduct extends React.Component {
   };
   removeToMyWishlist = async (id) => {
     if (this.state.Fav.findIndex((item) => item.id == id) !== -1) {
-      console.log("id " + id);
-      console.log("this.state.id_wishlistfromModal " + this.state.list);
-      console.log("this.context.customer.id " + this.context.customer.id);
+      // console.log("id " + id);
+      // console.log("this.state.id_wishlistfromModal " + this.state.list);
+      // console.log("this.context.customer.id " + this.context.customer.id);
       var url = api_post_wishlist_ + "REMOVE";
       let body = {
         id_wishlist: this.state.list,
@@ -59,12 +59,12 @@ class CardProduct extends React.Component {
         id_product: id,
         id_product_attribute: null,
       };
-      console.log(JSON.stringify(body));
+      //console.log(JSON.stringify(body));
       try {
         let envoi = await fetch_url_post(url, body);
-        console.log("response=", envoi);
+        //console.log("response=", envoi);
         if (envoi) {
-          alert("Votre produit a bien été supprimer aux favoris");
+          alert("Votre produit a bien été supprimé des favoris");
           this.setState({ wished: false });
         } else {
           alert("impossible de supprimer");
@@ -138,9 +138,9 @@ class CardProduct extends React.Component {
   }
 
   render() {
-    console.log("card this.props");
+    //console.log("card this.props");
 
-    console.log(this.props);
+    //console.log(this.props);
     const { item, showDetail } = this.props;
     return (
       <View>

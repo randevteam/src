@@ -23,9 +23,9 @@ class PanierList extends React.Component {
     }
 
     render(){
-        console.log(" render for the props cartP")
-        console.log(this.props)
-        console.log(" render for the props cartP");
+        // console.log(" render for the props cartP")
+        // console.log(this.props)
+        // console.log(" render for the props cartP");
 
         const { cartP, addQuantity, dropQuantity, delete_cart } = this.props
         return(

@@ -34,7 +34,7 @@ class SendEmail extends React.Component {
 
     envoyer = async () => {
         let valide = await this.validate_form();
-        console.log(valide)
+        //console.log(valide)
         if(valide){
             let body = {
                 nom: this.state.nom,
@@ -44,7 +44,7 @@ class SendEmail extends React.Component {
             }
             try{                
                 let envoi = await fetch_url_post(api_send_email, body);
-                console.log("register=",envoi);
+                //console.log("register=",envoi);
                 if(envoi){
                     alert("Message envoyé")
                 }else{

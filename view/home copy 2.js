@@ -66,9 +66,9 @@ class Home extends React.Component {
   getCategory = async () => {
     var category = null;
     category = await fetch_url_get(api_get_category_by_id_url + this.state.idCategory);
-    console.log("********");
-    console.log(category);
-    console.log("********");
+    // console.log("********");
+    // console.log(category);
+    // console.log("********");
     this.setState({
       dataCategory: category,
     });
@@ -110,18 +110,18 @@ class Home extends React.Component {
   
   displayCategory = () => {
 
-    console.log("===========****===========");
-    console.log(this.state.isLoading);
-    console.log("***")
-    console.log(this.state.dataCategory);
-    console.log("===========****==========");
+    // console.log("===========****===========");
+    // console.log(this.state.isLoading);
+    // console.log("***")
+    // console.log(this.state.dataCategory);
+    // console.log("===========****==========");
 
     if (!this.state.isLoading && this.state.dataCategory) {
       const data = this.state.dataCategory;
 
-      console.log("========================");
-      console.log(data);
-      console.log("========================");
+      // console.log("========================");
+      // console.log(data);
+      // console.log("========================");
 
         return (
           <View>

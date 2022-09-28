@@ -141,10 +141,10 @@ class Query extends React.Component {
       api_get_search_result + textSearch + "&language=1"
     );
 
-    console.log("--------001------");
-    console.log(products);
-    console.log(this.state.isLoading)
-    console.log("--------001------");
+    // console.log("--------001------");
+    // console.log(products);
+    // console.log(this.state.isLoading)
+    // console.log("--------001------");
 
     this.setState({
       products: products.product,
@@ -152,10 +152,10 @@ class Query extends React.Component {
       isLoading: false,
     });
 
-    console.log("--------002------");
-    console.log(this.state.products);
-    console.log(this.state.isLoading);
-    console.log("--------002------");
+    // console.log("--------002------");
+    // console.log(this.state.products);
+    // console.log(this.state.isLoading);
+    // console.log("--------002------");
     if (!this.state.isLoading && this.state.products) {
       // console.log(this.state.IdCategories)
       return (

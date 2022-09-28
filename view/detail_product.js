@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { View, ScrollView, Text, ActivityIndicator, Dimensions, Image, TextInput, TouchableOpacity, Share, Alert } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+//import { Picker } from '@react-native-picker/picker';
 import { Avatar, Badge, Card, Button, Icon } from "react-native-elements";
 // import Icon from 'react-native-vector-icons/FontAwesome';
 import SelectDropdown from 'react-native-select-dropdown';
@@ -12,7 +12,7 @@ import { api_url, api_get_product_by_id_url, api_add_cart_url, api_combination_g
 import { fetch_url_get, fetch_url_post } from '../helper/function/common-function/fetch';
 import detail_product_styles from './style/detail_product_style';
 import { primaryBackgroundColor } from '../helper/color';
-import { parse, transform } from '@babel/core';
+//import { parse, transform } from '@babel/core';
 import SimilarProduct from '../components/similar_product';
 
 class DetailProduct extends React.Component {
@@ -47,13 +47,13 @@ class DetailProduct extends React.Component {
     }
 
     shareto = async () => {
-        console.log('share it');
+        //console.log('share it');
         try {
             const result = await Share.share({
                 title: 'React Native | A framework for building native apps using React',
                 message: this.state.url_to_web,
             });
-            // console.log(result);
+            // //console.log(result);
             if (result.action === Share.sharedAction) {
                 if (result.activityType) {
                     // shared with activity type of result.activityType
@@ -151,10 +151,10 @@ class DetailProduct extends React.Component {
                         : null,
                 specific_price: price,
             });
-            //   console.log(this.state.specific_price);
-            // console.log(this.state.id_category[0].id);
-            // console.log(this.state.product.product.product.id);
-            // console.log(this.state.product.product.product);
+            //   //console.log(this.state.specific_price);
+            // //console.log(this.state.id_category[0].id);
+            // //console.log(this.state.product.product.product.id);
+            // //console.log(this.state.product.product.product);
             if (data.declinaison.length == 0) {
                 let choice = {
                     idAttribute: this.state.only_choice.id,
@@ -195,7 +195,7 @@ class DetailProduct extends React.Component {
                         qt,
                         id_group_customer,
                     );
-                    // console.log(item)
+                    // //console.log(item)
                 });
                 // ---------------
                 this.setState({
@@ -205,7 +205,7 @@ class DetailProduct extends React.Component {
         });
 
         await fetch_url_get(api_get_link_rewrite + this.state.id_category[1].id).then(async (data) => {
-            console.log(data.language);
+            //console.log(data.language);
             const url = 'http://www.projets-omega-web.net/' + data.language + '/' + this.state.product.product.product.id + '-' + this.state.product.product.product.link_rewrite.language + '.html'
             // const url = api_url + data.language + '/' + this.state.product.product.product.id + '-' + this.state.product.product.product.link_rewrite.language + '.html'
             await this.setState({
@@ -223,7 +223,7 @@ class DetailProduct extends React.Component {
 
 
     getoption = (opt) => {
-        console.log('name' +JSON.stringify(opt))
+        //console.log('name' +JSON.stringify(opt))
         if (typeof opt != null) {
             if (opt.product_option_value_T.name != undefined) {
                 var optToReturn = (
@@ -380,7 +380,7 @@ class DetailProduct extends React.Component {
               idCustomer: idCustomer,
             };
             
-            console.log('  contenu du body '+JSON.stringify(body))
+            //console.log('  contenu du body '+JSON.stringify(body))
             await fetch_url_post(api_add_cart_url, body).then(() => {
                 Alert.alert("Alerte","Ajout au panier!");
                 global.statut = true
@@ -396,7 +396,7 @@ class DetailProduct extends React.Component {
               idCustomer: idCustomer,
             };
             
-            console.log(' contenu du body '+JSON.stringify(body))
+            //console.log(' contenu du body '+JSON.stringify(body))
             await fetch_url_post(api_add_cart_url, body).then(() => {
                 Alert.alert("Alerte","Ajout au panier!");
                 global.statut = true
@@ -460,7 +460,7 @@ class DetailProduct extends React.Component {
                 fetch_url_post(api_combination_get_price_url, Bd)
                     .then(async (json) => {
                         
-                        // console.log(json)
+                        // //console.log(json)
                         this.setState({
                             currentCombination: json
                         })
@@ -500,7 +500,7 @@ class DetailProduct extends React.Component {
 
     render() {
        
-        console.log('vue du details produits' + JSON.stringify(this.props.route.params))
+        //console.log('vue du details produits' + JSON.stringify(this.props.route.params))
         if (this.state.product && this.state.product != "no data" && !this.state.loading) {
             var combinationTplNew = this.state.product.declinaison.map((combinationVar, i) => {
                 var combinationId = combinationVar.id;

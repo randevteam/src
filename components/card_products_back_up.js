@@ -25,10 +25,10 @@ class CardProduct extends React.Component {
 
     addToMyWishlist = async () => {
         var url = api_post_wishlist_ADD + 'ADD';
-        console.log("url");
-        console.log(url);
-        console.log(this.context.customer.id);
-        console.log(this.state.id_product);
+        // console.log("url");
+        // console.log(url);
+        // console.log(this.context.customer.id);
+        // console.log(this.state.id_product);
         var result = await fetch_url_post(url, {
             id_customer: this.context.customer.id,
             id_product: this.state.id_product

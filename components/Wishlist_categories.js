@@ -112,11 +112,11 @@ class Wishlist extends React.Component {
       console.log("id:", this.state.id_wishlist);
       if (this.state.id_wishlist != null) {
         var url = api_post_wishlist_ + "ADD";
-        console.log("url");
-        console.log(url);
-        console.log("id id_wishlist " + this.state.id_wishlist);
-        console.log("customer " + this.context.customer.id);
-        console.log("id product " + this.props.id_product);
+        // console.log("url");
+        // console.log(url);
+        // console.log("id id_wishlist " + this.state.id_wishlist);
+        // console.log("customer " + this.context.customer.id);
+        // console.log("id product " + this.props.id_product);
 
         let body = {
           id_wishlist: this.state.id_wishlist,
@@ -125,22 +125,22 @@ class Wishlist extends React.Component {
           id_product_attribute: null,
           quantity: 1,
         };
-        console.log(JSON.stringify(body));
+        //console.log(JSON.stringify(body));
         try {
           let envoi = await fetch_url_post(url, body);
-          console.log("response=", envoi);
+          //console.log("response=", envoi);
           if (envoi) {
             // this.props.navigation.navigate('Home')
             Alert.alert(
               "Information",
-              "Votre produit a bien été ajouter aux favoris!"
+              "Votre produit a bien été ajouté aux favoris!"
             );
             this.props.id_wishlistfromModal(this.state.id_wishlist);
 
             // this.props.redHeart();
             this.props.dismiss();
           } else {
-            Alert.alert("Information", "impossible d'ajouter au favoris!");
+            Alert.alert("Information", "impossible d'ajouté au favoris!");
           }
         } catch (e) {
             Alert.alert("Information", "Erreur sur l'api d'envoi email!");
@@ -193,7 +193,7 @@ class Wishlist extends React.Component {
           id_customer: this.context.customer.id,
           name: this.state.wishlist_name,
         });
-        console.log(result);
+        //console.log(result);
         if (result) {
           this.setState({
             showInput: false,
@@ -344,7 +344,7 @@ class Wishlist extends React.Component {
 
   render() {
     // const redHeart = this.props.id_product
-    console.log("productId" + JSON.stringify(this.props));
+    //console.log("productId" + JSON.stringify(this.props));
     return (
       <View>
         <Modal

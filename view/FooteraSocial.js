@@ -1,17 +1,17 @@
 import React from 'react';
 
 import { View ,Button ,FlatList, Text, TouchableOpacity, StyleSheet, Image, Linking} from 'react-native';
-import { DotsLoader } from 'react-native-indicator';
+//import { DotsLoader } from 'react-native-indicator';
 import { SearchBar, Icon } from 'react-native-elements';
 
 import { AuthContext } from '../helper/context/auth-context';
-import {api_get_search_result } from '../helper/api_url';
+//import {api_get_search_result } from '../helper/api_url';
 
 
-import { fetch_url_get } from '../helper/function/common-function/fetch';
-import SearchList from '../components/search_list';
-import { primaryColor, title_search_color } from '../helper/color';
-import ImageBackgroundGlobal from '../components/image_background_global';
+//import { fetch_url_get } from '../helper/function/common-function/fetch';
+//import SearchList from '../components/search_list';
+//import { primaryColor, title_search_color } from '../helper/color';
+//import ImageBackgroundGlobal from '../components/image_background_global';
 
 import detail_product_styles from './style/detail_product_style';
 
@@ -48,8 +48,8 @@ class FooteraSocial extends React.Component {
       };
     render(){
         
-        const nouvy = require('./nouveate.png')
-        const maily = require('./mail.png')
+        // const nouvy = require('/nouveate.png')
+        // const maily = require('./mail.png')
         return(
             <View>
                 <View style={{flexDirection: 'row', height : 80,padding : 5,backgroundColor : '#F0E8DB'}}>
@@ -76,7 +76,7 @@ class FooteraSocial extends React.Component {
                     </TouchableOpacity>
                     <TouchableOpacity style={detail_product_styles.plus_panel} onPress={() => { this.props.navigation.navigate('SendEmail') }}>
                         <Image
-                            source={maily}
+                            source={{uri:"https://www.passion-campagne.com/img/mail.png"}}
                             style={{
                                 height: 50,
                                 width: '40%',
@@ -111,7 +111,7 @@ class FooteraSocial extends React.Component {
                     </TouchableOpacity>
                     <TouchableOpacity style={detail_product_styles.plus_panel} onPress={() => { this.props.navigation.navigate('Nouveaute') }}>
                         <Image
-                            source={nouvy}
+                            source={{uri:"https://www.passion-campagne.com/img/nouveate.png"}}
                             style={{
                                 height: 50,
                                 width: '40%',

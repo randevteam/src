@@ -25,9 +25,9 @@ class Flatlistercategorydetails extends Component {
   getCategory = async (idCategory) => {
     var category = null;
     category = await fetch_url_get(api_get_category_by_id_url + this.props.idCategory);
-    console.log("======1111111111=");
-    console.log(category);
-    console.log("=======1111111111=");
+    // console.log("======1111111111=");
+    // console.log(category);
+    // console.log("=======1111111111=");
     this.setState({
       dataCategory: category,
     });

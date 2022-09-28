@@ -51,7 +51,7 @@ export default class SwiperComponent extends Component {
                     <View style={styles.slide2} >
                         <TouchableOpacity  style={{width: '100%'}} activeOpacity={1} onPress={()=> {same_category({IdCategorie: 102, titre: 'Chaussures de chasse',text: 'Chaussures'}) }}>
                             <Image
-                                onPress={()=> {console.log("predddddddddd") }}
+                                //onPress={()=> {console.log("predddddddddd") }}
                                 style={{
                                     height: 250, 
                                     width: "100%", 
@@ -77,7 +77,7 @@ export default class SwiperComponent extends Component {
                                     borderBottomLeftRadius: 30
                                 }}
                                 source={{ uri: 'https://www.passion-campagne.com/10522-medium_default/etui-toile-marron-et-cuir-clair-a-12-balles-maremmano.jpg' }}
-                                onPress={()=> {console.log("predddddddddd") }}
+                                //onPress={()=> {console.log("predddddddddd") }}
                             />
                         </TouchableOpacity>
                         <Text style={styles.text}>SACS DE CHASSE</Text>

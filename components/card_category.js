@@ -65,9 +65,9 @@ class CardCategory extends React.Component {
     render() {
         const { item, showDetail } = this.props;
         const data = this.state.dataCategory;
-        console.log("rrrrrrrrr");
-        console.log(data);
-        console.log("rrrrrrrr");
+        //console.log("rrrrrrrrr");
+        //console.log(data);
+        //console.log("rrrrrrrr");
         if (data && typeof data === 'object' && typeof data.name.language !== 'object') {
             return (
                 <View>

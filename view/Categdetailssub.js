@@ -259,9 +259,9 @@ class Categdetailssub extends React.Component {
   };
 
   render() {
-    console.log("details perops debug")
-    console.log(this.props.route.params.idCategory.id)
-    console.log("details perops debug")
+    // console.log("details perops debug")
+    // console.log(this.props.route.params.idCategory.id)
+    // console.log("details perops debug")
     const data = this.state;
     return (
       <View style={{ flex: 1, maxWidth: '100%' }}>

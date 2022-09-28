@@ -50,7 +50,7 @@ class SignUp extends React.Component {
                 gender: this.state.gender,
                 password: this.state.password
             }
-            console.log(body)
+            //console.log(body)
             try{                
                 let register = await fetch_url_post(api_register_url, body);
                 console.log("register=",register);

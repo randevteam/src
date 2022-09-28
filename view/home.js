@@ -320,7 +320,7 @@ class Home extends React.Component {
         id_customer: this.context.customer.id,
         id_product: this.props.item.id,
       });
-      console.log(result);
+      //console.log(result);
       if (result) {
         this.setState({ wished: true });
       }
@@ -410,9 +410,9 @@ class Home extends React.Component {
   // }
   removeToMyWishlist = async (id) => {
     if (!this.state.wished) {
-      console.log("id " + id);
-      console.log("this.state.id_wishlistfromModal " + this.state.list);
-      console.log("this.context.customer.id " + this.context.customer.id);
+      // console.log("id " + id);
+      // console.log("this.state.id_wishlistfromModal " + this.state.list);
+      // console.log("this.context.customer.id " + this.context.customer.id);
       var url = api_post_wishlist_ + "REMOVE";
       let body = {
         id_wishlist: this.state.list,
@@ -420,10 +420,10 @@ class Home extends React.Component {
         id_product: id,
         id_product_attribute: null,
       };
-      console.log(JSON.stringify(body));
+      //console.log(JSON.stringify(body));
       try {
         let envoi = await fetch_url_post(url, body);
-        console.log("response=", envoi);
+        //console.log("response=", envoi);
         if (envoi) {
           Alert.alert(
             "Information",

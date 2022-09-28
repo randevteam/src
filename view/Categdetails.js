@@ -141,12 +141,12 @@ class Categdetails extends React.Component {
     if (!this.state.isLoading && this.state.dataCategory) {
       const data = this.state.dataCategory;
 
-      console.log("=======00E000=");
-      //console.log(api_url + "c/" + data.id + "-category_default" + "/" + data.link_rewrite.language + ".jpg");
-      console.log(data.id);
-      console.log(data.link_rewrite.language);
-      console.log(api_url+"c/"+data.id+"-category_default" + "/" + data.link_rewrite.language + ".jpg");
-      console.log("=======00E000=");
+      // console.log("=======00E000=");
+      // //console.log(api_url + "c/" + data.id + "-category_default" + "/" + data.link_rewrite.language + ".jpg");
+      // console.log(data.id);
+      // console.log(data.link_rewrite.language);
+      // console.log(api_url+"c/"+data.id+"-category_default" + "/" + data.link_rewrite.language + ".jpg");
+      // console.log("=======00E000=");
 
       if (data) {
         return (

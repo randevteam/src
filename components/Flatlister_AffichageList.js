@@ -95,9 +95,9 @@ class Flatlister_AffichageList extends Component {
     if(this.state.promo){
       
       this.state.promo.map((promotion)=>{
-        console.log(promotion);
+        //console.log(promotion);
         this.state.products.map((produit)=>{
-          console.log(produit);
+          //console.log(produit);
           if(promotion.id_product == produit.id){
             return (
                 <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false} >

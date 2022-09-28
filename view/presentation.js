@@ -57,10 +57,10 @@ class Presentation extends React.Component {
 
       RNFS.readFile('./visite.json', 'ascii')
         .then((res) => {
-          console.log(res);
+          //console.log(res);
            d = JSON.parse(res);
           this.setState({ content: d.type });
-          console.log(this.state.content)
+          //console.log(this.state.content)
         })
         .catch((err) => {
           console.log(err.message, err.code);

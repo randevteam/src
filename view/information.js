@@ -69,7 +69,7 @@ class Information extends React.Component {
             "new_passwd": this.state.new_passwd ? this.state.new_passwd : "",
             "birthday": birthday
         }
-        console.log(api_edit_customer_url + this.state.customer.id, body)
+        //console.log(api_edit_customer_url + this.state.customer.id, body)
         await fetch_url_post(api_edit_customer_url + this.state.customer.id, body).then(async (data) => {
             this.setState({
                 isLoading: false
