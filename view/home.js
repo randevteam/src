@@ -63,15 +63,20 @@ class Home extends React.Component {
     id_wishlistfromModal: null,
   };
 
-  getProduct_Viewed = async () => {
-    const resultat = await fetch_url_get(viewAPI);
-    this.setState({
-      Data: resultat,
-    });
-    // console.log("viewed Product begin")
-    // console.log(resultat)
-    // console.log("viewed Product after")
-  };
+  // getProduct_Viewed = async () => {
+  //   try{
+  //     const resultat = await fetch_url_get(viewAPI);
+  //     this.setState({
+  //       Data: resultat,
+  //     });
+       
+  //   }catch(err){
+  //     console.error('erreur ' + err)
+  //   }
+  //   // console.log("viewed Product begin")
+  //   // console.log(resultat)
+  //   // console.log("viewed Product after")
+  // };
   // getFavoris = async()=>{
   //   let result = await fetch_url_get(api_get_wishlist+this.context.customer.id);
   //   this.setState({Fav : result.product})
@@ -209,7 +214,7 @@ class Home extends React.Component {
           <Image
             style={styles.img_product}
             source={{
-              uri: "https://www.ow.randev.ovh/modules/ps_imageslider/images/a8711f28ec87f9394b89282ae9a04c9dea0b3fdc_musto rentrée 2019 1920 x 674 px_V2.jpg",
+              uri: "https://www.passion-campagne.com/modules/ps_imageslider/images/a8711f28ec87f9394b89282ae9a04c9dea0b3fdc_musto rentrée 2019 1920 x 674 px_V2.jpg",
             }}
           />
 
@@ -308,22 +313,30 @@ class Home extends React.Component {
   }
 
   getData = async () => {
-    const resultat = await fetch_url_get(getLatestProducts);
+    try {
+      const resultat = await fetch_url_get(getLatestProducts);
+      this.setState({ datas: resultat.product });
+    } catch (error) {
+      console.error("erreur " + error);
+    }
     //    console.log('les produits nouveaut ' +JSON.stringify (resultat.product))
-    this.setState({ datas: resultat.product });
   };
   CheckIfProductAreAlreadyWishlisted = async () => {
-    if (this.state.wished == false) {
-      var url = api_post_wishlist_ + "CheckProducts";
-      var result = null;
-      result = await fetch_url_post(url, {
-        id_customer: this.context.customer.id,
-        id_product: this.props.item.id,
-      });
-      //console.log(result);
-      if (result) {
-        this.setState({ wished: true });
+    try{
+      if (this.state.wished == false) {
+        var url = api_post_wishlist_ + "CheckProducts";
+        var result = null;
+        result = await fetch_url_post(url, {
+          id_customer: this.context.customer.id,
+          id_product: this.props.item.id,
+        });
+        console.log(result);
+        if (result) {
+          this.setState({ wished: true });
+        }
       }
+    }catch(error){
+      console.error('erreur '+ error)
     }
   };
 
@@ -334,19 +347,21 @@ class Home extends React.Component {
     });
     await this.getData(),
       // await this.getFavoris(),
-      await this.getProduct_Viewed(),
+      // await this.getProduct_Viewed(),
       await this.getGuest();
-    await this.getCategory();
+    // await this.getCategory();
     this.setState({
       isLoading: false,
     });
-    this.getidCategorieWishlist();
+    // this.getidCategorieWishlist();
 
     if (this.context.customer.id != null) {
       let result = await fetch_url_get(
         api_get_wishlist + this.context.customer.id
       );
       this.setState({ Fav: result.product });
+    }else{
+      alert('non user')
     }
 
     var array = [];
@@ -359,17 +374,17 @@ class Home extends React.Component {
 
     var a = await this.isIncreasing(array);
 
-    await this.get_notification(
-      "1",
-      array[array.length - 1].titre,
-      array[array.length - 1].description,
-      array[array.length - 1].media,
-      array[array.length - 1].lien
-    );
+    // await this.get_notification(
+    //   "1",
+    //   array[array.length - 1].titre,
+    //   array[array.length - 1].description,
+    //   array[array.length - 1].media,
+    //   array[array.length - 1].lien
+    // );
     this.setState({
       id_product: this.props.item.id,
     });
-    this.CheckIfProductAreAlreadyWishlisted();
+    // this.CheckIfProductAreAlreadyWishlisted();
     var imageurl =
       api_url +
       item.id_default_image +
@@ -386,15 +401,19 @@ class Home extends React.Component {
     notification.kirimNotificationJadwal(id, titre, desc, image);
   };
   getidCategorieWishlist = async () => {
-    var list = await fetch_url_get(
-      api_get_wishlist_categories + this.context.customer.id
-    );
-
-    list.map((item) => {
-      this.setState({
-        list: item.id_wishlist,
+    try{
+      var list = await fetch_url_get(
+        api_get_wishlist_categories + this.context.customer.id
+      );
+  
+      list.map((item) => {
+        this.setState({
+          list: item.id_wishlist,
+        });
       });
-    });
+    }catch(error){
+      console.error('erreur '+error)
+    }
   };
   //   async componentDidUpdate(prevProps, prevState) {
   //     if (prevState != this.state.Fav) {
@@ -409,33 +428,37 @@ class Home extends React.Component {
 
   // }
   removeToMyWishlist = async (id) => {
-    if (!this.state.wished) {
-      // console.log("id " + id);
-      // console.log("this.state.id_wishlistfromModal " + this.state.list);
-      // console.log("this.context.customer.id " + this.context.customer.id);
-      var url = api_post_wishlist_ + "REMOVE";
-      let body = {
-        id_wishlist: this.state.list,
-        id_customer: this.context.customer.id,
-        id_product: id,
-        id_product_attribute: null,
-      };
-      //console.log(JSON.stringify(body));
-      try {
-        let envoi = await fetch_url_post(url, body);
-        //console.log("response=", envoi);
-        if (envoi) {
-          Alert.alert(
-            "Information",
-            "iVotre produit a bien été supprimer aux favoris!"
-          );
-          this.setState({ wished: false });
-        } else {
-          Alert.alert("Information", "impossible de supprimer!");
+    try{
+      if (!this.state.wished) {
+        console.log("id " + id);
+        console.log("this.state.id_wishlistfromModal " + this.state.list);
+        console.log("this.context.customer.id " + this.context.customer.id);
+        var url = api_post_wishlist_ + "REMOVE";
+        let body = {
+          id_wishlist: this.state.list,
+          id_customer: this.context.customer.id,
+          id_product: id,
+          id_product_attribute: null,
+        };
+        console.log(JSON.stringify(body));
+        try {
+          let envoi = await fetch_url_post(url, body);
+          console.log("response=", envoi);
+          if (envoi) {
+            Alert.alert(
+              "Information",
+              "iVotre produit a bien été supprimer aux favoris!"
+            );
+            this.setState({ wished: false });
+          } else {
+            Alert.alert("Information", "impossible de supprimer!");
+          }
+        } catch (e) {
+          Alert.alert("Information", "Erreur sur l'api!");
         }
-      } catch (e) {
-        Alert.alert("Information", "Erreur sur l'api!");
       }
+    }catch(error){
+      console.error('erreur ' + error)
     }
   };
   Wishlist = (id) => {
@@ -514,7 +537,7 @@ class Home extends React.Component {
             style={card_product_styles.img_product}
             source={{
               uri:
-                "https://www.ow.randev.ovh/" +
+                "https://www.passion-campagne.com/" +
                 item.id_default_image +
                 "-medium_default/" +
                 item.link_rewrite.language +
@@ -581,7 +604,7 @@ class Home extends React.Component {
             style={card_product_styles.img_product}
             source={{
               uri:
-                "https://www.ow.randev.ovh/" +
+                "https://www.passion-campagne.com/" +
                 item.id_image +
                 "-medium_default/" +
                 item.link_rewrite +

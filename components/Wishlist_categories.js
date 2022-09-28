@@ -93,12 +93,19 @@ class Wishlist extends React.Component {
   };
 
   getProduct = async () => {
-    var list = await fetch_url_get(
-      api_get_wishlist_categories + this.context.customer.id
-    );
-    this.setState({
-      list: list.reverse(),
-    });
+    if (this.context.customer.id != null){
+    try{
+        var list = await fetch_url_get(
+          api_get_wishlist_categories + this.context.customer.id
+        );
+      this.setState({
+        list: list.reverse(),
+      });
+
+    }catch(err){
+      console.error('errurrrr '+err)
+    }
+  }
   };
 
   setRedHeart = () => {};
@@ -188,18 +195,22 @@ class Wishlist extends React.Component {
         // var url = api_post_wishlist_ + 'ADD_CATEGORIES';
         // console.log(this.context.customer.id);
         // console.log(this.state.wishlist_name);
-        var result = null;
-        result = await fetch_url_post(url, {
-          id_customer: this.context.customer.id,
-          name: this.state.wishlist_name,
-        });
-        //console.log(result);
-        if (result) {
-          this.setState({
-            showInput: false,
-            showcreatebutton: true,
+        try{
+          var result = null;
+          result = await fetch_url_post(url, {
+            id_customer: this.context.customer.id,
+            name: this.state.wishlist_name,
           });
-          this.getProduct();
+          console.log(result);
+          if (result) {
+            this.setState({
+              showInput: false,
+              showcreatebutton: true,
+            });
+            this.getProduct();
+          }
+        }catch(err){
+          Alert.alert("Information", "impossible de créer une nouvelle liste");
         }
       }
     } else {
@@ -216,26 +227,26 @@ class Wishlist extends React.Component {
       ]);
     }
   };
-  componentDidMount() {
-    // this.getProduct();
-    this.setState({
-      id_product: this.props.id_product,
-    });
-    if (this.props.showcreatebutton) {
-      this.setState({
-        showcreatebutton: true,
-      });
-    }
-  }
+  // componentDidMount() {
+  //   // this.getProduct();
+  //   this.setState({
+  //     id_product: this.props.id_product,
+  //   });
+  //   if (this.props.showcreatebutton) {
+  //     this.setState({
+  //       showcreatebutton: true,
+  //     });
+  //   }
+  // }
 
-  async componentDidUpdate(prevProps) {
-    if (prevProps != this.props) {
-      this.setState({
-        showInput: false,
-        showcreatebutton: true,
-      });
-    }
-  }
+  // async componentDidUpdate(prevProps) {
+  //   if (prevProps != this.props) {
+  //     this.setState({
+  //       showInput: false,
+  //       showcreatebutton: true,
+  //     });
+  //   }
+  // }
 
   addtbutton = () => {
     // alert('ok')
