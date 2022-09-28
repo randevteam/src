@@ -223,7 +223,9 @@ class DetailProduct extends React.Component {
 
 
     getoption = (opt) => {
-        //console.log('name' +JSON.stringify(opt))
+      console.log('=================================opt')  
+      console.log('name' +JSON.stringify(opt))
+      console.log('=================================opt')
         if (typeof opt != null) {
             if (opt.product_option_value_T.name != undefined) {
                 var optToReturn = (
@@ -234,6 +236,7 @@ class DetailProduct extends React.Component {
                         width: "96%",
                         marginLeft: "2%",
                         marginRight: "2%",
+                        color: "black",
                       }}
                       defaultButtonText={"Séléctionner votre taille"}
                       onSelect={(selectedItem, combinationId) => {
