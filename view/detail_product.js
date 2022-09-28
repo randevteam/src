@@ -26,7 +26,9 @@ class DetailProduct extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
+       
+    }
+     state = {
             product: null,
             price: "Choisir option",
             qtty: 1,
@@ -44,7 +46,6 @@ class DetailProduct extends React.Component {
             specific_price: null,
             selectedValue:'',
         }
-    }
 
     shareto = async () => {
         console.log('share it');
@@ -53,7 +54,7 @@ class DetailProduct extends React.Component {
                 title: 'React Native | A framework for building native apps using React',
                 message: this.state.url_to_web,
             });
-            // console.log(result);
+            console.log(result);
             if (result.action === Share.sharedAction) {
                 if (result.activityType) {
                     // shared with activity type of result.activityType
@@ -127,82 +128,88 @@ class DetailProduct extends React.Component {
         this.setState({
             loading: true
         });
-        await fetch_url_get(
-            api_get_product_by_id_url +
-            this.props.route.params.data +
-            '&idDefaultGroup=' +
-            this.props.route.params.defaultGroup,
-        ).then(async data => {
-            if (data.prices != 'null') {
-                var price = parseFloat(data.prices.specific_price.reduction) * 100;
-            } else {
-                var price = null;
-            }
-            await this.setState({
-                product: data,
-                id_category: data.product.product.associations.categories.category,
-                guest: this.context.guest,
-                customer: this.context.customer,
-                price: Math.round(data.product.product.price * 100) / 100,
-                decl_count: data.declinaison.length,
-                only_choice:
-                    data.declinaison.length == 0
-                        ? data.product.product.associations.stock_availables
-                        : null,
-                specific_price: price,
-            });
-            //   console.log(this.state.specific_price);
-            // console.log(this.state.id_category[0].id);
-            // console.log(this.state.product.product.product.id);
-            // console.log(this.state.product.product.product);
-            if (data.declinaison.length == 0) {
-                let choice = {
-                    idAttribute: this.state.only_choice.id,
-                    idProduct: this.state.product.product.product.id,
-                };
+        try{
 
-                await fetch_url_get(
-                    api_get_stock_by_id_attribute_product_url(choice),
-                ).then(results => {
-                    let stock = results.stock_available.quantity;
+            await fetch_url_get(
+                api_get_product_by_id_url +
+                this.props.route.params.data +
+                '&idDefaultGroup=' +
+                this.props.route.params.defaultGroup,
+            ).then(async data => {
+                if (data.prices != 'null') {
+                    var price = parseFloat(data.prices.specific_price.reduction) * 100;
+                } else {
+                    var price = null;
+                }
+                await this.setState({
+                    product: data,
+                    id_category: data.product.product.associations.categories.category,
+                    guest: this.context.guest,
+                    customer: this.context.customer,
+                    price: this.props.route.params.price,
+                    decl_count: data.declinaison.length,
+                    only_choice:
+                        data.declinaison.length == 0
+                            ? data.product.product.associations.stock_availables
+                            : null,
+                    specific_price: price,
+                });
+                //   console.log(this.state.specific_price);
+                // console.log(this.state.id_category[0].id);
+                // console.log(this.state.product.product.product.id);
+                // console.log(this.state.product.product.product);
+                if (data.declinaison.length == 0) {
+                    let choice = {
+                        idAttribute: this.state.only_choice.id,
+                        idProduct: this.state.product.product.product.id,
+                    };
+    
+                    await fetch_url_get(
+                        api_get_stock_by_id_attribute_product_url(choice),
+                    ).then(results => {
+                        let stock = results.stock_available.quantity;
+                        this.setState({
+                            stock: stock,
+                            loading: false,
+                        });
+                    });
+                } else {
+                    // init combination
+                    await data.declinaison.forEach(async item => {
+                        let id = item.id;
+                        let opt =
+                            item.associations.product_option_values.product_option_value_T;
+                        let qt = 1;
+                        let id_group_customer;
+                        if (this.context.customer) {
+                            id_group_customer = this.context.customer.id_default_group;
+                        } else {
+                            id_group_customer = 1;
+                        }
+                        let opt_value;
+                        if (opt.name != undefined) {
+                            opt_value = opt.id;
+                        } else {
+                            opt_value = opt[0].id;
+                        }
+                        await this.changeDeclinaison(
+                            opt_value,
+                            id,
+                            qt,
+                            id_group_customer,
+                        );
+                        // console.log(item)
+                    });
+                    // ---------------
                     this.setState({
-                        stock: stock,
                         loading: false,
                     });
-                });
-            } else {
-                // init combination
-                await data.declinaison.forEach(async item => {
-                    let id = item.id;
-                    let opt =
-                        item.associations.product_option_values.product_option_value_T;
-                    let qt = 1;
-                    let id_group_customer;
-                    if (this.context.customer) {
-                        id_group_customer = this.context.customer.id_default_group;
-                    } else {
-                        id_group_customer = 1;
-                    }
-                    let opt_value;
-                    if (opt.name != undefined) {
-                        opt_value = opt.id;
-                    } else {
-                        opt_value = opt[0].id;
-                    }
-                    await this.changeDeclinaison(
-                        opt_value,
-                        id,
-                        qt,
-                        id_group_customer,
-                    );
-                    // console.log(item)
-                });
-                // ---------------
-                this.setState({
-                    loading: false,
-                });
-            }
-        });
+                }
+            });
+        }catch(err)
+        {
+            console.log(err)
+        }
 
         await fetch_url_get(api_get_link_rewrite + this.state.id_category[1].id).then(async (data) => {
             console.log(data.language);
@@ -223,44 +230,46 @@ class DetailProduct extends React.Component {
 
 
     getoption = (opt) => {
-        console.log('name' +JSON.stringify(opt))
+        console.log('valeur des taille de vetement' +JSON.stringify(opt))
         if (typeof opt != null) {
             if (opt.product_option_value_T.name != undefined) {
+                var data = opt.product_option_value_T
+                // alert(data.name)
                 var optToReturn = (
-                  <View>
-                    <SelectDropdown
-                      data={opt.product_option_value_T}
-                      buttonStyle={{
-                        width: "96%",
-                        marginLeft: "2%",
-                        marginRight: "2%",
-                      }}
-                      defaultButtonText={"Séléctionner votre taille"}
-                      onSelect={(selectedItem, combinationId) => {
-                        this.setState({ selectedValue: selectedItem.name });
-                        var qt = 1;
-                        let id_group_customer;
-                        if (this.context.customer) {
-                          id_group_customer =
-                            this.context.customer.id_default_group;
-                        } else {
-                          id_group_customer = 1;
-                        }
-                        this.changeDeclinaison(
-                          selectedItem.id,
-                          combinationId,
-                          qt,
-                          id_group_customer
-                        );
-                      }}
-                      buttonTextAfterSelection={(selectedItem, index) => {
-                        return selectedItem.name;
-                      }}
-                      rowTextForSelection={(item, index) => {
-                        return item.name;
-                      }}
-                    />
-                  </View>
+                    <View>
+                        <SelectDropdown
+                        data={data}
+                        buttonStyle={{
+                            width: "96%",
+                            marginLeft: "2%",
+                            marginRight: "2%",
+                        }}
+                            defaultButtonText={"Séléctionners votre taille"}
+                            onSelect={(value, combinationId) =>
+                                {
+                                    var qt = 1;
+                                    let id_group_customer;
+                                    if(this.context.customer){
+                                    id_group_customer =
+                                    this.context.customer.id_default_group;
+                                    } 
+                                    else {
+                                        id_group_customer = 1;
+                                    }
+                                    this.changeDeclinaison(value.id,combinationId,qt,id_group_customer);
+                                    this.setState({ selectedValue: value });
+                                }
+                            }
+                            buttonTextAfterSelection={
+                                (selectedItem, index) => {
+                                    return selectedItem;
+                                }
+                            }
+                        rowTextForSelection={(item, index) => {
+                            return item;
+                        }}
+                        />
+                    </View>
                 );
                 //<Picker.Item label={opt.product_option_value_T.name} value={opt.product_option_value_T.id} />
                 
@@ -500,7 +509,7 @@ class DetailProduct extends React.Component {
 
     render() {
        
-        console.log('vue du details produits' + JSON.stringify(this.props.route.params))
+        console.log('vue du details produits' + JSON.stringify(this.props.route.params.price))
         if (this.state.product && this.state.product != "no data" && !this.state.loading) {
             var combinationTplNew = this.state.product.declinaison.map((combinationVar, i) => {
                 var combinationId = combinationVar.id;
@@ -525,201 +534,168 @@ class DetailProduct extends React.Component {
             var condition = productInfo.condition;
             var description = productInfo.description.language;
             var title = productInfo.name.language;
-            var detailProduct = (
-              <View style={{ flex: 1 }}>
-                <View
-                  style={{
-                    flex: 8,
-                    backgroundColor: "white",
-                    paddingTop: "5%",
-                  }}
-                >
-                  <ScrollView
-                    showsHorizontalScrollIndicator={false}
-                    showsVerticalScrollIndicator={false}
-                  >
-                    <View>
-                      <Image
-                        source={{ uri: ImgUrl }}
-                        style={{
-                          height: 400,
-                          width: "100%",
-                          resizeMode: "contain",
-                        }}
-                      />
-                      {this.show_promotion()}
-                      <View
-                        style={{
-                          backgroundColor: primaryBackgroundColor,
-                          paddingHorizontal: "5%",
-                          justifyContent: this.state.specific_price
-                            ? "space-between"
-                            : "center",
-                          alignItems: "center",
-                          position: "absolute",
-                          bottom: "30%",
-                          left: "5%",
-                          flexDirection: "row",
-                        }}
-                      >
-                        <Text
-                          style={{
-                            textAlign: "center",
-                            fontSize: 25,
-                            color: "white",
-                            textDecorationLine: this.state.specific_price
-                              ? "line-through"
-                              : "none",
-                          }}
-                        >
-                          {this.state.price}€ TTC
-                        </Text>
-                        {this.show_price_after_promo()}
-                      </View>
-                    </View>
-                    <View style={detail_product_styles.name_price}>
-                      <Text style={detail_product_styles.name}>
-                        {title.toUpperCase()}
-                      </Text>
-                      <View style={{ flexDirection: "row" }}>
-                        <Text style={detail_product_styles.price}>
-                          {this.state.price}€ TTC
-                        </Text>
-                        {combinationTplNew}
-                      </View>
-                    </View>
-                    <View style={detail_product_styles.description}>
-                      <Text style={detail_product_styles.description_text}>
-                        {description}
-                      </Text>
-                    </View>
-                    <Text style={detail_product_styles.similar_title}>
-                      Produits similaires
-                    </Text>
-                    {this.state.id_category ? (
-                      <SimilarProduct
-                        change_product={this.change_product}
-                        id_category={this.state.id_category}
-                        navigation={this.props.navigation}
-                      />
-                    ) : (
-                      <View></View>
-                    )}
-                  </ScrollView>
-                  <TouchableOpacity
-                    style={detail_product_styles.share}
-                    onPress={() => this.shareto()}
-                  >
-                    <Icon type="entypo" name="share" size={25} />
-                  </TouchableOpacity>
-                  <View style={detail_product_styles.panel_add_number}>
-                    <TouchableOpacity
-                      style={detail_product_styles.plus_panel}
-                      onPress={() => {
-                        this.add_quantity();
-                      }}
+            var detailProduct = <View style={{ flex: 1 }}>
+                <View style={{ flex: 8, backgroundColor: 'white', paddingTop: '5%' }}>
+                    <ScrollView
+                        showsHorizontalScrollIndicator={false}
+                        showsVerticalScrollIndicator={false}
                     >
-                      <Icon
-                        name="plus"
-                        type="font-awesome"
-                        color="#FFFFFF"
-                        size={18}
-                        containerStyle={{
-                          backgroundColor: "#efe4d0",
-                          borderRadius: 50,
-                        }}
-                      />
-                    </TouchableOpacity>
-                    <View style={detail_product_styles.input_panel_container}>
-                      <View style={detail_product_styles.input_panel}>
-                        <TextInput
-                          style={detail_product_styles.input_number}
-                          keyboardType="numeric"
-                          selectionColor="#713F18"
-                          value={String(this.state.qtty)}
-                          onChangeText={(qtt) => this.changeQuantity(qtt)}
+                        <View>
+                            <Image
+                                source={{ uri: ImgUrl }}
+                                style={{
+                                    height: 400,
+                                    width: '100%',
+                                    resizeMode: 'contain',
+                                }}
+                            />
+                            {this.show_promotion()}
+                            <View
+                                style={{
+                                    backgroundColor: primaryBackgroundColor,
+                                    paddingHorizontal: '5%',
+                                    justifyContent: this.state.specific_price ? 'space-between' : 'center',
+                                    alignItems: 'center',
+                                    position: 'absolute',
+                                    bottom: '30%',
+                                    left: '5%',
+                                    flexDirection: 'row',
+
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        textAlign: 'center',
+                                        fontSize: 25,
+                                        color: 'white',
+                                        textDecorationLine: this.state.specific_price ? 'line-through' : 'none'
+                                    }}
+                                >
+                                    {this.props.route.params.price}€ TTC
+                                </Text>
+                                {this.show_price_after_promo()}
+                            </View>
+                        </View>
+                        <View style={detail_product_styles.name_price}>
+                            <Text style={detail_product_styles.name}>
+                                {title.toUpperCase()}
+                            </Text>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text style={detail_product_styles.price}>
+                                    {this.props.route.params.price}€ TTC
+                                </Text>
+                                {combinationTplNew}
+                            </View>
+                        </View>
+                        <View style={detail_product_styles.description}>
+                            <Text style={detail_product_styles.description_text}>
+                                {description}
+                            </Text>
+                        </View>
+                        <Text style={detail_product_styles.similar_title}>Produits similaires</Text>
+                        {
+                            this.state.id_category
+                                ?
+                                (<SimilarProduct change_product={this.change_product} id_category={this.state.id_category} navigation={this.props.navigation} />)
+                                :
+                                (<View></View>)
+                        }
+                    </ScrollView>
+                    <TouchableOpacity style={detail_product_styles.share} onPress={() => this.shareto()}>
+                        <Icon
+                            type="entypo"
+                            name="share"
+                            size={25}
                         />
-                      </View>
-                    </View>
-                    <TouchableOpacity
-                      style={detail_product_styles.plus_panel}
-                      onPress={() => {
-                        this.remove_quantity();
-                      }}
-                    >
-                      <Icon
-                        name="minus"
-                        type="font-awesome"
-                        color="#FFFFFF"
-                        size={18}
-                        containerStyle={{
-                          backgroundColor: "#efe4d0",
-                          borderRadius: 50,
-                        }}
-                      />
                     </TouchableOpacity>
-                  </View>
+                    <View style={detail_product_styles.panel_add_number}>
+                        <TouchableOpacity style={detail_product_styles.plus_panel} onPress={() => { this.add_quantity() }}>
+                            <Icon
+                                name='plus'
+                                type='font-awesome'
+                                color='#FFFFFF'
+                                size={18}
+                                containerStyle={{
+                                    backgroundColor: '#efe4d0',
+                                    borderRadius: 50,
+                                }}
+
+                            />
+                        </TouchableOpacity>
+                        <View style={detail_product_styles.input_panel_container}>
+                            <View style={detail_product_styles.input_panel}>
+                                <TextInput
+                                    style={detail_product_styles.input_number}
+                                    keyboardType="numeric"
+                                    selectionColor='#713F18'
+                                    value={String(this.state.qtty)}
+                                    onChangeText={(qtt) => this.changeQuantity(qtt)}
+                                />
+                            </View>
+                        </View>
+                        <TouchableOpacity style={detail_product_styles.plus_panel} onPress={() => { this.remove_quantity() }}>
+                            <Icon
+                                name='minus'
+                                type='font-awesome'
+                                color='#FFFFFF'
+                                size={18}
+                                containerStyle={{
+                                    backgroundColor: '#efe4d0',
+                                    borderRadius: 50,
+                                }}
+
+                            />
+                        </TouchableOpacity>
+                    </View>
                 </View>
                 <View style={detail_product_styles.button_view}>
-                  {this.state.stock && this.state.stock != 0 ? (
-                    <View style={detail_product_styles.button_view_content}>
-                      <Button
-                        buttonStyle={detail_product_styles.button}
-                        title="Ajouter au panier"
-                        onPress={() => {
-                          this.addToCart();
-                        }}
-                      />
-                      <Button
-                        icon={
-                          <Icon
-                            name="credit-card"
-                            color="#713F18"
-                            size={20}
-                            style={{ marginRight: 5 }}
-                          />
-                        }
-                        buttonStyle={detail_product_styles.button_outline}
-                        titleStyle={
-                          detail_product_styles.title_style_button_outline
-                        }
-                        title="Acheter"
-                        type="outline"
-                      />
-                    </View>
-                  ) : this.state.stock == null ? (
-                    <View
-                      style={[
-                        detail_product_styles.button_view_content,
-                        { alignItems: "center" },
-                      ]}
-                    >
-                      <Text>Veuillez choisir</Text>
-                    </View>
-                  ) : (
-                    <View
-                      style={[
-                        detail_product_styles.button_view_content,
-                        { alignItems: "center" },
-                      ]}
-                    >
-                      <View style={{ flexDirection: "row" }}>
-                        <Icon
-                          type="font-awesome"
-                          name="warning"
-                          size={16}
-                          color="#E0A80D"
-                        />
-                        <Text style={{ color: "#E0A80D" }}>
-                          {" "}
-                          Il n'y a plus de stock
-                        </Text>
-                      </View>
-                    </View>
-                  )}
+                    {
+                        this.state.stock && this.state.stock != 0
+                            ?
+                            (
+                                <View style={detail_product_styles.button_view_content}>
+                                    <Button
+                                        buttonStyle={detail_product_styles.button}
+                                        title="Ajouter au panier"
+                                        onPress={() => {
+                                            this.addToCart();
+                                        }}
+                                    />
+                                    <Button
+                                        icon={<Icon name='credit-card' color='#713F18' size={20} style={{ marginRight: 5 }} />}
+                                        buttonStyle={detail_product_styles.button_outline}
+                                        titleStyle={detail_product_styles.title_style_button_outline}
+                                        title="Acheter"
+                                        type="outline"
+                                    />
+                                </View>
+                            )
+                            :
+                            (
+                                this.state.stock == null
+                                    ?
+                                    (
+                                        <View style={[detail_product_styles.button_view_content, { alignItems: 'center' }]}>
+                                            <Text>Veuillez choisir</Text>
+                                        </View>
+                                    )
+                                    : (
+                                        <View style={[detail_product_styles.button_view_content, { alignItems: 'center' }]}>
+                                            <View style={{ flexDirection: 'row' }}>
+                                                <Icon
+                                                    type="font-awesome"
+                                                    name="warning"
+                                                    size={16}
+                                                    color="#E0A80D"
+                                                />
+                                                <Text style={{ color: "#E0A80D" }}> Il n'y a plus de stock</Text>
+                                            </View>
+                                        </View>
+                                    )
+                            )
+                    }
                 </View>
-              </View>
-            );
+            </View>
         } else {
             var detailProduct = <ActivityIndicator style={{ paddingTop: 11 }} size="large" color={"#713F18"} />;
         }
