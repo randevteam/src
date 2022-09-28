@@ -29,10 +29,10 @@ class PanierListItem extends React.Component{
             var qtty = this.state.item.quantity;
             var total_price = 0;
             if (this.state.item.default_price) {
-              unit_price = Math.round(this.state.item.default_price * 100) / 100;
+              unit_price = Math.round(this.state.item.default_price * (1 + 20 / 100));
             } else {
               unit_price =
-                Math.round(this.state.item.default_price * 100) / 100;
+                Math.round(this.state.item.default_price * (1 + 20 / 100));
             }
 
             total_price = unit_price * qtty;

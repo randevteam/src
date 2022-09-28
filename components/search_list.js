@@ -9,9 +9,11 @@ class SearchList extends React.Component {
     }
 
     showDetail = (data) => {
+        var price = parseFloat(data.price * (1+20/100) ).toFixed(2)
         this.props.navigation.navigate('DetailProduct', {
             screen: 'DetailProduct',
             params: { data: data.id,
+                price:price,
                 defaultGroup: this.context.customer ? this.customer.id_default_group: 1
             }
         });

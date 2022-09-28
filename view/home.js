@@ -61,6 +61,7 @@ class Home extends React.Component {
     isModalVisible: false,
     checked: false,
     id_wishlistfromModal: null,
+    price:null
   };
 
   // getProduct_Viewed = async () => {
@@ -104,10 +105,12 @@ class Home extends React.Component {
     }
   };
   showDetail = (data) => {
+    var price = parseFloat(data.price * (1+20/100) ).toFixed(2)
     this.props.navigation.navigate("DetailProduct", {
       screen: "DetailProduct",
       params: {
         data: data ? data.id : data.id_product,
+        price:price,
         defaultGroup: this.context.customer
           ? this.context.customer.id_default_group
           : 1,
@@ -257,7 +260,7 @@ class Home extends React.Component {
               keyExtractor={(item) => item.id}
               horizontal={true}
             />
-            <View style={styles.title_view}>
+            {/* <View style={styles.title_view}>
               <Text style={styles.title_text}>PRODUITS DEJA VUE</Text>
             </View>
             <FlatList
@@ -265,7 +268,7 @@ class Home extends React.Component {
               renderItem={this.renderItems}
               keyExtractor={(item) => item.id_product}
               horizontal={true}
-            />
+            /> */}
           </View>
           <View style={styles.title_view}></View>
 
@@ -353,7 +356,7 @@ class Home extends React.Component {
     this.setState({
       isLoading: false,
     });
-    // this.getidCategorieWishlist();
+    this.getidCategorieWishlist();
 
     if (this.context.customer.id != null) {
       let result = await fetch_url_get(
@@ -428,7 +431,7 @@ class Home extends React.Component {
 
   // }
   removeToMyWishlist = async (id) => {
-    try{
+ 
       if (!this.state.wished) {
         console.log("id " + id);
         console.log("this.state.id_wishlistfromModal " + this.state.list);
@@ -455,11 +458,11 @@ class Home extends React.Component {
           }
         } catch (e) {
           Alert.alert("Information", "Erreur sur l'api!");
+        } finally {
+          this.setState({ wished: false });
         }
       }
-    }catch(error){
-      console.error('erreur ' + error)
-    }
+    
   };
   Wishlist = (id) => {
     if (
@@ -514,6 +517,7 @@ class Home extends React.Component {
       );
     }
   };
+  
 
   renderItem = ({ item }) => (
     <View>
@@ -582,73 +586,73 @@ class Home extends React.Component {
     //     <Text style={styles.text}>{item.id}</Text>
     // </View>
   );
-  renderItems = ({ item }) => (
-    <View>
-      <Card style={card_product_styles.card}>
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          {/* <Text style={card_product_styles.condition}>{item.condition}</Text> */}
-          {this.Wishlists(item.id_product)}
-        </View>
-        <TouchableOpacity onPress={() => this.showDetails(item)}>
-          {/* <FastImage
-                          PlaceholderContent={<ActivityIndicator color={primaryColor} style={{ backgroundColor: 'white', flex: 1, width: '100%' }} />}
-                          style={card_product_styles.img_product}
-                          source={{
-                              uri: api_url + item.id_default_image + "-small_default" + "/" + item.link_rewrite.language + ".jpg",
-                              priority: FastImage.priority.normal,
-                              cache: FastImage.cacheControl.cacheOnly,
-                          }}
+  // renderItems = ({ item }) => (
+  //   <View>
+  //     <Card style={card_product_styles.card}>
+  //       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+  //         {/* <Text style={card_product_styles.condition}>{item.condition}</Text> */}
+  //         {this.Wishlists(item.id_product)}
+  //       </View>
+  //       <TouchableOpacity onPress={() => this.showDetails(item)}>
+  //         {/* <FastImage
+  //                         PlaceholderContent={<ActivityIndicator color={primaryColor} style={{ backgroundColor: 'white', flex: 1, width: '100%' }} />}
+  //                         style={card_product_styles.img_product}
+  //                         source={{
+  //                             uri: api_url + item.id_default_image + "-small_default" + "/" + item.link_rewrite.language + ".jpg",
+  //                             priority: FastImage.priority.normal,
+  //                             cache: FastImage.cacheControl.cacheOnly,
+  //                         }}
                           
-                      /> */}
-          <Image
-            style={card_product_styles.img_product}
-            source={{
-              uri:
-                "https://www.passion-campagne.com/" +
-                item.id_image +
-                "-medium_default/" +
-                item.link_rewrite +
-                ".jpg",
-            }}
-          />
-        </TouchableOpacity>
-        <Text style={card_product_styles.price}>
-          € {parseFloat(item.price).toFixed(2)}{" "}
-        </Text>
-        <Text
-          style={card_product_styles.name}
-          numberOfLines={2}
-          ellipsizeMode="tail"
-        >
-          {item.name}
-        </Text>
-      </Card>
-      <Wishlist
-        navigation={this.props.navigation}
-        visible={this.state.isModalVisible}
-        dismiss={this.hideModal}
-        id_product={this.state.idSelect}
-        redHeart={this.redHeart}
-        id_wishlistfromModal={this.id_wishlistfromModal}
-      />
-    </View>
-    // <View style={styles.slide1} >
-    //     <TouchableOpacity style={{width: '100%'}} activeOpacity={1} onPress={()=> {this.props.same_category({IdCategorie: item.id_category_default, titre: item.name.language, text: 'Vêtement'}) }}>
-    //         <Image
+  //                     /> */}
+  //         <Image
+  //           style={card_product_styles.img_product}
+  //           source={{
+  //             uri:
+  //               "https://www.passion-campagne.com/" +
+  //               item.id_image +
+  //               "-medium_default/" +
+  //               item.link_rewrite +
+  //               ".jpg",
+  //           }}
+  //         />
+  //       </TouchableOpacity>
+  //       <Text style={card_product_styles.price}>
+  //         € {parseFloat(item.price).toFixed(2)}{" "}
+  //       </Text>
+  //       <Text
+  //         style={card_product_styles.name}
+  //         numberOfLines={2}
+  //         ellipsizeMode="tail"
+  //       >
+  //         {item.name}
+  //       </Text>
+  //     </Card>
+  //     <Wishlist
+  //       navigation={this.props.navigation}
+  //       visible={this.state.isModalVisible}
+  //       dismiss={this.hideModal}
+  //       id_product={this.state.idSelect}
+  //       redHeart={this.redHeart}
+  //       id_wishlistfromModal={this.id_wishlistfromModal}
+  //     />
+  //   </View>
+  //   // <View style={styles.slide1} >
+  //   //     <TouchableOpacity style={{width: '100%'}} activeOpacity={1} onPress={()=> {this.props.same_category({IdCategorie: item.id_category_default, titre: item.name.language, text: 'Vêtement'}) }}>
+  //   //         <Image
 
-    //             style={{
-    //                 height: 250,
-    //                 width: "100%",
-    //             resizeMode: 'contain',
-    //             borderTopRightRadius: 30,
-    //             borderBottomLeftRadius: 30
-    //             }}
-    //             source={{ uri: 'https://www.passion-campagne.com/'+item.id_default_image+'-medium_default/'+item.link_rewrite.language+'.jpg' }}
-    //         />
-    //     </TouchableOpacity>
-    //     <Text style={styles.text}>{item.id}</Text>
-    // </View>
-  );
+  //   //             style={{
+  //   //                 height: 250,
+  //   //                 width: "100%",
+  //   //             resizeMode: 'contain',
+  //   //             borderTopRightRadius: 30,
+  //   //             borderBottomLeftRadius: 30
+  //   //             }}
+  //   //             source={{ uri: 'https://www.passion-campagne.com/'+item.id_default_image+'-medium_default/'+item.link_rewrite.language+'.jpg' }}
+  //   //         />
+  //   //     </TouchableOpacity>
+  //   //     <Text style={styles.text}>{item.id}</Text>
+  //   // </View>
+  // );
 
   render() {
     const data = this.state;
