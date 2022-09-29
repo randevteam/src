@@ -237,7 +237,16 @@ class DetailProduct extends React.Component {
                 // alert(data.name)
                 var optToReturn = (
                     <View>
-                        <SelectDropdown
+                         <Picker
+                            selectedValue={this.state.selectedValue}
+                            style={{ height: 50, width: 150 }}
+                            onValueChange={(value,combinationId)=>{
+                                this.setState({ selectedValue: value })
+                            }}
+                        >
+                            <Picker.Item label={opt.product_option_value_T.name} value={opt.product_option_value_T.id} />
+                        </Picker>
+                        {/* <SelectDropdown
                         data={data}
                         buttonStyle={{
                             width: "96%",
@@ -268,7 +277,7 @@ class DetailProduct extends React.Component {
                         rowTextForSelection={(item, index) => {
                             return item;
                         }}
-                        />
+                        /> */}
                     </View>
                 );
                 //<Picker.Item label={opt.product_option_value_T.name} value={opt.product_option_value_T.id} />
@@ -276,7 +285,16 @@ class DetailProduct extends React.Component {
             } else {
                 var optToReturn = (
                   <View>
-                    <SelectDropdown
+                    <Picker
+                            selectedValue={this.state.selectedValue}
+                            style={{ height: 50, width: 150 }}
+                            onValueChange={(value,combinationId)=>{
+                                this.setState({ selectedValue: value })
+                            }}
+                        >
+                            <Picker.Item label={opt.product_option_value_T.name} value={opt.product_option_value_T.id} />
+                        </Picker>
+                    {/* <SelectDropdown
                       data={opt.product_option_value_T}
                       defaultButtonText={"Séléctionner votre taille"}
                       buttonStyle={{
@@ -308,7 +326,7 @@ class DetailProduct extends React.Component {
                       rowTextForSelection={(item, index) => {
                         return item.name;
                       }}
-                    />
+                    /> */}
                   </View>
                 );
                 // opt.product_option_value_T.map((combOpt, i) => {
@@ -355,18 +373,18 @@ class DetailProduct extends React.Component {
             this.getProduct();
         })
     }
-    // show(value,combinationId){
+    show(value,combinationId){
         
-    //     this.setState({selectValue: value})
-    //     var qt = 1;
-    //                             let id_group_customer;
-    //                             if (this.context.customer) {
-    //                                 id_group_customer = this.context.customer.id_default_group;
-    //                             } else {
-    //                                 id_group_customer = 1;
-    //                             }
-    //                             this.changeDeclinaison(value, combinationId, qt, id_group_customer);
-    // }
+        this.setState({selectValue: value})
+        var qt = 1;
+                                let id_group_customer;
+                                if (this.context.customer) {
+                                    id_group_customer = this.context.customer.id_default_group;
+                                } else {
+                                    id_group_customer = 1;
+                                }
+                                this.changeDeclinaison(value, combinationId, qt, id_group_customer);
+    }
 
     addToCart = async () => {
         if (this.state.currentCombination) {
