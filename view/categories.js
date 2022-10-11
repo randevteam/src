@@ -13,7 +13,6 @@ import { fetch_url_get } from '../helper/function/common-function/fetch';
 import { DotsLoader } from "react-native-indicator";
 import {
   api_url,
-  api_get_category_url,
   api_get_category_by_id_url,
 } from "../helper/api_url";
 import { paire_color, impaire_color } from '../helper/color';
@@ -117,7 +116,7 @@ class Categories extends Component {
               }}
             />
 
-            <View style={{ flex: 1, margin: 20 }}></View>
+            {/* <View style={{ flex: 1, margin: 20 }}></View> */}
             <View style={styles.title_view}>
               <TouchableOpacity
                 style={styles.title_text}
@@ -147,26 +146,6 @@ class Categories extends Component {
       }
     }
   };
-
-//   handlePress = () =>
-//     this.setState({
-//       expanded: !expanded,
-//     });
-
-//   get_category = async () => {
-//     await fetch_url_get(api_get_category_url)
-//       .then((json) => {
-//         this.setState({
-//           data: json,
-//         });
-//       })
-//       .catch((error) => console.error(error))
-//       .finally(() => {
-//         this.setState({
-//           isLoading: false,
-//         });
-//       });
-//   };
 
   async componentDidMount() {
       this.setState({

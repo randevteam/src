@@ -2,8 +2,8 @@ import 'react-native-gesture-handler';
 import React , { Component } from 'react';
 import { View, StyleSheet , SafeAreaView , ScrollView , UIManager , Platform } from 'react-native'
 import { List, Text } from 'react-native-paper';
-import { fetch_url_get , fetch_url_get_and_store } from '../../helper/function/common-function/fetch';
-import { api_get_category_url } from '../../helper/api_url';
+//import { fetch_url_get , fetch_url_get_and_store } from '../../helper/function/common-function/fetch';
+import { api_get_category_url, api_get_category_url_constant } from '../../helper/api_url';
 import { paire_color, impaire_color , drawer_background_color } from '../../helper/color';
 import { Icon } from 'react-native-elements';
 
@@ -29,19 +29,23 @@ class Categories extends Component  {
 
     get_category = async () => {
         
-        await fetch_url_get_and_store(api_get_category_url)
-            .then((json) => {
+        // await fetch_url_get_and_store(api_get_category_url)
+        //     .then((json) => {
                 
-                this.setState({
-                    data: json
-                })
-            })
-            .catch((error) => console.error(error))
-            .finally(() => {
-                this.setState({
-                    isLoading: false
-                });
-            });
+        //         this.setState({
+        //             data: json
+        //         })
+        //     })
+        //     .catch((error) => console.error(error))
+        //     .finally(() => {
+        //         this.setState({
+        //             isLoading: false
+        //         });
+        //     });
+
+        this.setState({
+            data: JSON.parse(api_get_category_url_constant),
+        });
     }
 
     async componentDidMount() {

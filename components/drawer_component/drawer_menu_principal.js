@@ -10,7 +10,7 @@ import {Text, Drawer} from 'react-native-paper';
 import {Icon} from 'react-native-elements';
 import {fetch_url_get} from '../../helper/function/common-function/fetch';
 
-import {api_get_category_url} from '../../helper/api_url';
+import {api_get_category_url, api_get_category_url_constant} from '../../helper/api_url';
 import menu_principal_styles from './drawer_menu_principal_styles';
 import Categories from './drawer_menu_additional_list';
 
@@ -36,18 +36,27 @@ export class DrawerMenuContent extends Component {
   }
 
   get_Category_for_menuElements = async () => {
-    await fetch_url_get(api_get_category_url)
-      .then(json => {
-        this.setState({
-          data: json,
-        });
-      })
-      .catch(error => console.error(error))
-      .finally(() => {
-        this.setState({
-          isLoading: false,
-        });
+    // await fetch_url_get(api_get_category_url)
+    //   .then(json => {
+    //     this.setState({
+    //       data: json,
+    //     });
+    //   })
+    //   .catch(error => console.error(error))
+    //   .finally(() => {
+    //     this.setState({
+    //       isLoading: false,
+    //     });
+    //   });
+
+      this.setState({
+        data: JSON.parse(api_get_category_url_constant),
       });
+
+//  console.log("---------------------data--value--start");
+//  console.log(data);
+//  console.log("---------------------data--value--end");
+
   };
 
   /*showDetail = data => {

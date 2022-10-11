@@ -13,25 +13,17 @@ import { DotsLoader } from 'react-native-indicator';
 import { Icon, Button, Image } from 'react-native-elements';
 import { AuthContext } from '../helper/context/auth-context';
 import {
-  api_get_product_home_url,
-  api_get_HomeOrganizer,
   api_get_all_notif,
-  api_get_category_url,
   api_get_wishlist,
   api_post_wishlist_,
   api_url,
-  api_get_category_by_id_url,
   getLatestProducts,
   api_get_wishlist_categories,
-  viewAPI,
 } from "../helper/api_url";
 import { fetch_url_get,fetch_url_post } from '../helper/function/common-function/fetch';
 import { primaryColor } from '../helper/color';
-import Flatlistercategory from '../components/Flatlistercategory';
-import FlatLister from '../components/Flatlister';
 import { notification } from '../notification/Notification';
 import FooteraSocial from './FooteraSocial';
-import HTMLView from 'react-native-htmlview';
 import { Card } from 'react-native-paper';
 import card_product_styles from '../components/card_product_style';
 import Wishlist from '../components/Wishlist_categories';
@@ -221,8 +213,8 @@ class Home extends React.Component {
             }}
           />
 
-          <View style={{ flex: 1, margin: 20 }}>
-            {/* <HTMLView
+          {/* <View style={{ flex: 1, margin: 20 }}>
+            <HTMLView
                 value={
                   data.description.language &&
                   typeof data.description.language !== "object" &&
@@ -231,7 +223,7 @@ class Home extends React.Component {
                     : ""
                 }
                 stylesheet={styles}
-              /> */}
+              />
             <Text>
               Passion-Campagne: Le sérieux d'une boutique, la souplesse d'un
               site internet ! Le seul site internet chasse et campagne à avoir
@@ -247,10 +239,10 @@ class Home extends React.Component {
               Mareuil, Maremmano, Stetson, Jumfil, Musto, Fynch-Hatton,
               Filson...
             </Text>
-          </View>
+          </View> */}
 
           <View style={styles.title_view}>
-            <Text style={styles.title_text}>PRODUITS NOUVEAUX</Text>
+            <Text style={styles.title_text}>NOUVEAUX PRODUITS</Text>
           </View>
 
           <View>

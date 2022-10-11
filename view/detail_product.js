@@ -109,6 +109,9 @@ class DetailProduct extends React.Component {
     }
 
     show_price_after_promo = () => {
+        console.log("ioioioioioioioioioio11");
+        console.log(this.state.product);
+        console.log("ioioioioioioioioioio11");
         if (this.state.specific_price) {
             return (
                 <Text
@@ -119,6 +122,8 @@ class DetailProduct extends React.Component {
                     }}
                 >
                     {this.state.specific_price ? (this.state.price - ((this.state.price * 30) / 100)) + "€" : ''}
+                    {'\n'}{this.state.specific_price}
+                    {'\n'}{this.state.price}
                 </Text>
             );
         }
@@ -568,10 +573,12 @@ class DetailProduct extends React.Component {
                                         textAlign: 'center',
                                         fontSize: 25,
                                         color: 'white',
-                                        textDecorationLine: this.state.specific_price ? 'line-through' : 'none'
+                                        // textDecorationLine: this.state.specific_price ? 'line-through' : 'none'
                                     }}
                                 >
-                                    {this.props.route.params.price}€ TTC
+                                     {this.props.route.params.price}€ TTC{'\n'}
+                                    {this.state.price}€ TTC{'\n'}
+                                    {this.state.specific_price}
                                 </Text>
                                 {this.show_price_after_promo()}
                             </View>
@@ -588,9 +595,14 @@ class DetailProduct extends React.Component {
                             </View>
                         </View>
                         <View style={detail_product_styles.description}>
-                            <Text style={detail_product_styles.description_text}>
-                                {description}
-                            </Text>
+                            
+                                
+                                {description ? (
+                                    <Text style={detail_product_styles.description_text}></Text>
+                                ) : (
+                                    <Text></Text>
+                                )}
+                            
                         </View>
                         <Text style={detail_product_styles.similar_title}>Produits similaires</Text>
                         {

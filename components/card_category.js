@@ -49,7 +49,9 @@ class CardCategory extends React.Component {
             dataCategory: category,
         });
 
-        var imageurl = api_url + "c/" + this.props.item.id + "-category_default" + "/" + category.link_rewrite.language + ".jpg"
+        //var imageurl = api_url + "c/" + this.props.item.id + "-large_default" + "/" + category.link_rewrite.language + ".jpg";
+        var imageurl = api_url + "img/c/" + this.props.item.id + ".jpg";
+
         Image.prefetch(imageurl);
         // console.log(imageurl)
         this.setState({

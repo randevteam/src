@@ -4,8 +4,8 @@ export default card_search_styles = StyleSheet.create({
         width:'20%',
         paddingBottom:5,
         color:'white',
-        textAlign:'center',
-        backgroundColor:'#713F18'
+        textAlign:'right',
+        backgroundColor:'#713F18',
     },
     img_product:{
         height: 150, 

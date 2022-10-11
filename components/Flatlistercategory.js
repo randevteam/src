@@ -69,9 +69,9 @@ class Flatlistercategory extends Component {
 
 
       const ItemCategory = this.state.dataCategory;
-      //console.log("==========222222222=");
-      //console.log(ItemCategory.associations.categories.category);
-      //console.log("===========2222222222=");
+      // console.log("==========222222222=");
+      // console.log(ItemCategory.associations.categories.category);
+      // console.log("===========2222222222=");
 
       return (
 

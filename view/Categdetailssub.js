@@ -2,7 +2,6 @@ import React from 'react';
 
 import {
   View,
-  FlatList,
   StyleSheet,
   ScrollView,
   Text,
@@ -12,11 +11,8 @@ import { Icon, Button, Image } from 'react-native-elements';
 
 import { AuthContext } from '../helper/context/auth-context';
 import {
-  api_get_product_home_url,
-  api_get_HomeOrganizer,
   api_get_all_notif,
   api_url,
-  api_get_category_url,
   api_get_category_by_id_url,
 } from '../helper/api_url';
 import { fetch_url_get } from '../helper/function/common-function/fetch';
@@ -156,13 +152,13 @@ class Categdetailssub extends React.Component {
             </View>
 
             <Image style={styles.img_product}
-              source={{ uri: api_url + "c/" + data.id + "-category_default" + "/" + data.link_rewrite.language + ".jpg" }} />
+              source={{ uri: api_url + "img/c/" + data.id + ".jpg" }} />
 
-            <View style={{ flex: 1 }}>
+            {/* <View style={{ flex: 1 }}>
             <Text style={styles.title_text}>
               {data.description.language && typeof data.description.language !== 'object' && data.description.language !== null ? this.showHtmlView(data.description.language) : ""}
               </Text>
-            </View>
+            </View> */}
 
             <View style={styles.title_view}>
               <Text style={styles.title_text}>

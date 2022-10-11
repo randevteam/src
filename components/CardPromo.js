@@ -14,7 +14,8 @@ class CardPromo extends React.Component{
         const { item, showDetail } = this.props
             return(
                 <Card style={ card_search_styles.card }>
-                    <Text style={card_search_styles.condition}>{item.condition}</Text>
+                    {/* <Text style={card_search_styles.condition}>{item.condition}</Text> */}
+                    <Text style={card_search_styles.condition}>Promo</Text>
                     <TouchableOpacity onPress={() => showDetail(item)}>
                         <Image style={card_search_styles.img_product}
                             source={{ uri: api_url + item.id_default_image + "/" + item.link_rewrite.language + ".jpg" }} />
