@@ -110,7 +110,8 @@ export default detail_product_styles = StyleSheet.create({
         padding: '5%',
     },
     description_text: {
-        textAlign: 'justify'
+        textAlign: 'justify',
+        marginBottom: 15,
     },
 
     panel_add_number: {

@@ -244,7 +244,7 @@ class DetailProduct extends React.Component {
 
     show_price_after_promo = () => {
 
-        
+
         return (
             <View
                 style={{
@@ -259,7 +259,9 @@ class DetailProduct extends React.Component {
 
                 }}
             >
-                <Text
+                
+                {parseFloat(this.state.price_final).toFixed(2)!=this.props.route.params.price ? (
+                    <Text
                     style={{
                         textAlign: 'center',
                         fontSize: 25,
@@ -270,6 +272,10 @@ class DetailProduct extends React.Component {
                 >
                     {this.props.route.params.price}€ TTC
                 </Text>
+                ) : (
+                    <Text></Text>
+                )}
+                
                 {this.state.price_final ? (
                     <Text
                         style={{
@@ -283,7 +289,7 @@ class DetailProduct extends React.Component {
                 )}
             </View>
         );
-        
+
 
 
     }
@@ -593,8 +599,24 @@ class DetailProduct extends React.Component {
             var productInfo = this.state.product.product.product;
             var ImgUrl = api_url + productInfo.id_default_image + "-medium_default/" + productInfo.link_rewrite.language[0] + ".jpg";
             var condition = productInfo.condition;
-            var description = productInfo.description.language;
+            if (productInfo.description_short.language && typeof productInfo.description_short.language != 'object' && !Array.isArray(productInfo.description_short.language) && productInfo.description_short.language !== null) {
+                var description_short = productInfo.description_short.language;
+            } else {
+                var description_short = "...";
+            }
+            if (productInfo.description.language && typeof productInfo.description.language != 'object' && !Array.isArray(productInfo.description.language) && productInfo.description.language !== null) {
+                var description = productInfo.description.language;
+            } else {
+                var description = "...";
+            }
             var title = productInfo.name.language;
+
+            // console.log("____________productInfo_description__start");
+            // console.log(productInfo.description.language);
+            // console.log("______");
+            // console.log(productInfo.description_short.language);
+            // console.log("____________productInfo_description__end");
+
             var detailProduct = <View style={{ flex: 1 }}>
                 <View style={{ flex: 8, backgroundColor: 'white', paddingTop: '5%' }}>
                     <ScrollView
@@ -629,11 +651,16 @@ class DetailProduct extends React.Component {
                         </View>
                         <View style={detail_product_styles.description}>
 
-
-                            {description ? (
-                                <Text style={detail_product_styles.description_text}></Text>
+                            {description_short ? (
+                                <Text style={detail_product_styles.description_text}>{description_short}</Text>
                             ) : (
-                                <Text></Text>
+                                <Text>...</Text>
+                            )}
+                            
+                            {description ? (
+                                <Text style={detail_product_styles.description_text}>{description}</Text>
+                            ) : (
+                                <Text>...</Text>
                             )}
 
                         </View>
