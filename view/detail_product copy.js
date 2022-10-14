@@ -26,27 +26,26 @@ class DetailProduct extends React.Component {
 
     constructor(props) {
         super(props);
-
+       
     }
-    state = {
-        product: null,
-        price: "Choisir option",
-        qtty: 1,
-        guest: null,
-        arrayDeclChoice: null,
-        currentCombination: null,
-        changeCart: 0,
-        customer: null,
-        stock: null,
-        decl_count: null,
-        only_choice: null,
-        loading: false,
-        id_category: null,
-        url_to_web: null,
-        specific_price: null,
-        selectedValue: '',
-        price_final: null,
-    }
+     state = {
+            product: null,
+            price: "Choisir option",
+            qtty: 1,
+            guest: null,
+            arrayDeclChoice: null,
+            currentCombination: null,
+            changeCart: 0,
+            customer: null,
+            stock: null,
+            decl_count: null,
+            only_choice: null,
+            loading: false,
+            id_category: null,
+            url_to_web: null,
+            specific_price: null,
+            selectedValue:'',
+        }
 
     shareto = async () => {
         //console.log('share it');
@@ -109,11 +108,54 @@ class DetailProduct extends React.Component {
         }
     }
 
+    getPriceafterpromo = async () => {
+        // console.log("___________product_________start");
+        // console.log(this.state.product);
+        // console.log("___________product_________end");
+        // console.log("__________specific_price_____start");
+        // console.log(this.state.product.prices.specific_price);
+        // console.log("__________specific_price_____end");
+
+        const resp = await fetch(api_get_spec_prices_product + '&idCombination_sp=' + this.state.product.product.product.id_default_combination + '&idProduct_sp=' + this.state.product.product.product.id + '&quantity_sp=1');
+        const data = await resp.json();
+        console.log("__________api_get_spec_prices_product_____start");
+        console.log(data);
+
+        // await fetch_url_get(
+        //     api_get_spec_prices_product + '&idCombination_sp=' + this.state.product.product.product.id_default_combination + '&idProduct_sp=' + this.state.product.product.product.id + '&quantity_sp=1',
+            
+        // ).then(async results => {
+            
+        //     this.setState({
+        //         price: results.product.my_price,
+        //     });
+
+            
+        //     return (
+        //         <Text
+        //             style={{
+        //                 textAlign: 'center',
+        //                 fontSize: 25,
+        //                 color: 'white', 
+        //                 // textDecorationLine: this.state.specific_price ? 'line-through' : 'none'
+        //             }}
+        //         >
+        //             {'\n'}price config : {this.props.route.params.price}€ TTC
+        //             {'\n'} price start : {results.product.my_price}
+        //         </Text>
+        //     );
+            
+
+        // });
+
+        
+    }
+
     getProduct = async () => {
         this.setState({
             loading: true
         });
-        try {
+        try{
 
             await fetch_url_get(
                 api_get_product_by_id_url +
@@ -148,7 +190,7 @@ class DetailProduct extends React.Component {
                         idAttribute: this.state.only_choice.id,
                         idProduct: this.state.product.product.product.id,
                     };
-
+    
                     await fetch_url_get(
                         api_get_stock_by_id_attribute_product_url(choice),
                     ).then(results => {
@@ -185,15 +227,14 @@ class DetailProduct extends React.Component {
                         );
                         // console.log(item)
                     });
-
                     // ---------------
                     this.setState({
                         loading: false,
                     });
                 }
-                this.updateFinalPrice();// update price to show with product info
             });
-        } catch (err) {
+        }catch(err)
+        {
             console.log(err)
         }
 
@@ -215,83 +256,8 @@ class DetailProduct extends React.Component {
     }
 
 
-    updateFinalPrice = async () => {
-        // console.log("___________product_________start");
-        // console.log(this.state.product);
-        // console.log("___________product_________end");
-        // console.log("__________specific_price_____start");
-        // console.log(this.state.product.prices.specific_price);
-        // console.log("__________specific_price_____end");
-
-        let id_default_combination_data = this.state.product.product.product.id_default_combination;
-        let id_product_data = this.state.product.product.product.id;
-
-        try {
-            const response = await fetch(
-                api_get_spec_prices_product + '&idCombination_sp=' + id_default_combination_data + '&idProduct_sp=' + id_product_data + '&quantity_sp=1'
-            );
-            const json = await response.json();
-            console.log("___________api_get_spec_prices_product_________start");
-            console.log(json);
-            //return json.movies;
-            this.setState({
-                price_final: json.product.my_price,
-            });
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    show_price_after_promo = () => {
-
-        
-        return (
-            <View
-                style={{
-                    backgroundColor: primaryBackgroundColor,
-                    paddingHorizontal: '5%',
-                    justifyContent: this.state.specific_price ? 'space-between' : 'center',
-                    alignItems: 'center',
-                    position: 'absolute',
-                    bottom: '30%',
-                    left: '5%',
-                    flexDirection: 'row',
-
-                }}
-            >
-                <Text
-                    style={{
-                        textAlign: 'center',
-                        fontSize: 25,
-                        color: 'white',
-                        marginRight: 15,
-                        textDecorationLine: this.state.price_final ? 'line-through' : 'none'
-                    }}
-                >
-                    {this.props.route.params.price}€ TTC
-                </Text>
-                {this.state.price_final ? (
-                    <Text
-                        style={{
-                            textAlign: 'center',
-                            fontSize: 25,
-                            color: 'white'
-                        }}
-                    >{parseFloat(this.state.price_final).toFixed(2)}€ TTC</Text>
-                ) : (
-                    <Text></Text>
-                )}
-            </View>
-        );
-        
-
-
-    }
-
-
-
     getoption = (opt) => {
-        console.log('valeur des taille de vetement' + JSON.stringify(opt))
+        console.log('valeur des taille de vetement' +JSON.stringify(opt))
         if (typeof opt != null) {
             if (opt.product_option_value_T.name != undefined) {
                 var data = opt.product_option_value_T
@@ -299,86 +265,87 @@ class DetailProduct extends React.Component {
                 var optToReturn = (
                     <View>
                         <SelectDropdown
-                            data={data}
-                            buttonStyle={{
-                                width: "96%",
-                                marginLeft: "2%",
-                                marginRight: "2%",
-                            }}
+                        data={data}
+                        buttonStyle={{
+                            width: "96%",
+                            marginLeft: "2%",
+                            marginRight: "2%",
+                        }}
                             defaultButtonText={"Séléctionners votre taille"}
-                            onSelect={(value, combinationId) => {
-                                var qt = 1;
-                                let id_group_customer;
-                                if (this.context.customer) {
+                            onSelect={(value, combinationId) =>
+                                {
+                                    var qt = 1;
+                                    let id_group_customer;
+                                    if(this.context.customer){
                                     id_group_customer =
-                                        this.context.customer.id_default_group;
+                                    this.context.customer.id_default_group;
+                                    } 
+                                    else {
+                                        id_group_customer = 1;
+                                    }
+                                    this.changeDeclinaison(value.id,combinationId,qt,id_group_customer);
+                                    this.setState({ selectedValue: value });
                                 }
-                                else {
-                                    id_group_customer = 1;
-                                }
-                                this.changeDeclinaison(value.id, combinationId, qt, id_group_customer);
-                                this.setState({ selectedValue: value });
-                            }
                             }
                             buttonTextAfterSelection={
                                 (selectedItem, index) => {
                                     return selectedItem;
                                 }
                             }
-                            rowTextForSelection={(item, index) => {
-                                return item;
-                            }}
+                        rowTextForSelection={(item, index) => {
+                            return item;
+                        }}
                         />
                     </View>
                 );
                 //<Picker.Item label={opt.product_option_value_T.name} value={opt.product_option_value_T.id} />
-
+                
             } else {
                 var optToReturn = (
-                    <View>
-                        <SelectDropdown
-                            data={opt.product_option_value_T}
-                            defaultButtonText={"Séléctionner votre taille"}
-                            buttonStyle={{
-                                width: "96%",
-                                marginLeft: "2%",
-                                marginRight: "2%",
-                            }}
-                            onSelect={(value, combinationId) => {
-                                // alert(value.id);
-                                var qt = 1;
-                                let id_group_customer;
-                                if (this.context.customer) {
-                                    id_group_customer =
-                                        this.context.customer.id_default_group;
-                                } else {
-                                    id_group_customer = 1;
-                                }
-                                this.changeDeclinaison(
-                                    value.id,
-                                    combinationId,
-                                    qt,
-                                    id_group_customer
-                                );
-                                this.setState({ selectedValue: value.name });
-                            }}
-                            buttonTextAfterSelection={(selectedItem, index) => {
-                                return selectedItem.name;
-                            }}
-                            rowTextForSelection={(item, index) => {
-                                return item.name;
-                            }}
-                        />
-                    </View>
+                  <View>
+                    <SelectDropdown
+                      data={opt.product_option_value_T}
+                      defaultButtonText={"Séléctionner votre taille"}
+                      buttonStyle={{
+                        width: "96%",
+                        marginLeft: "2%",
+                        marginRight: "2%",
+                      }}
+                      onSelect={(value, combinationId) => {
+                        // alert(value.id);
+                        var qt = 1;
+                        let id_group_customer;
+                        if (this.context.customer) {
+                            id_group_customer =
+                            this.context.customer.id_default_group;
+                        } else {
+                            id_group_customer = 1;
+                        }
+                        this.changeDeclinaison(
+                          value.id,
+                          combinationId,
+                          qt,
+                          id_group_customer
+                        );
+                            this.setState({ selectedValue: value.name});
+                      }}
+                      buttonTextAfterSelection={(selectedItem, index) => {
+                        return selectedItem.name;
+                      }}
+                      rowTextForSelection={(item, index) => {
+                        return item.name;
+                      }}
+                    />
+                  </View>
                 );
                 // opt.product_option_value_T.map((combOpt, i) => {
-
+                    
                 //     return (
 
                 //         // <Picker.Item key={i} label={combOpt.name} value={combOpt.name} />
                 //         )
                 //     });
-            }
+                }
             return optToReturn;
         }
     }
@@ -416,7 +383,7 @@ class DetailProduct extends React.Component {
         })
     }
     // show(value,combinationId){
-
+        
     //     this.setState({selectValue: value})
     //     var qt = 1;
     //                             let id_group_customer;
@@ -442,32 +409,32 @@ class DetailProduct extends React.Component {
                 product_attribute = 0;
             }
             var body = {
-                id_product: this.props.route.params.data,
-                product_attribute: size,
-                quantity: quantity,
-                guest: this.state.guest,
-                idCustomer: idCustomer,
+              id_product: this.props.route.params.data,
+              product_attribute: size,
+              quantity: quantity,
+              guest: this.state.guest,
+              idCustomer: idCustomer,
             };
-
+            
             //console.log('  contenu du body '+JSON.stringify(body))
             await fetch_url_post(api_add_cart_url, body).then(() => {
-                Alert.alert("Alerte", "Ajout au panier!");
+                Alert.alert("Alerte","Ajout au panier!");
                 global.statut = true
             }).catch((error) => console.error(error));
         } else if (this.state.arrayDeclChoice == null) {
             var quantity = this.state.qtty;
             var size = this.state.selectedValue;
             var body = {
-                id_product: this.props.route.params.data,
-                product_attribute: size,
-                quantity: quantity,
-                guest: this.state.guest,
-                idCustomer: idCustomer,
+              id_product: this.props.route.params.data,
+              product_attribute: size,
+              quantity: quantity,
+              guest: this.state.guest,
+              idCustomer: idCustomer,
             };
-
+            
             //console.log(' contenu du body '+JSON.stringify(body))
             await fetch_url_post(api_add_cart_url, body).then(() => {
-                Alert.alert("Alerte", "Ajout au panier!");
+                Alert.alert("Alerte","Ajout au panier!");
                 global.statut = true
             }).catch((error) => console.error(error));
         }
@@ -477,7 +444,7 @@ class DetailProduct extends React.Component {
         //  alert(valueSent)
         if (valueSent != 0) {
             var value = valueSent;
-
+            
             var combinationId = combinationIdSent;
             var default_Val = false;
         } else {
@@ -488,7 +455,7 @@ class DetailProduct extends React.Component {
         if (this.state.arrayDeclChoice == null) {
             var myArrayO = [];
             this.state.product.declinaison.map((combinationVar, i) => {
-
+               
 
                 var combinationId = combinationVar.id;
                 combinationId = combinationVar.id;
@@ -528,7 +495,7 @@ class DetailProduct extends React.Component {
                 };
                 fetch_url_post(api_combination_get_price_url, Bd)
                     .then(async (json) => {
-
+                        
                         // //console.log(json)
                         this.setState({
                             currentCombination: json
@@ -563,13 +530,12 @@ class DetailProduct extends React.Component {
     }
 
     componentDidMount() {
-        //this.updateFinalPrice();
         this.reload_screen();
     }
-
+    
 
     render() {
-
+       
         //console.log('vue du details produits' + JSON.stringify(this.props.route.params.price))
         if (this.state.product && this.state.product != "no data" && !this.state.loading) {
             var combinationTplNew = this.state.product.declinaison.map((combinationVar, i) => {
@@ -610,11 +576,23 @@ class DetailProduct extends React.Component {
                                     resizeMode: 'contain',
                                 }}
                             />
-
                             {this.show_promotion()}
+                            <View
+                                style={{
+                                    backgroundColor: primaryBackgroundColor,
+                                    paddingHorizontal: '5%',
+                                    justifyContent: this.state.specific_price ? 'space-between' : 'center',
+                                    alignItems: 'center',
+                                    position: 'absolute',
+                                    bottom: '30%',
+                                    left: '5%',
+                                    flexDirection: 'row',
 
-                            {this.show_price_after_promo()}
-
+                                }}
+                            >
+                                {this.getPriceafterpromo()}
+                            </View>
+                            
                         </View>
                         <View style={detail_product_styles.name_price}>
                             <Text style={detail_product_styles.name}>
@@ -622,20 +600,20 @@ class DetailProduct extends React.Component {
                             </Text>
                             <View style={{ flexDirection: 'row' }}>
                                 <Text style={detail_product_styles.price}>
-                                    {parseFloat(this.state.price_final).toFixed(2)}€ TTC
+                                    {this.props.route.params.price}€ TTC
                                 </Text>
                                 {combinationTplNew}
                             </View>
                         </View>
                         <View style={detail_product_styles.description}>
-
-
-                            {description ? (
-                                <Text style={detail_product_styles.description_text}></Text>
-                            ) : (
-                                <Text></Text>
-                            )}
-
+                            
+                                
+                                {description ? (
+                                    <Text style={detail_product_styles.description_text}></Text>
+                                ) : (
+                                    <Text></Text>
+                                )}
+                            
                         </View>
                         <Text style={detail_product_styles.similar_title}>Produits similaires</Text>
                         {
