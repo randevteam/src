@@ -216,14 +216,14 @@ class DetailProduct extends React.Component {
 
 
     updateFinalPrice = async () => {
-        // console.log("___________product_________start");
-        // console.log(this.state.product);
-        // console.log("___________product_________end");
+        console.log("___________product_________start");
+        console.log(this.state.product);
+        console.log("___________product_________end");
         // console.log("__________specific_price_____start");
         // console.log(this.state.product.prices.specific_price);
         // console.log("__________specific_price_____end");
 
-        let id_default_combination_data = this.state.product.product.product.id_default_combination;
+        let id_default_combination_data = this.state.product.product.product.id_default_combination ? this.state.product.product.product.id_default_combination : 0;
         let id_product_data = this.state.product.product.product.id;
 
         try {
@@ -231,8 +231,8 @@ class DetailProduct extends React.Component {
                 api_get_spec_prices_product + '&idCombination_sp=' + id_default_combination_data + '&idProduct_sp=' + id_product_data + '&quantity_sp=1'
             );
             const json = await response.json();
-            console.log("___________api_get_spec_prices_product_________start");
-            console.log(json);
+            // console.log("___________api_get_spec_prices_product_________start");
+            // console.log(json);
             //return json.movies;
             this.setState({
                 price_final: json.product.my_price,
@@ -250,7 +250,7 @@ class DetailProduct extends React.Component {
                 style={{
                     backgroundColor: primaryBackgroundColor,
                     paddingHorizontal: '5%',
-                    justifyContent: this.state.specific_price ? 'space-between' : 'center',
+                    justifyContent: 'center',
                     alignItems: 'center',
                     position: 'absolute',
                     bottom: '30%',
@@ -270,7 +270,7 @@ class DetailProduct extends React.Component {
                         textDecorationLine: this.state.price_final ? 'line-through' : 'none'
                     }}
                 >
-                    {this.props.route.params.price}€ TTC
+                    {this.state.price}€ TTC
                 </Text>
                 ) : (
                     <Text></Text>
@@ -297,7 +297,7 @@ class DetailProduct extends React.Component {
 
 
     getoption = (opt) => {
-        console.log('valeur des taille de vetement' + JSON.stringify(opt))
+        //console.log('valeur des taille de vetement' + JSON.stringify(opt))
         if (typeof opt != null) {
             if (opt.product_option_value_T.name != undefined) {
                 var data = opt.product_option_value_T

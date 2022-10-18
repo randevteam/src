@@ -310,6 +310,9 @@ class Home extends React.Component {
   getData = async () => {
     try {
       const resultat = await fetch_url_get(getLatestProducts);
+      console.log('________________________getdataproductcard_start');
+      console.log(resultat);
+      console.log('________________________getdataproductcard_end');
       this.setState({ datas: resultat.product });
     } catch (error) {
       console.error("erreur " + error);
@@ -533,7 +536,8 @@ class Home extends React.Component {
             style={card_product_styles.img_product}
             source={{
               uri:
-                "https://www.passion-campagne.com/" +
+                //"https://www.passion-campagne.com/" +
+                api_url +
                 item.id_default_image +
                 "-medium_default/" +
                 item.link_rewrite.language +
@@ -542,7 +546,8 @@ class Home extends React.Component {
           />
         </TouchableOpacity>
         <Text style={card_product_styles.price}>
-          € {parseFloat(item.price * (1+20/100) ).toFixed(2)}{" "}
+          {/* € {parseFloat(item.price * (1+20/100) ).toFixed(2)}{" "} */}
+          {parseFloat(item.price_final).toFixed(2)}€
         </Text>
         <Text
           style={card_product_styles.name}
