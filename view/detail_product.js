@@ -216,9 +216,9 @@ class DetailProduct extends React.Component {
 
 
     updateFinalPrice = async () => {
-        console.log("___________product_________start");
-        console.log(this.state.product);
-        console.log("___________product_________end");
+        // console.log("___________product_________start");
+        // console.log(this.state.product);
+        // console.log("___________product_________end");
         // console.log("__________specific_price_____start");
         // console.log(this.state.product.prices.specific_price);
         // console.log("__________specific_price_____end");
@@ -244,6 +244,11 @@ class DetailProduct extends React.Component {
 
     show_price_after_promo = () => {
 
+        console.log("___________show_price_after_promo_________start");
+        console.log(this.state.price);
+        console.log(this.state.price_final);
+        console.log(this.state.product);
+        
 
         return (
             <View
@@ -270,7 +275,7 @@ class DetailProduct extends React.Component {
                         textDecorationLine: this.state.price_final ? 'line-through' : 'none'
                     }}
                 >
-                    {this.state.price}€ TTC
+                    {this.props.route.params.price ? parseFloat(this.props.route.params.price).toFixed(2) : parseFloat(this.state.product.product.product.price).toFixed(2)}€ TTC
                 </Text>
                 ) : (
                     <Text></Text>
@@ -644,7 +649,12 @@ class DetailProduct extends React.Component {
                             </Text>
                             <View style={{ flexDirection: 'row' }}>
                                 <Text style={detail_product_styles.price}>
-                                    {parseFloat(this.state.price_final).toFixed(2)}€ TTC
+                                    {
+                                    this.state.price_final ? parseFloat(this.state.price_final).toFixed(2) : 
+                                    this.props.route.params.price ? parseFloat(this.props.route.params.price).toFixed(2) : parseFloat(this.state.product.product.product.price).toFixed(2)
+                                    }€ TTC
+
+
                                 </Text>
                                 {combinationTplNew}
                             </View>

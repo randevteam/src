@@ -4,13 +4,13 @@ const api_menu_file = 'mobile_data/Menu.php?type=';
 
 const api_wishlist = 'mobile_data/Mywishlist.php?type=';
 
-//export const api_url = 'https://www.passion-campagne2.projets-omega.net/';
-export const api_url = 'http://192.168.88.227/ow.randev.ovh/';
+export const api_url = 'https://www.passion-campagne.projets-omega.net/';
+//export const api_url = 'http://192.168.88.227/ow.randev.ovh/';
 // export const api_url = 'http://www.projets-omega-web.net/';
 
 export const api_create_guest_url = api_url + api_path_file + 'createGuest';
-//export const viewAPI = "https://www.passion-campagne2.projets-omega.net/modules/easycarousels/commande.php";
-export const viewAPI = "http://192.168.88.227/ow.randev.ovh/modules/easycarousels/commande.php";
+export const viewAPI = "https://www.passion-campagne.projets-omega.net/modules/easycarousels/commande.php";
+//export const viewAPI = "http://192.168.88.227/ow.randev.ovh/modules/easycarousels/commande.php";
 export const api_get_product_home_url = api_url + api_path_file + 'produit';
 
 export const api_get_product_by_id_url =
