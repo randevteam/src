@@ -176,7 +176,7 @@ class CardProduct extends React.Component {
             />
           </TouchableOpacity>
           <Text style={card_product_styles.price}>
-            € {parseFloat(item.price* (1+20/100)).toFixed(2)}{" "}
+            {parseFloat(item.price).toFixed(2)} €
           </Text>
           <Text
             style={card_product_styles.name}
