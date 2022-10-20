@@ -246,7 +246,7 @@ class DetailProduct extends React.Component {
     }
 
     show_price_after_promo = () => {
-        if(!this.state.isloadingPrice){
+      if(!this.state.isloadingPrice){
             return (
               <View
                 style={{
@@ -275,8 +275,7 @@ class DetailProduct extends React.Component {
                         : "none",
                     }}
                   >
-                    {this.props.route.params.price}€ TTC 
-                    {/* {this.showPrice()} */}
+                    {this.props.route.params.price ? parseFloat(this.props.route.params.price).toFixed(2) : parseFloat(this.state.product.product.product.price).toFixed(2)}€ TTC
                   </Text>
                 ) : (
                   <Text></Text>
@@ -326,8 +325,7 @@ class DetailProduct extends React.Component {
                     : "none",
                 }}
               >
-                {this.props.route.params.price}€ TTC
-                {/* {this.showPrice()} */}
+                {this.props.route.params.price ? parseFloat(this.props.route.params.price).toFixed(2) : parseFloat(this.state.product.product.product.price).toFixed(2)}€ TTC
               </Text>
             ) : (
               <Text></Text>
@@ -738,8 +736,14 @@ class DetailProduct extends React.Component {
                       </Text>
                       <View style={{ flexDirection: "row" }}>
                         <Text style={detail_product_styles.price}>
-                          {/* {this.showPrice()} */}
-                          {parseFloat(this.state.price_final).toFixed(2)}€ TTC
+                          
+                          {
+                          this.state.price_final ? parseFloat(this.state.price_final).toFixed(2) : 
+                            this.props.route.params.price ? parseFloat(this.props.route.params.price).toFixed(2) : 
+                              parseFloat(this.state.product.product.product.price).toFixed(2)
+                          }
+                          € TTC
+                          
                         </Text>
                         {combinationTplNew}
                       </View>
