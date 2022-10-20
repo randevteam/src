@@ -339,7 +339,7 @@ class DetailProduct extends React.Component {
                   color: "white",
                 }}
               >
-                chargement du prix {/* {this.showPrice()} */}
+                ... {/* {this.showPrice()} */}
               </Text>
             ) : (
               <Text></Text>
