@@ -356,7 +356,7 @@ class DetailProduct extends React.Component {
 
     getoption = (opt,combinationId) => {
         // alert('Idcombination '+combinationId);
-        // console.log('valeur des taille de vetement' + JSON.stringify(opt))
+        console.log('valeur des taille de vetement' + JSON.stringify(opt))
         if (typeof opt != null) {
             if (opt.product_option_value_T.name != undefined) {
                 var data = opt.product_option_value_T
@@ -371,7 +371,7 @@ class DetailProduct extends React.Component {
                                 marginLeft: "2%",
                                 marginRight: "2%",
                             }}
-                            defaultButtonText={"Séléctionners votre taille"}
+                            defaultButtonText={"Séléctionner"}
                             onSelect={(value) => {
                                 // alert(JSON.stringify('alert value 1 '+value.id));
                                 var qt = 1;
@@ -410,7 +410,7 @@ class DetailProduct extends React.Component {
                     <View>
                         <SelectDropdown
                             data={opt.product_option_value_T}
-                            defaultButtonText={"Séléctionner votre taille"}
+                            defaultButtonText={"Séléctionner"}
                             buttonStyle={{
                                 width: "96%",
                                 marginLeft: "2%",
@@ -662,10 +662,14 @@ class DetailProduct extends React.Component {
             var combinationTplNew = this.state.product.declinaison.map((combinationVar, i) => {
                 var combinationId = combinationVar.id;
 
+                // console.log("_____________declinaison_combinationVar_start");
+                // console.log(this.state.product.declinaison);
+                // console.log("_____________declinaison_combinationVar_end");
+
                 return (
                   <View style={detail_product_styles.view} key={i}>
                     <Text style={detail_product_styles.name}>
-                      {combinationVar.public_name.language} :
+                      {combinationVar.name.language} :
                     </Text>
                     {this.getoption(
                       combinationVar.associations.product_option_values,

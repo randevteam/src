@@ -310,9 +310,9 @@ class Home extends React.Component {
   getData = async () => {
     try {
       const resultat = await fetch_url_get(getLatestProducts);
-      console.log('________________________getdataproductcard_start');
-      console.log(resultat);
-      console.log('________________________getdataproductcard_end');
+      // console.log('________________________getdataproductcard_start');
+      // console.log(resultat);
+      // console.log('________________________getdataproductcard_end');
       this.setState({ datas: resultat.product });
     } catch (error) {
       console.error("erreur " + error);

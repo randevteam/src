@@ -21,7 +21,7 @@ export const api_get_category_by_id_url =
 
 export const api_add_cart_url = api_url + api_path_file + 'addToCart';
 
-export const api_get_spec_prices_product = api_url + api_path_file + 'getSpecificPricesProduct&use_tax_sp=1'; // &idCombination_sp=987987&idProduct_sp=876&quantity_sp=3  http://localhost:8888/passioncampagne/mobile_data/root_url.php?type=getSpecificPricesProduct&idCombination_sp=32988&idProduct_sp=5185&quantity_sp=3&use_tax_sp=1
+export const api_get_spec_prices_product = api_url + api_path_file + 'getSpecificPricesProduct&use_tax_sp=1'; // &idCombination_sp=987987&idProduct_sp=876&quantity_sp=3  http://localhost:8888/passioncampagne/mobile_data/root_url.php?type=getSpecificPricesProduct&idCombination_sp=32988&idProduct_sp=5185&quantity_sp=1&use_tax_sp=1
 
 export const api_combination_get_price_url =
   api_url + api_path_file + 'combinationGetPrices';
