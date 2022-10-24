@@ -4,7 +4,7 @@ const api_menu_file = 'mobile_data/Menu.php?type=';
 
 const api_wishlist = 'mobile_data/Mywishlist.php?type=';
 
-export const api_url = 'https://www.passion-campagne.projets-omega.net/';
+export const api_url = 'https://www.passion-campagne2.projets-omega.net/';
 //export const api_url = 'http://192.168.88.227/ow.randev.ovh/';
 // export const api_url = 'http://www.projets-omega-web.net/';
 

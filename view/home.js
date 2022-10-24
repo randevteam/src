@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 import {
   View,
@@ -7,11 +7,11 @@ import {
   ScrollView,
   Text,
   Alert,
-  TouchableOpacity
-} from 'react-native';
-import { DotsLoader } from 'react-native-indicator';
-import { Icon, Button, Image } from 'react-native-elements';
-import { AuthContext } from '../helper/context/auth-context';
+  TouchableOpacity,
+} from "react-native";
+import { DotsLoader } from "react-native-indicator";
+import { Icon, Button, Image } from "react-native-elements";
+import { AuthContext } from "../helper/context/auth-context";
 import {
   api_get_all_notif,
   api_get_wishlist,
@@ -20,13 +20,16 @@ import {
   getLatestProducts,
   api_get_wishlist_categories,
 } from "../helper/api_url";
-import { fetch_url_get,fetch_url_post } from '../helper/function/common-function/fetch';
-import { primaryColor } from '../helper/color';
-import { notification } from '../notification/Notification';
-import FooteraSocial from './FooteraSocial';
-import { Card } from 'react-native-paper';
-import card_product_styles from '../components/card_product_style';
-import Wishlist from '../components/Wishlist_categories';
+import {
+  fetch_url_get,
+  fetch_url_post,
+} from "../helper/function/common-function/fetch";
+import { primaryColor } from "../helper/color";
+import { notification } from "../notification/Notification";
+import FooteraSocial from "./FooteraSocial";
+import { Card } from "react-native-paper";
+import card_product_styles from "../components/card_product_style";
+import Wishlist from "../components/Wishlist_categories";
 // global.idCategory_main = 2
 //global.signBack = false
 //global.signBackName = 'View';
@@ -45,7 +48,7 @@ class Home extends React.Component {
     Data: [],
     Fav: [],
     guest: null,
-    isLoading: false,
+    isLoading: true,
     idCategorie: null,
     wished: false,
     list: null,
@@ -53,7 +56,7 @@ class Home extends React.Component {
     isModalVisible: false,
     checked: false,
     id_wishlistfromModal: null,
-    price:null
+    price: null,
   };
 
   // getProduct_Viewed = async () => {
@@ -62,7 +65,7 @@ class Home extends React.Component {
   //     this.setState({
   //       Data: resultat,
   //     });
-       
+
   //   }catch(err){
   //     console.error('erreur ' + err)
   //   }
@@ -77,60 +80,60 @@ class Home extends React.Component {
 
   // }
 
-  showModal = (id) => this.setState({ isModalVisible: true, idSelect: id });
-  hideModal = () => this.setState({ isModalVisible: false });
-  redHeart = () => this.setState({ wished: true });
-  id_wishlistfromModal = (id_wishlist) =>
-    this.setState({ id_wishlistfromModal: id_wishlist });
+  // showModal = (id) => this.setState({ isModalVisible: true, idSelect: id });
+  // hideModal = () => this.setState({ isModalVisible: false });
+  // redHeart = () => this.setState({ wished: true });
+  // id_wishlistfromModal = (id_wishlist) =>
+  //   this.setState({ id_wishlistfromModal: id_wishlist });
 
-  get_notif = async () => {
-    try {
-      const response = await fetch_url_get(api_get_all_notif);
-      const json = await response;
-      this.setState({
-        data: json,
-      });
-    } catch (error) {
-      // console.log(error);
-    } finally {
-      this.setState({ isLoading: false });
-    }
-  };
+  // get_notif = async () => {
+  //   try {
+  //     const response = await fetch_url_get(api_get_all_notif);
+  //     const json = await response;
+  //     this.setState({
+  //       data: json,
+  //     });
+  //   } catch (error) {
+  //     // console.log(error);
+  //   } finally {
+  //     this.setState({ isLoading: false });
+  //   }
+  // };
   showDetail = (data) => {
-    var price = parseFloat(data.price * (1+20/100) ).toFixed(2)
+    var price = parseFloat(data.price * (1 + 20 / 100)).toFixed(2);
     this.props.navigation.navigate("DetailProduct", {
       screen: "DetailProduct",
       params: {
         data: data ? data.id : data.id_product,
-        price:price,
+        price: price,
         defaultGroup: this.context.customer
           ? this.context.customer.id_default_group
           : 1,
       },
     });
   };
-  showDetails = (data) => {
-    this.props.navigation.navigate("DetailProduct", {
-      screen: "DetailProduct",
-      params: {
-        data: data.id_product,
-        defaultGroup: this.context.customer
-          ? this.context.customer.id_default_group
-          : 1,
-      },
-    });
-  };
-  getGuest = async () => {
-    this.get_notif();
-    var guest = null;
-    guest = await this.context.getGuest();
-    if (guest) {
-      this.setState({
-        guest: guest,
-      });
-      this.context.guest = guest;
-    }
-  };
+  // showDetails = (data) => {
+  //   this.props.navigation.navigate("DetailProduct", {
+  //     screen: "DetailProduct",
+  //     params: {
+  //       data: data.id_product,
+  //       defaultGroup: this.context.customer
+  //         ? this.context.customer.id_default_group
+  //         : 1,
+  //     },
+  //   });
+  // };
+  // getGuest = async () => {
+  //   this.get_notif();
+  //   var guest = null;
+  //   guest = await this.context.getGuest();
+  //   if (guest) {
+  //     this.setState({
+  //       guest: guest,
+  //     });
+  //     this.context.guest = guest;
+  //   }
+  // };
 
   // getCategory = async () => {
   //   // console.log("***home***idCategory_main****");
@@ -310,67 +313,67 @@ class Home extends React.Component {
   getData = async () => {
     try {
       const resultat = await fetch_url_get(getLatestProducts);
-      console.log('________________________getdataproductcard_start');
+      console.log("________________________getdataproductcard_start");
       console.log(resultat);
-      console.log('________________________getdataproductcard_end');
-      this.setState({ datas: resultat.product });
+      console.log("________________________getdataproductcard_end");
+      this.setState({ datas: resultat.product, isLoading: false });
     } catch (error) {
       console.error("erreur " + error);
     }
     //    console.log('les produits nouveaut ' +JSON.stringify (resultat.product))
   };
-  CheckIfProductAreAlreadyWishlisted = async () => {
-    try{
-      if (this.state.wished == false) {
-        var url = api_post_wishlist_ + "CheckProducts";
-        var result = null;
-        result = await fetch_url_post(url, {
-          id_customer: this.context.customer.id,
-          id_product: this.props.item.id,
-        });
-        console.log(result);
-        if (result) {
-          this.setState({ wished: true });
-        }
-      }
-    }catch(error){
-      console.error('erreur '+ error)
-    }
-  };
+  // CheckIfProductAreAlreadyWishlisted = async () => {
+  //   try{
+  //     if (this.state.wished == false) {
+  //       var url = api_post_wishlist_ + "CheckProducts";
+  //       var result = null;
+  //       result = await fetch_url_post(url, {
+  //         id_customer: this.context.customer.id,
+  //         id_product: this.props.item.id,
+  //       });
+  //       console.log(result);
+  //       if (result) {
+  //         this.setState({ wished: true });
+  //       }
+  //     }
+  //   }catch(error){
+  //     console.error('erreur '+ error)
+  //   }
+  // };
 
   async componentDidMount() {
     // console.log('mon id '+ this.context.customer.id)
-    this.setState({
-      isLoading: true,
-    });
-    await this.getData(),
-      // await this.getFavoris(),
-      // await this.getProduct_Viewed(),
-      await this.getGuest();
+    // this.setState({
+    //   isLoading: true,
+    // });
+    await this.getData();
+    // await this.getFavoris(),
+    // await this.getProduct_Viewed(),
+    // await this.getGuest();
     // await this.getCategory();
-    this.setState({
-      isLoading: false,
-    });
-    this.getidCategorieWishlist();
+    // this.setState({
+    //   isLoading: false,
+    // });
+    // this.getidCategorieWishlist();
 
-    if (this.context.customer.id != null) {
-      let result = await fetch_url_get(
-        api_get_wishlist + this.context.customer.id
-      );
-      this.setState({ Fav: result.product });
-    }else{
-      alert('non user')
-    }
+    // if (this.context.customer.id != null) {
+    //   let result = await fetch_url_get(
+    //     api_get_wishlist + this.context.customer.id
+    //   );
+    //   this.setState({ Fav: result.product });
+    // }else{
+    //   alert('non user')
+    // }
 
-    var array = [];
+    // var array = [];
 
-    for (let prop in this.state.data) {
-      array.push(this.state.data[prop]);
-    }
+    // for (let prop in this.state.data) {
+    //   array.push(this.state.data[prop]);
+    // }
 
     //8  console.log('json=', array[0].titre);
 
-    var a = await this.isIncreasing(array);
+    // var a = await this.isIncreasing(array);
 
     // await this.get_notification(
     //   "1",
@@ -379,40 +382,40 @@ class Home extends React.Component {
     //   array[array.length - 1].media,
     //   array[array.length - 1].lien
     // );
-    this.setState({
-      id_product: this.props.item.id,
-    });
+    // this.setState({
+    //   id_product: this.props.item.id,
+    // });
     // this.CheckIfProductAreAlreadyWishlisted();
-    var imageurl =
-      api_url +
-      item.id_default_image +
-      "-small_default" +
-      "/" +
-      item.link_rewrite.language +
-      ".jpg";
-    Image.prefetch(imageurl);
+    // var imageurl =
+    //   api_url +
+    //   item.id_default_image +
+    //   "-small_default" +
+    //   "/" +
+    //   item.link_rewrite.language +
+    //   ".jpg";
+    // Image.prefetch(imageurl);
   }
 
-  get_notification = (id, titre, desc, image, url) => {
-    notification.configure(url);
-    notification.buatchannel("1");
-    notification.kirimNotificationJadwal(id, titre, desc, image);
-  };
-  getidCategorieWishlist = async () => {
-    try{
-      var list = await fetch_url_get(
-        api_get_wishlist_categories + this.context.customer.id
-      );
-  
-      list.map((item) => {
-        this.setState({
-          list: item.id_wishlist,
-        });
-      });
-    }catch(error){
-      console.error('erreur '+error)
-    }
-  };
+  // get_notification = (id, titre, desc, image, url) => {
+  //   notification.configure(url);
+  //   notification.buatchannel("1");
+  //   notification.kirimNotificationJadwal(id, titre, desc, image);
+  // };
+  // getidCategorieWishlist = async () => {
+  //   try{
+  //     var list = await fetch_url_get(
+  //       api_get_wishlist_categories + this.context.customer.id
+  //     );
+
+  //     list.map((item) => {
+  //       this.setState({
+  //         list: item.id_wishlist,
+  //       });
+  //     });
+  //   }catch(error){
+  //     console.error('erreur '+error)
+  //   }
+  // };
   //   async componentDidUpdate(prevProps, prevState) {
   //     if (prevState != this.state.Fav) {
   //       let result = await fetch_url_get(api_get_wishlist+this.context.customer.id);
@@ -425,102 +428,99 @@ class Home extends React.Component {
   //     this.setState({Fav : result.product})
 
   // }
-  removeToMyWishlist = async (id) => {
- 
-      if (!this.state.wished) {
-        console.log("id " + id);
-        console.log("this.state.id_wishlistfromModal " + this.state.list);
-        console.log("this.context.customer.id " + this.context.customer.id);
-        var url = api_post_wishlist_ + "REMOVE";
-        let body = {
-          id_wishlist: this.state.list,
-          id_customer: this.context.customer.id,
-          id_product: id,
-          id_product_attribute: null,
-        };
-        console.log(JSON.stringify(body));
-        try {
-          let envoi = await fetch_url_post(url, body);
-          console.log("response=", envoi);
-          if (envoi) {
-            Alert.alert(
-              "Information",
-              "iVotre produit a bien été supprimer aux favoris!"
-            );
-            this.setState({ wished: false });
-          } else {
-            Alert.alert("Information", "impossible de supprimer!");
-          }
-        } catch (e) {
-          Alert.alert("Information", "Erreur sur l'api!");
-        } finally {
-          this.setState({ wished: false });
-        }
-      }
-    
-  };
-  Wishlist = (id) => {
-    if (
-      this.state.Fav.findIndex((item) => item.id == id) !== -1 &&
-      !this.state.wished
-    ) {
-      return (
-        <Icon
-          type="font-awesome"
-          name="heart"
-          size={22}
-          color="red"
-          onPress={() => this.removeToMyWishlist(id)}
-        />
-      );
-    } else {
-      return (
-        <Icon
-          type="font-awesome"
-          name="heart-o"
-          size={22}
-          color="grey"
-          onPress={() => {
-            this.showModal(id);
-          }}
-        />
-      );
-    }
-  };
-  Wishlists = (id) => {
-    if (this.state.Fav.findIndex((item) => item.id == id) !== -1) {
-      return (
-        <Icon
-          type="font-awesome"
-          name="heart"
-          size={22}
-          color="red"
-          onPress={() => this.removeToMyWishlist(id)}
-        />
-      );
-    } else {
-      return (
-        <Icon
-          type="font-awesome"
-          name="heart-o"
-          size={22}
-          color="grey"
-          onPress={() => {
-            this.showModal(id);
-          }}
-        />
-      );
-    }
-  };
-  
+  // removeToMyWishlist = async (id) => {
+  //   if (!this.state.wished) {
+  //     console.log("id " + id);
+  //     console.log("this.state.id_wishlistfromModal " + this.state.list);
+  //     console.log("this.context.customer.id " + this.context.customer.id);
+  //     var url = api_post_wishlist_ + "REMOVE";
+  //     let body = {
+  //       id_wishlist: this.state.list,
+  //       id_customer: this.context.customer.id,
+  //       id_product: id,
+  //       id_product_attribute: null,
+  //     };
+  //     console.log(JSON.stringify(body));
+  //     try {
+  //       let envoi = await fetch_url_post(url, body);
+  //       console.log("response=", envoi);
+  //       if (envoi) {
+  //         Alert.alert(
+  //           "Information",
+  //           "iVotre produit a bien été supprimer aux favoris!"
+  //         );
+  //         this.setState({ wished: false });
+  //       } else {
+  //         Alert.alert("Information", "impossible de supprimer!");
+  //       }
+  //     } catch (e) {
+  //       Alert.alert("Information", "Erreur sur l'api!");
+  //     } finally {
+  //       this.setState({ wished: false });
+  //     }
+  //   }
+  // };
+  // Wishlist = (id) => {
+  //   if (
+  //     this.state.Fav.findIndex((item) => item.id == id) !== -1 &&
+  //     !this.state.wished
+  //   ) {
+  //     return (
+  //       <Icon
+  //         type="font-awesome"
+  //         name="heart"
+  //         size={22}
+  //         color="red"
+  //         onPress={() => this.removeToMyWishlist(id)}
+  //       />
+  //     );
+  //   } else {
+  //     return (
+  //       <Icon
+  //         type="font-awesome"
+  //         name="heart-o"
+  //         size={22}
+  //         color="grey"
+  //         onPress={() => {
+  //           this.showModal(id);
+  //         }}
+  //       />
+  //     );
+  //   }
+  // };
+  // Wishlists = (id) => {
+  //   if (this.state.Fav.findIndex((item) => item.id == id) !== -1) {
+  //     return (
+  //       <Icon
+  //         type="font-awesome"
+  //         name="heart"
+  //         size={22}
+  //         color="red"
+  //         onPress={() => this.removeToMyWishlist(id)}
+  //       />
+  //     );
+  //   } else {
+  //     return (
+  //       <Icon
+  //         type="font-awesome"
+  //         name="heart-o"
+  //         size={22}
+  //         color="grey"
+  //         onPress={() => {
+  //           this.showModal(id);
+  //         }}
+  //       />
+  //     );
+  //   }
+  // };
 
   renderItem = ({ item }) => (
     <View>
       <Card style={card_product_styles.card}>
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+        {/* <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           {/* <Text style={card_product_styles.condition}>{item.condition}</Text> */}
-          {this.Wishlist(item.id)}
-        </View>
+        {/* {this.Wishlist(item.id)} */}
+        {/* </View> */}
         <TouchableOpacity onPress={() => this.showDetail(item)}>
           {/* <FastImage
                           PlaceholderContent={<ActivityIndicator color={primaryColor} style={{ backgroundColor: 'white', flex: 1, width: '100%' }} />}
@@ -557,14 +557,14 @@ class Home extends React.Component {
           {item.name.language}
         </Text>
       </Card>
-      <Wishlist
+      {/* <Wishlist
         visible={this.state.isModalVisible}
         dismiss={this.hideModal}
         id_product={this.state.idSelect}
         redHeart={this.redHeart}
         navigation={this.props.navigation}
         id_wishlistfromModal={this.id_wishlistfromModal}
-      />
+      /> */}
     </View>
     // <View style={styles.slide1} >
     //     <TouchableOpacity style={{width: '100%'}} activeOpacity={1} onPress={()=> {this.props.same_category({IdCategorie: item.id_category_default, titre: item.name.language, text: 'Vêtement'}) }}>
@@ -599,7 +599,7 @@ class Home extends React.Component {
   //                             priority: FastImage.priority.normal,
   //                             cache: FastImage.cacheControl.cacheOnly,
   //                         }}
-                          
+
   //                     /> */}
   //         <Image
   //           style={card_product_styles.img_product}
@@ -653,7 +653,7 @@ class Home extends React.Component {
 
   render() {
     const data = this.state;
-    // console.log('id item checked ' +JSON.stringify(this.props))
+    console.log("id item checked " + JSON.stringify(this.props));
     return (
       <View style={{ flex: 1, maxWidth: "100%" }}>
         <ScrollView
@@ -698,7 +698,7 @@ const styles = StyleSheet.create({
   title_texts: {
     fontSize: 25,
     color: "#713F18",
-    marginTop:5,
+    marginTop: 5,
     textTransform: "uppercase",
   },
   title_text_under: {
@@ -726,7 +726,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
-
-
 
 export default Home;
