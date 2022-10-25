@@ -171,15 +171,15 @@ class DetailProduct extends React.Component {
             idProduct: this.state.product.product.product.id,
           };
 
-          await fetch_url_get(
-            api_get_stock_by_id_attribute_product_url(choice)
-          ).then((results) => {
-            let stock = results.stock_available.quantity;
-            this.setState({
-              stock: stock,
-              loading: false,
-            });
-          });
+          // await fetch_url_get(
+          //   api_get_stock_by_id_attribute_product_url(choice)
+          // ).then((results) => {
+          //   let stock = results.stock_available.quantity;
+          //   this.setState({
+          //     stock: stock,
+          //     loading: false,
+          //   });
+          // });
         } else {
           // init combination
           await data.declinaison.forEach(async (item) => {
@@ -215,23 +215,23 @@ class DetailProduct extends React.Component {
       console.log(err);
     }
 
-    await fetch_url_get(
-      api_get_link_rewrite + this.state.id_category[1].id
-    ).then(async (data) => {
-      //console.log(data.language);
-      //const url = 'http://www.projets-omega-web.net/' + data.language + '/' + this.state.product.product.product.id + '-' + this.state.product.product.product.link_rewrite.language + '.html'
-      const url =
-        api_url +
-        data.language +
-        "/" +
-        this.state.product.product.product.id +
-        "-" +
-        this.state.product.product.product.link_rewrite.language +
-        ".html";
-      await this.setState({
-        url_to_web: url,
-      });
-    });
+    // await fetch_url_get(
+    //   api_get_link_rewrite + this.state.id_category[1].id
+    // ).then(async (data) => {
+    //   //console.log(data.language);
+    //   //const url = 'http://www.projets-omega-web.net/' + data.language + '/' + this.state.product.product.product.id + '-' + this.state.product.product.product.link_rewrite.language + '.html'
+    //   const url =
+    //     api_url +
+    //     data.language +
+    //     "/" +
+    //     this.state.product.product.product.id +
+    //     "-" +
+    //     this.state.product.product.product.link_rewrite.language +
+    //     ".html";
+    //   await this.setState({
+    //     url_to_web: url,
+    //   });
+    // });
   };
 
   change_product = async (id) => {
@@ -633,47 +633,47 @@ class DetailProduct extends React.Component {
           ind++;
         });
       }
-      if (value != "null") {
-        var Bd = {
-          id_product: this.props.route.params.data,
-          optVal: myArray,
-          id_group_customer: id_group_customer,
-        };
-        console.log(Bd);
-        fetch_url_post(api_combination_get_price_url, Bd)
-          .then(async (json) => {
-            console.log("====================================");
-            console.log(json);
-            console.log("====================================");
-            this.setState({
-              currentCombination: json,
-              isloadingPrice: false,
-            });
-            var data = {
-              idAttribute:
-                this.state.currentCombination.product.currentCombinationId,
-              idProduct: this.state.currentCombination.product.id,
-            };
-            await fetch_url_get(
-              api_get_stock_by_id_attribute_product_url(data)
-            ).then((result) => {
-              this.setState({
-                stock: result.stock_available.quantity,
-              });
-            });
-            if (json.error != "1") {
-              var new_price = parseFloat(json.product.my_price);
-              // alert(new_price)
-              // alert('new_price before calcul '+new_price)
-              new_price = Math.round(new_price * 1000) / 1000;
-              // alert('new_price after calcul '+new_price);
-              this.setState({
-                price_final: new_price,
-              });
-            }
-          })
-          .catch((error) => console.error(error));
-      }
+      // if (value != "null") {
+      //   var Bd = {
+      //     id_product: this.props.route.params.data,
+      //     optVal: myArray,
+      //     id_group_customer: id_group_customer,
+      //   };
+      //   console.log(Bd);
+      //   fetch_url_post(api_combination_get_price_url, Bd)
+      //     .then(async (json) => {
+      //       console.log("====================================");
+      //       console.log(json);
+      //       console.log("====================================");
+      //       this.setState({
+      //         currentCombination: json,
+      //         isloadingPrice: false,
+      //       });
+      //       var data = {
+      //         idAttribute:
+      //           this.state.currentCombination.product.currentCombinationId,
+      //         idProduct: this.state.currentCombination.product.id,
+      //       };
+      //       // await fetch_url_get(
+      //       //   api_get_stock_by_id_attribute_product_url(data)
+      //       // ).then((result) => {
+      //       //   this.setState({
+      //       //     stock: result.stock_available.quantity,
+      //       //   });
+      //       // });
+      //       if (json.error != "1") {
+      //         var new_price = parseFloat(json.product.my_price);
+      //         // alert(new_price)
+      //         // alert('new_price before calcul '+new_price)
+      //         new_price = Math.round(new_price * 1000) / 1000;
+      //         // alert('new_price after calcul '+new_price);
+      //         this.setState({
+      //           price_final: new_price,
+      //         });
+      //       }
+      //     })
+      //     .catch((error) => console.error(error));
+      // }
     }
   };
 
@@ -685,7 +685,8 @@ class DetailProduct extends React.Component {
 
   componentDidMount() {
     //this.updateFinalPrice();
-    this.reload_screen();
+    this.getProduct();
+    //this.reload_screen();
   }
   showPrice = () => {
     if (!this.state.isloadingPrice) {
@@ -922,15 +923,38 @@ class DetailProduct extends React.Component {
                 />
               </View>
             ) : this.state.stock == null ? (
-              <View
-                style={[
-                  detail_product_styles.button_view_content,
-                  { alignItems: "center" },
-                ]}
-              >
-                <Text>Veuillez choisir</Text>
+              <View style={detail_product_styles.button_view_content}>
+                <Button
+                  buttonStyle={detail_product_styles.button}
+                  title="Ajouter au panier"
+                  onPress={() => {
+                    this.addToCart();
+                  }}
+                />
+                <Button
+                  icon={
+                    <Icon
+                      name="credit-card"
+                      color="#713F18"
+                      size={20}
+                      style={{ marginRight: 5 }}
+                    />
+                  }
+                  buttonStyle={detail_product_styles.button_outline}
+                  titleStyle={detail_product_styles.title_style_button_outline}
+                  title="Acheter"
+                  type="outline"
+                />
               </View>
             ) : (
+              // <View
+              //   style={[
+              //     detail_product_styles.button_view_content,
+              //     { alignItems: "center" },
+              //   ]}
+              // >
+              //   <Text>Veuillez choisir</Text>
+              // </View>
               <View
                 style={[
                   detail_product_styles.button_view_content,
