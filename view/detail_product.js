@@ -160,6 +160,7 @@ class DetailProduct extends React.Component {
               ? data.product.product.associations.stock_availables
               : null,
           specific_price: price,
+          loading: false,
         });
         //   console.log(this.state.specific_price);
         // console.log(this.state.id_category[0].id);
@@ -242,8 +243,6 @@ class DetailProduct extends React.Component {
   };
 
   updateFinalPrice = async () => {
-    // console.log("___________product_________start");
-    // console.log(this.state.product);
     // console.log("___________product_________end");
     // console.log("__________specific_price_____start");
     // console.log(this.state.product.prices.specific_price);
@@ -253,29 +252,42 @@ class DetailProduct extends React.Component {
       this.state.product.product.product.id_default_combination;
     let id_product_data = this.state.product.product.product.id;
 
-    try {
-      const response = await fetch(
-        api_get_spec_prices_product +
-          "&idCombination_sp=" +
-          id_default_combination_data +
-          "&idProduct_sp=" +
-          id_product_data +
-          "&quantity_sp=1"
-      );
-      const json = await response.json();
-      console.log("___________api_get_spec_prices_product_________start");
-      console.log(json);
-      //return json.movies;
+    // console.log(typeof id_default_combination_data);
+    // console.log("__________specific_price_____end");
+
+    if (typeof id_default_combination_data != "string") {
       this.setState({
-        price_final: json.product.my_price,
+        price_final: this.props.route.params.price,
         isloadingPrice: false,
       });
-    } catch (error) {
-      console.error(error);
+      // alert(this.state.product.product.product.price);
+    } else {
+      try {
+        const response = await fetch(
+          api_get_spec_prices_product +
+            "&idCombination_sp=" +
+            id_default_combination_data +
+            "&idProduct_sp=" +
+            id_product_data +
+            "&quantity_sp=1"
+        );
+        const json = await response.json();
+        console.log("___________api_get_spec_prices_product_________start");
+        console.log(json);
+        //return json.movies;
+        this.setState({
+          price_final: json.product.my_price,
+          isloadingPrice: false,
+        });
+      } catch (error) {
+        console.error("erreur de prix " + error);
+      }
     }
   };
 
   show_price_after_promo = () => {
+    console.log("___________product_________start");
+    console.log(this.state.product);
     if (!this.state.isloadingPrice) {
       return (
         <View
@@ -685,8 +697,8 @@ class DetailProduct extends React.Component {
 
   componentDidMount() {
     //this.updateFinalPrice();
-    this.getProduct();
-    //this.reload_screen();
+    // this.getProduct();
+    this.reload_screen();
   }
   showPrice = () => {
     if (!this.state.isloadingPrice) {
