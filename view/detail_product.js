@@ -698,6 +698,11 @@ class DetailProduct extends React.Component {
 
   render() {
     //console.log('vue du details produits' + JSON.stringify(this.props.route.params.price))
+
+    console.log("------------------this.state.product.start");
+    console.log(this.state.product);
+    console.log("------------------this.state.product.end");
+
     if (
       this.state.product &&
       this.state.product != "no data" &&
