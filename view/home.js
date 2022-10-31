@@ -30,6 +30,7 @@ import FooteraSocial from "./FooteraSocial";
 import { Card } from "react-native-paper";
 import card_product_styles from "../components/card_product_style";
 import Wishlist from "../components/Wishlist_categories";
+import RNFS from "react-native-fs";
 // global.idCategory_main = 2
 //global.signBack = false
 //global.signBackName = 'View';
@@ -57,6 +58,7 @@ class Home extends React.Component {
     checked: false,
     id_wishlistfromModal: null,
     price: null,
+    fileData: [],
   };
 
   // getProduct_Viewed = async () => {
@@ -250,7 +252,7 @@ class Home extends React.Component {
 
           <View>
             <FlatList
-              data={this.state.datas}
+              data={this.state.fileData}
               renderItem={this.renderItem}
               keyExtractor={(item) => item.id}
               horizontal={true}
@@ -340,13 +342,43 @@ class Home extends React.Component {
   //     console.error('erreur '+ error)
   //   }
   // };
+  readFile = () => {
+    RNFS.readDir(RNFS.DocumentDirectoryPath)
+      .then((result) => {
+        // console.log('resultat');
+        // console.log(result);
+        return Promise.all([RNFS.stat(result[0].path), result[0].path]);
+      })
+      .then((statResult) => {
+        if (statResult[0].isFile()) {
+          // si nous avons un fichier
+          return RNFS.readFile(statResult[1], "utf8");
+        }
+
+        alert("pas de fichier qui contient de contenus");
+      })
+      .then((contents) => {
+        // afficher les données
+        if (contents.length > 0) {
+          const data = JSON.parse(contents);
+          this.setState({ fileData: data.product });
+          // console.log(this.state.fileData);
+        } else {
+          alert("vide");
+        }
+      })
+      .catch((err) => {
+        console.log(err.message, err.code);
+      });
+  };
 
   async componentDidMount() {
     // console.log('mon id '+ this.context.customer.id)
     // this.setState({
     //   isLoading: true,
     // });
-    await this.getData();
+    // await this.getData();
+    await this.readFile(),
     // await this.getFavoris(),
     // await this.getProduct_Viewed(),
     // await this.getGuest();
