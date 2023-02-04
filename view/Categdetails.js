@@ -1,29 +1,31 @@
 import React from 'react';
 
-import {
-  View,
-  FlatList,
-  StyleSheet,
-  ScrollView,
-  Text,
-} from 'react-native';
-import { DotsLoader } from 'react-native-indicator';
-import { Icon, Button, Image } from 'react-native-elements';
+import {View, FlatList, StyleSheet, ScrollView, Text} from 'react-native';
+import {DotsLoader} from 'react-native-indicator';
+import {Icon, Button, Image} from 'react-native-elements';
 
-import { AuthContext } from '../helper/context/auth-context';
+import {AuthContext} from '../helper/context/auth-context';
 import {
   api_get_all_notif,
   api_url,
   api_get_category_by_id_url,
 } from '../helper/api_url';
-import { fetch_url_get } from '../helper/function/common-function/fetch';
-import { primaryColor } from '../helper/color';
+import {fetch_url_get} from '../helper/function/common-function/fetch';
+import {primaryColor} from '../helper/color';
 import FlatLister from '../components/Flatlister';
-import { notification } from '../notification/Notification';
+import {notification} from '../notification/Notification';
 import FooteraSocial from './FooteraSocial';
 import Flatlistercategorydetails from '../components/Flatlistercategorydetails';
 import HTMLView from 'react-native-htmlview';
-
+import {db} from '../configs';
+import {
+  ref,
+  onValue,
+  orderByChild,
+  equalTo,
+  get,
+  query,
+} from 'firebase/database';
 
 class Categdetails extends React.Component {
   static contextType = AuthContext;
@@ -33,7 +35,7 @@ class Categdetails extends React.Component {
     this.state = {
       data: [],
       guest: null,
-      dataCategory: null,
+      dataCategory: [],
       isLoading: false,
       idCategory: null,
     };
@@ -49,7 +51,7 @@ class Categdetails extends React.Component {
     } catch (error) {
       // //console.log(error);
     } finally {
-      this.setState({ isLoading: false });
+      this.setState({isLoading: false});
     }
   };
 
@@ -66,24 +68,36 @@ class Categdetails extends React.Component {
   };
 
   getCategory = async () => {
-
     // console.log("***Categdetails***idCategory****");
     // console.log(this.props.route.params.data);
     // console.log("***Categdetails***idCategory****");
-
-
-    var category = null;
-    category = await fetch_url_get(api_get_category_by_id_url + this.props.route.params.data);
-    // console.log("********");
-    // console.log(category);
-    // console.log("********");
-    this.setState({
-      dataCategory: category,
+    const startCountRef = query(
+      ref(db, 'getCategories/category'),
+      orderByChild('id'),
+      equalTo(this.props.route.params.data),
+    );
+    get(startCountRef).then(snapshot => {
+      var data = [];
+      data = snapshot.val();
+      // console.log('==========33333333=');
+      // console.log(data);
+      this.setState({
+        dataCategory: data,
+        // loading: false,
+      });
     });
+
+    // var category = null;
+    // category = await fetch_url_get(api_get_category_by_id_url + this.props.route.params.data);
+    // // console.log("********");
+    // // console.log(category);
+    // // console.log("********");
+    // this.setState({
+    //   dataCategory: category,
+    // });
   };
 
   showProductList = data => {
-
     this.props.navigation.navigate('Query', {
       screen: 'Query',
       params: {
@@ -94,7 +108,6 @@ class Categdetails extends React.Component {
         },
       },
     });
-
   };
 
   displayLoading = () => {
@@ -113,22 +126,20 @@ class Categdetails extends React.Component {
     }
   };
 
-  showHtmlView = (varcontent) => {
+  showHtmlView = varcontent => {
     if (varcontent) {
       return (
         <HTMLView
           value={varcontent}
-          style={{ padding: 20, justifyContent: 'center' }}
+          style={{padding: 20, justifyContent: 'center'}}
         />
-      )
+      );
     }
-  }
-
+  };
 
   /*  recheck here randev  */
 
   displayCategory = () => {
-
     // console.log("===========****===========");
     // console.log(this.state.isLoading);
     // console.log("***")
@@ -146,16 +157,40 @@ class Categdetails extends React.Component {
       // console.log("=======00E000=");
 
       if (data) {
-        return (
+        var tpl = Object.values(this.state.dataCategory).map(data => (
           <View>
             <View style={styles.title_view}>
               <Text style={styles.title_text}>
                 {data.name.language &&
-                typeof data.name.language !== "object" &&
+                typeof data.name.language !== 'object' &&
                 data.name.language !== null
                   ? data.name.language
-                  : ""}
+                  : ''}
               </Text>
+            </View>
+
+            {/*<View style={styles.title_view}>
+              <Text style={styles.title_text}>PRODUITS</Text>
+                </View>*/}
+
+            <View>
+              <FlatLister
+                key={data.id}
+                idCategories={data.id}
+                navigation={this.props.navigation}
+              />
+            </View>
+
+            <View style={styles.title_view}>
+              <Text style={styles.title_text}>Les Sous-rubriques</Text>
+            </View>
+
+            <View>
+              <Flatlistercategorydetails
+                key={data.id}
+                idCategory={data.id}
+                navigation={this.props.navigation}
+              />
             </View>
 
             <Image
@@ -163,12 +198,12 @@ class Categdetails extends React.Component {
               source={{
                 uri:
                   api_url +
-                  "c/" +
+                  'c/' +
                   data.id +
-                  "-category_default" +
-                  "/" +
+                  '-category_default' +
+                  '/' +
                   data.link_rewrite.language +
-                  ".jpg",
+                  '.jpg',
               }}
             />
 
@@ -185,43 +220,19 @@ class Categdetails extends React.Component {
               />
             </View> */}
 
-            <View style={styles.title_view}>
-              <Text style={styles.title_text}>PRODUITS</Text>
-            </View>
-
-            <View>
-              <FlatLister
-                key={data.id}
-                idCategories={data.id}
-                navigation={this.props.navigation}
-              />
-            </View>
-
-            <View style={styles.title_view}>
-              <Text style={styles.title_text}>SOUS-CATEGORIES</Text>
-            </View>
-
-            <View>
-              <Flatlistercategorydetails
-                key={data.id}
-                idCategory={data.id}
-                navigation={this.props.navigation}
-              />
-            </View>
+            
           </View>
-        );
+        ));
       } else {
-        return (
+        var tpl = (
           <View>
             <Text>Cette catégorie n'existe pas.</Text>
           </View>
-        )
+        );
       }
-
-
+      return tpl;
     }
   };
-
 
   isIncreasing(xs) {
     var prev, cur;
@@ -236,7 +247,6 @@ class Categdetails extends React.Component {
   }
 
   async componentDidMount() {
-
     this.setState({
       isLoading: true,
     });
@@ -266,21 +276,18 @@ class Categdetails extends React.Component {
   }
 
   get_notification = (id, titre, desc, image, url) => {
-
     notification.configure(url);
     notification.buatchannel('1');
     notification.kirimNotificationJadwal(id, titre, desc, image);
-
   };
 
   render() {
     const data = this.state;
     return (
-      <View style={{ flex: 1, maxWidth: '100%' }}>
+      <View style={{flex: 1, maxWidth: '100%'}}>
         <ScrollView
           showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-        >
+          showsVerticalScrollIndicator={false}>
           {this.displayLoading()}
           {this.displayCategory()}
         </ScrollView>
@@ -296,7 +303,7 @@ const styles = StyleSheet.create({
     //   marginTop: StatusBar.currentHeight || 0,
   },
   item: {
-    backgroundColor: "#20232A",
+    backgroundColor: '#20232A',
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,
@@ -308,30 +315,28 @@ const styles = StyleSheet.create({
   },
   title_view: {
     height: 40,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   title_text: {
     fontSize: 20,
-    color: "#713F18",
-    textTransform: "uppercase",
+    color: '#713F18',
+    fontStyle:'italic',
   },
   title_text_under: {
     fontSize: 11,
-    color: "grey",
+    color: 'grey',
     marginLeft: 5,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   img_product: {
     height: 300,
-    width: "95%",
+    width: '95%',
     borderRadius: 3,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     margin: 10,
   },
 });
-
-
 
 export default Categdetails;

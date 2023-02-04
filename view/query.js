@@ -1,21 +1,42 @@
 import React from 'react';
 
-import { View, Button, FlatList, Text, TouchableOpacity, Picker, ScrollView } from 'react-native';
-import { DotsLoader } from 'react-native-indicator';
-import { SearchBar, Icon } from 'react-native-elements';
+import {
+  View,
+  Button,
+  FlatList,
+  Text,
+  TouchableOpacity,
+  Picker,
+  ScrollView,
+} from 'react-native';
+import {DotsLoader} from 'react-native-indicator';
+import {SearchBar, Icon} from 'react-native-elements';
 
-import { AuthContext } from '../helper/context/auth-context';
-import { api_get_search_result, getProductsManufacturer, api_products_by_id_categorie } from '../helper/api_url';
+import {AuthContext} from '../helper/context/auth-context';
+import {
+  api_get_search_result,
+  getProductsManufacturer,
+  api_products_by_id_categorie,
+} from '../helper/api_url';
 
-
-import { fetch_url_get } from '../helper/function/common-function/fetch';
+import {fetch_url_get} from '../helper/function/common-function/fetch';
 import SearchList from '../components/search_list';
-import { primaryColor, title_search_color } from '../helper/color';
+import {primaryColor, title_search_color} from '../helper/color';
 import ImageBackgroundGlobal from '../components/image_background_global';
 import FooteraSocial from './FooteraSocial';
 import detail_product_styles from './style/detail_product_style';
 
 import SelectDropdown from 'react-native-select-dropdown';
+
+import {db} from '../configs';
+import {
+  ref,
+  onValue,
+  orderByChild,
+  equalTo,
+  get,
+  query,
+} from 'firebase/database';
 
 class Query extends React.Component {
   static contextType = AuthContext;
@@ -24,7 +45,7 @@ class Query extends React.Component {
     super(props);
     this.state = {
       guest: null,
-      products: null,
+      products: [],
       isLoading: false,
       IdCategories: null,
       titre: null,
@@ -32,13 +53,13 @@ class Query extends React.Component {
       mode: false,
       Text: null,
       manufacturers: null,
-      selectedValue: "",
-      monsearch: "",
+      selectedValue: '',
+      monsearch: '',
     };
   }
 
-  updateSearch = (text) => {
-    this.setState({ monsearch: text });
+  updateSearch = text => {
+    this.setState({monsearch: text});
   };
 
   getGuest = async () => {
@@ -57,7 +78,7 @@ class Query extends React.Component {
   //           Text: this.props.route.params.data.text,
   //         }
   getProduct = async () => {
-    this.setState({ isLoading: true });
+    this.setState({isLoading: true});
     // var products = null;
     // products = await fetch_url_get(api_products_by_id_categorie + this.state.IdCategories);
     // this.setState({
@@ -80,16 +101,40 @@ class Query extends React.Component {
       this.props.route.params.data.IdCategorie != null &&
       this.props.route.params.data.IdCategorie != 0
     ) {
-      products = await fetch_url_get(
-        api_products_by_id_categorie +
-          this.props.route.params.data.IdCategorie +
-          "&language=1"
+      const startCountRef = query(
+        ref(db, 'getCategories/category'),
+        orderByChild('id'),
+        equalTo(this.props.route.params.data.IdCategorie.toString()),
       );
-      // console.log(api_products_by_id_categorie + this.props.route.params.data.IdCategorie + '&language=1');
-      this.setState({
-        products: products,
-        isLoading: false,
+      // console.log('id');
+      // console.log(typeof this.props.route.params.data.IdCategorie.toString());
+      get(startCountRef).then(snapshot => {
+        var data = [];
+        snapshot.forEach(snapshotChild => {
+          data.push(snapshotChild.val());
+        });
+
+        this.setState({
+          products: data,
+          isLoading: false,
+        });
+
+        // this.setState({
+        //   product: data,
+        //   loading: false,
+        // });
+        // Object.values(this.state.product).map(item =>
+        //   this.setState({
+        //     id_category: item.associations.categories.category,
+        //   }),
+        // );
       });
+      // products = await fetch_url_get(
+      //   api_products_by_id_categorie +
+      //     this.props.route.params.data.IdCategorie +
+      //     "&language=1"
+      // );
+      // console.log(api_products_by_id_categorie + this.props.route.params.data.IdCategorie + '&language=1');
     } else if (
       (!this.props.route.params.data.IdCategorie ||
         this.props.route.params.data.IdCategorie == 0) &&
@@ -98,7 +143,7 @@ class Query extends React.Component {
       products = await fetch_url_get(
         api_get_search_result +
           this.props.route.params.data.SousSousSousTitre +
-          "&language=1"
+          '&language=1',
       );
       this.setState({
         products: products,
@@ -109,7 +154,7 @@ class Query extends React.Component {
       products = await fetch_url_get(
         api_get_search_result +
           this.props.route.params.data.Text +
-          "&language=1"
+          '&language=1',
       );
       // products = await fetch_url_get(api_get_search_result + this.state.search + '&language=1' );
       this.setState({
@@ -117,7 +162,7 @@ class Query extends React.Component {
         isLoading: false,
       });
       products = await fetch_url_get(
-        api_get_search_result + this.props.route.params.data + "&language=1"
+        api_get_search_result + this.props.route.params.data + '&language=1',
       );
       // products = await fetch_url_get(api_get_search_result + this.state.search + '&language=1' );
       // this.setState({ selectedValue: this.props.route.params.data });
@@ -133,12 +178,12 @@ class Query extends React.Component {
     }
   };
 
-  runDirectSearch = async (textSearch) => {
-    this.setState({ isLoading: true });
+  runDirectSearch = async textSearch => {
+    this.setState({isLoading: true});
     // alert(textSearch);
     var products = null;
     products = await fetch_url_get(
-      api_get_search_result + textSearch + "&language=1"
+      api_get_search_result + textSearch + '&language=1',
     );
 
     // console.log("--------001------");
@@ -167,7 +212,6 @@ class Query extends React.Component {
       );
     }
   };
- 
 
   getManufacturers = async () => {
     var manufacturers = null;
@@ -184,11 +228,11 @@ class Query extends React.Component {
         <View>
           <SelectDropdown
             data={data}
-            defaultButtonText={"Séléctionner la Marque"}
-            buttonStyle={{ width: "96%", marginLeft: "2%", marginRight: "2%" }}
+            defaultButtonText={'Séléctionner la Marque'}
+            buttonStyle={{width: '96%', marginLeft: '2%', marginRight: '2%'}}
             onSelect={(selectedItem, index) => {
               //console.log(selectedItem, index);
-              this.setState({ selectedValue: selectedItem.id });
+              this.setState({selectedValue: selectedItem.id});
             }}
             buttonTextAfterSelection={(selectedItem, index) => {
               return selectedItem.name;
@@ -208,10 +252,9 @@ class Query extends React.Component {
         <View
           style={{
             flex: 1,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
           <DotsLoader color={primaryColor} betweenSpace={20} size={20} />
         </View>
       );
@@ -221,19 +264,20 @@ class Query extends React.Component {
   displayProduct = () => {
     if (!this.state.isLoading && this.state.products) {
       // console.log(this.state.IdCategories)
-      return (
+      var tpl = Object.values(this.state.products).map(data => (
         <SearchList
-          products={this.state.products.product}
+          products={data.associations.products.product}
           navigation={this.props.navigation}
           selectedValue={this.state.selectedValue}
         />
-      );
+      ));
+      return tpl;
     }
   };
 
-  displayTitre = (titre) => {
+  displayTitre = titre => {
     if (this.state.titre) {
-      return <Text style={{ color: "#000000", fontSize: 16 }}> {titre} </Text>;
+      return <Text style={{color: '#000000', fontSize: 16}}> {titre} </Text>;
     }
   };
 
@@ -263,15 +307,14 @@ class Query extends React.Component {
     //     this.setState({stringToSearch : this.state.search})
     // }}
     return (
-      <View style={{ flex: 1, maxWidth: "100%", marginBottom: "2%" }}>
+      <View style={{flex: 1, maxWidth: '100%', marginBottom: '2%'}}>
         <ScrollView>
           <View
             style={{
               height: 50,
-              padding: "2%",
+              padding: '2%',
               marginBottom: 10,
-            }}
-          >
+            }}>
             <SearchBar
               returnKeyType="search"
               onSubmitEditing={() => {
@@ -286,24 +329,24 @@ class Query extends React.Component {
                 // });
               }}
               placeholder="Rechercher..."
-              onChangeText={(text) => {
+              onChangeText={text => {
                 this.updateSearch(text);
               }}
               value={this.state.monsearch}
               inputContainerStyle={{
                 borderRadius: 50,
-                backgroundColor: "#FFFFFF",
-                height: "90%",
+                backgroundColor: '#FFFFFF',
+                height: '90%',
               }}
               containerStyle={{
-                backgroundColor: "#FFFFFF",
+                backgroundColor: '#FFFFFF',
                 borderBottomWidth: 0,
                 borderTopWidth: 0,
-                height: "100%",
-                width: "100%",
+                height: '100%',
+                width: '100%',
                 padding: 0,
-                alignItems: "center",
-                justifyContent: "center",
+                alignItems: 'center',
+                justifyContent: 'center',
                 borderRadius: 50,
                 flex: 1,
               }}
@@ -316,14 +359,14 @@ class Query extends React.Component {
                     type="font-awesome"
                     name="search"
                     size={18}
-                    iconStyle={{ paddingLeft: 5 }}
+                    iconStyle={{paddingLeft: 5}}
                   />
                 );
               }}
             />
           </View>
           <View>{/* {this.displayMarques()} */}</View>
-          <View style={{ marginTop: 10 }}>
+          <View style={{marginTop: 10}}>
             {this.displayLoading()}
             {this.displayProduct()}
           </View>

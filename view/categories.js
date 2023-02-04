@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React , { Component } from 'react';
+import React, {Component} from 'react';
 import {
   View,
   StyleSheet,
@@ -7,17 +7,23 @@ import {
   SafeAreaView,
   ScrollView,
   Image,
-} from "react-native";
-import { List, Text } from 'react-native-paper';
-import { fetch_url_get } from '../helper/function/common-function/fetch';
-import { DotsLoader } from "react-native-indicator";
-import {
-  api_url,
-  api_get_category_by_id_url,
-} from "../helper/api_url";
-import { paire_color, impaire_color } from '../helper/color';
-import Flatlistercategory from "../components/Flatlistercategory";
+} from 'react-native';
+import {List, Text} from 'react-native-paper';
+import {fetch_url_get} from '../helper/function/common-function/fetch';
+import {DotsLoader} from 'react-native-indicator';
+import {api_url, api_get_category_by_id_url} from '../helper/api_url';
+import {paire_color, impaire_color} from '../helper/color';
+import Flatlistercategory from '../components/Flatlistercategory';
 global.idCategory_main = 2;
+import {db} from '../configs';
+import {
+  ref,
+  onValue,
+  orderByChild,
+  equalTo,
+  get,
+  query,
+} from 'firebase/database';
 class Categories extends Component {
   constructor(props) {
     super(props);
@@ -30,7 +36,7 @@ class Categories extends Component {
       expanded: true,
       idCategorie: null,
       dataCategory: null,
-      isLoading:false,
+      isLoading: false,
     };
   }
   getCategory = async () => {
@@ -38,20 +44,38 @@ class Categories extends Component {
     // console.log(global.idCategory_main);
     // console.log("***home***idCategory_main****");
 
-    var category = null;
-    category = await fetch_url_get(
-      api_get_category_by_id_url + global.idCategory_main
+    // var category = null;
+    // category = await fetch_url_get(
+    //   api_get_category_by_id_url + global.idCategory_main,
+    // );
+    // // console.log("********");
+    // // console.log(category);
+    // // console.log("********");
+    // this.setState({
+    //   dataCategory: category,
+    // });
+
+    const startCountRef = query(
+      ref(db, 'getCategories/category'),
+      orderByChild('id'),
+      equalTo(global.idCategory_main),
     );
-    // console.log("********");
-    // console.log(category);
-    // console.log("********");
-    this.setState({
-      dataCategory: category,
+    get(startCountRef).then(snapshot => {
+      var data = [];
+      snapshot.forEach(snapshotChild => {
+        data.push(snapshotChild.val());
+      });
+      // console.log('--------- Category List ------------');
+      // console.log(data);
+      this.setState({
+        // dataCategory: data,
+        // loading: false,
+      });
     });
   };
-  showProductList = (data) => {
-    this.props.navigation.navigate("Query", {
-      screen: "Query",
+  showProductList = data => {
+    this.props.navigation.navigate('Query', {
+      screen: 'Query',
       params: {
         data: {
           IdCategorie: data.IdCategorie,
@@ -67,11 +91,10 @@ class Categories extends Component {
         <View
           style={{
             /* flex: 1, */
-            alignItems: "center",
-            justifyContent: "center",
+            alignItems: 'center',
+            justifyContent: 'center',
             marginTop: 150,
-          }}
-        >
+          }}>
           <DotsLoader color={primaryColor} betweenSpace={20} size={20} />
         </View>
       );
@@ -88,17 +111,17 @@ class Categories extends Component {
     if (!this.state.isLoading && this.state.dataCategory) {
       const data = this.state.dataCategory;
 
-      //  console.log("=======00E000=");
+      console.log('=======00E000=');
       // // //console.log(api_url + "c/" + data.id + "-category_default" + "/" + data.link_rewrite.language + ".jpg");
-      //  console.log(data);
-      // console.log("=======00E000=");
+      console.log(data);
+      console.log('=======00E000=');
 
       if (data) {
         return (
           <View>
             <View style={styles.title_view}>
               <Text style={styles.title_text}>
-                {data.name.language ? data.name.language : ""}
+                {data.name.language ? data.name.language : ''}
               </Text>
             </View>
 
@@ -107,12 +130,12 @@ class Categories extends Component {
               source={{
                 uri:
                   api_url +
-                  "c/" +
+                  'c/' +
                   data.id +
-                  "-category_default" +
-                  "/" +
+                  '-category_default' +
+                  '/' +
                   data.link_rewrite.language +
-                  ".jpg"
+                  '.jpg',
               }}
             />
 
@@ -121,10 +144,9 @@ class Categories extends Component {
               <TouchableOpacity
                 style={styles.title_text}
                 onPress={() => {
-                  this.props.navigation.navigate("Categorie");
-                }}
-              >
-                <Text style={styles.title_text}>SOUS-CATEGORIES</Text>
+                  this.props.navigation.navigate('Categorie');
+                }}>
+                <Text style={styles.title_text}>Les Sous-rubriques</Text>
               </TouchableOpacity>
             </View>
 
@@ -148,9 +170,9 @@ class Categories extends Component {
   };
 
   async componentDidMount() {
-      this.setState({
-        isLoading: true,
-      });
+    this.setState({
+      isLoading: true,
+    });
     // await this.get_category();
     await this.getCategory();
     this.setState({
@@ -158,68 +180,68 @@ class Categories extends Component {
     });
   }
 
-  showDetail = (data) => {
-    this.props.navigation.navigate("Search", {
-      screen: "Search",
-      params: { data: data },
+  showDetail = data => {
+    this.props.navigation.navigate('Search', {
+      screen: 'Search',
+      params: {data: data},
     });
   };
 
-//   Accordion = (data) => {
-//     if (data.length != 0) {
-//       return data.map((item, index) => {
-//         var color = index % 2 == 0 ? paire_color : impaire_color;
-//         if (item.SousMenu.length != 0) {
-//           var SousMenu = item.SousMenu.map((item) => {
-//             var list = item.SousSousTitre.map((item) => {
-//               return (
-//                 <List.Item
-//                   title={item.SousSousSousTitre}
-//                   style={{ marginLeft: 20, color: "#F2F1EF" }}
-//                   left={(props) => <List.Icon {...props} icon="circle-small" />}
-//                   onPress={() => this.showDetail(item)}
-//                 />
-//               );
-//             });
+  //   Accordion = (data) => {
+  //     if (data.length != 0) {
+  //       return data.map((item, index) => {
+  //         var color = index % 2 == 0 ? paire_color : impaire_color;
+  //         if (item.SousMenu.length != 0) {
+  //           var SousMenu = item.SousMenu.map((item) => {
+  //             var list = item.SousSousTitre.map((item) => {
+  //               return (
+  //                 <List.Item
+  //                   title={item.SousSousSousTitre}
+  //                   style={{ marginLeft: 20, color: "#F2F1EF" }}
+  //                   left={(props) => <List.Icon {...props} icon="circle-small" />}
+  //                   onPress={() => this.showDetail(item)}
+  //                 />
+  //               );
+  //             });
 
-//             return (
-//               <List.AccordionGroup>
-//                 <List.Accordion
-//                   title={
-//                     <Text style={{ marginLeft: 20 }}>
-//                       {item.SousTitre[0].SousMenu}{" "}
-//                     </Text>
-//                   }
-//                   id="1"
-//                   style={{ backgroundColor: "#ABB7B7" }}
-//                 >
-//                   {list}
-//                 </List.Accordion>
-//               </List.AccordionGroup>
-//             );
-//           });
-//         }
+  //             return (
+  //               <List.AccordionGroup>
+  //                 <List.Accordion
+  //                   title={
+  //                     <Text style={{ marginLeft: 20 }}>
+  //                       {item.SousTitre[0].SousMenu}{" "}
+  //                     </Text>
+  //                   }
+  //                   id="1"
+  //                   style={{ backgroundColor: "#ABB7B7" }}
+  //                 >
+  //                   {list}
+  //                 </List.Accordion>
+  //               </List.AccordionGroup>
+  //             );
+  //           });
+  //         }
 
-//         return (
-//           <View>
-//             {/* <List.AccordionGroup>
-//               <List.Accordion
-//                 title={item.MenuName[0].Menu_Name}
-//                 id="1"
-//                 style={{ backgroundColor: color }}
-//               >
-//                 {SousMenu}
-//               </List.Accordion>
-//             </List.AccordionGroup> */}
-//             {this.displayCategory()}
-//           </View>
-//         );
-//       });
-//     }
-//   };
+  //         return (
+  //           <View>
+  //             {/* <List.AccordionGroup>
+  //               <List.Accordion
+  //                 title={item.MenuName[0].Menu_Name}
+  //                 id="1"
+  //                 style={{ backgroundColor: color }}
+  //               >
+  //                 {SousMenu}
+  //               </List.Accordion>
+  //             </List.AccordionGroup> */}
+  //             {this.displayCategory()}
+  //           </View>
+  //         );
+  //       });
+  //     }
+  //   };
 
   render() {
-    const { data, isLoading } = this.state;
+    const {data, isLoading} = this.state;
 
     return (
       <SafeAreaView>
@@ -232,39 +254,39 @@ class Categories extends Component {
   }
 }
 
-    const styles = StyleSheet.create({
-      container: {
-        flex: 1,
-        marginTop: 0,
-      },
-      item: {
-        backgroundColor: "#f9c2ff",
-        padding: 5,
-        marginVertical: 1,
-        marginHorizontal: 16,
-      },
-      title: {
-        fontSize: 16,
-        textAlign: "center",
-      },
-      title_view: {
-        height: 40,
-        justifyContent: "center",
-        alignItems: "center",
-      },
-      title_text: {
-        fontSize: 25,
-        color: "#713F18",
-        textTransform: "uppercase",
-      },
-      img_product: {
-        height: 300,
-        width: "95%",
-        borderRadius: 3,
-        justifyContent: "center",
-        alignItems: "center",
-        margin: 10,
-      },
-    });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: 0,
+  },
+  item: {
+    backgroundColor: '#f9c2ff',
+    padding: 5,
+    marginVertical: 1,
+    marginHorizontal: 16,
+  },
+  title: {
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  title_view: {
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  title_text: {
+    fontSize: 25,
+    color: '#713F18',
+    fontStyle:'italic',
+  },
+  img_product: {
+    height: 300,
+    width: '95%',
+    borderRadius: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 10,
+  },
+});
 
 export default Categories;

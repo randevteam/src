@@ -12,7 +12,7 @@ import { fetch_url_get } from '../helper/function/common-function/fetch';
 import SearchList from '../components/search_list';
 import { primaryColor, title_search_color } from '../helper/color';
 import ImageBackgroundGlobal from '../components/image_background_global';
-import Animated from 'react-native-reanimated';
+//import Animated from 'react-native-reanimated';
 
 class Search extends React.Component {
 

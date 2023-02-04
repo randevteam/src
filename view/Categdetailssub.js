@@ -1,27 +1,30 @@
 import React from 'react';
 
-import {
-  View,
-  StyleSheet,
-  ScrollView,
-  Text,
-} from 'react-native';
-import { DotsLoader } from 'react-native-indicator';
-import { Icon, Button, Image } from 'react-native-elements';
+import {View, StyleSheet, ScrollView, Text} from 'react-native';
+import {DotsLoader} from 'react-native-indicator';
+import {Icon, Button, Image} from 'react-native-elements';
 
-import { AuthContext } from '../helper/context/auth-context';
+import {AuthContext} from '../helper/context/auth-context';
 import {
   api_get_all_notif,
   api_url,
   api_get_category_by_id_url,
 } from '../helper/api_url';
-import { fetch_url_get } from '../helper/function/common-function/fetch';
-import { primaryColor } from '../helper/color';
+import {fetch_url_get} from '../helper/function/common-function/fetch';
+import {primaryColor} from '../helper/color';
 import FlatLister from '../components/Flatlister';
-import { notification } from '../notification/Notification';
+import {notification} from '../notification/Notification';
 import FooteraSocial from './FooteraSocial';
 import Flatlistercategorydetailssub from '../components/Flatlistercategorydetailssub';
-
+import {db} from '../configs';
+import {
+  ref,
+  onValue,
+  orderByChild,
+  equalTo,
+  get,
+  query,
+} from 'firebase/database';
 import HTMLView from 'react-native-htmlview';
 
 class Categdetailssub extends React.Component {
@@ -32,7 +35,7 @@ class Categdetailssub extends React.Component {
     this.state = {
       data: [],
       guest: null,
-      dataCategory: null,
+      dataCategory: [],
       isLoading: false,
       idCategory: null,
     };
@@ -48,7 +51,7 @@ class Categdetailssub extends React.Component {
     } catch (error) {
       // //console.log(error);
     } finally {
-      this.setState({ isLoading: false });
+      this.setState({isLoading: false});
     }
   };
 
@@ -65,24 +68,38 @@ class Categdetailssub extends React.Component {
   };
 
   getCategory = async () => {
-
     //console.log("********");
     //console.log(global.idCategory_main);
     //console.log("********");
-
-
-    var category = null;
-    category = await fetch_url_get(api_get_category_by_id_url + this.props.route.params.idCategory.id);
-    // //console.log("********");
-    // //console.log(category);
-    // //console.log("********");
-    this.setState({
-      dataCategory: category,
+    const startCountRef = query(
+      ref(db, 'getCategories/category'),
+      orderByChild('id'),
+      equalTo(this.props.route.params.idCategory.id),
+    );
+    get(startCountRef).then(snapshot => {
+      var data = [];
+      data = snapshot.val();
+      // console.log('==========33333333=');
+      // console.log(data);
+      this.setState({
+        dataCategory: data,
+        // loading: false,
+      });
     });
+
+    // var category = null;
+    // category = await fetch_url_get(
+    //   api_get_category_by_id_url + this.props.route.params.idCategory.id,
+    // );
+    // // //console.log("********");
+    // // //console.log(category);
+    // // //console.log("********");
+    // this.setState({
+    //   dataCategory: category,
+    // });
   };
 
   showProductList = data => {
-
     this.props.navigation.navigate('Query', {
       screen: 'Query',
       params: {
@@ -93,7 +110,6 @@ class Categdetailssub extends React.Component {
         },
       },
     });
-
   };
 
   displayLoading = () => {
@@ -112,22 +128,20 @@ class Categdetailssub extends React.Component {
     }
   };
 
-  showHtmlView = (varcontent) => {
+  showHtmlView = varcontent => {
     if (varcontent) {
       return (
         <HTMLView
           value={varcontent}
-          style={{ padding: 20, justifyContent: 'center' }}
+          style={{padding: 20, justifyContent: 'center'}}
         />
-      )
+      );
     }
-  }
-
+  };
 
   /*  recheck here randev  */
 
   displayCategory = () => {
-
     // console.log("===========****===========");
     // console.log(this.state.isLoading);
     // console.log("***")
@@ -143,28 +157,17 @@ class Categdetailssub extends React.Component {
       // console.log("=======00E000=");
 
       if (data) {
-        return (
+        var tpl = Object.values(this.state.dataCategory).map(data => (
           <View>
             <View style={styles.title_view}>
               <Text style={styles.title_text}>
-                {data.name.language ? data.name.language : ""}
+                {data.name.language ? data.name.language : ''}
               </Text>
             </View>
 
-            <Image style={styles.img_product}
-              source={{ uri: api_url + "img/c/" + data.id + ".jpg" }} />
-
-            {/* <View style={{ flex: 1 }}>
-            <Text style={styles.title_text}>
-              {data.description.language && typeof data.description.language !== 'object' && data.description.language !== null ? this.showHtmlView(data.description.language) : ""}
-              </Text>
-            </View> */}
-
-            <View style={styles.title_view}>
-              <Text style={styles.title_text}>
-                PRODUITS
-              </Text>
-            </View>
+            {/*<View style={styles.title_view}>
+              <Text style={styles.title_text}>PRODUITS</Text>
+            </View>*/}
 
             <View>
               <FlatLister
@@ -175,9 +178,7 @@ class Categdetailssub extends React.Component {
             </View>
 
             <View style={styles.title_view}>
-              <Text style={styles.title_text}>
-                SOUS-CATEGORIES
-              </Text>
+              <Text style={styles.title_text}>Les Sous-rubriques</Text>
             </View>
 
             <View>
@@ -188,21 +189,30 @@ class Categdetailssub extends React.Component {
               />
             </View>
 
+            <Image
+              style={styles.img_product}
+              source={{uri: api_url + 'img/c/' + data.id + '.jpg'}}
+            />
 
+            {/* <View style={{ flex: 1 }}>
+            <Text style={styles.title_text}>
+              {data.description.language && typeof data.description.language !== 'object' && data.description.language !== null ? this.showHtmlView(data.description.language) : ""}
+              </Text>
+            </View> */}
+
+            
           </View>
-        );
+        ));
       } else {
-        return (
+        var tpl = (
           <View>
             <Text>Cette catégorie n'existe pas.</Text>
           </View>
-        )
+        );
       }
-
-
+      return tpl;
     }
   };
-
 
   isIncreasing(xs) {
     var prev, cur;
@@ -217,7 +227,6 @@ class Categdetailssub extends React.Component {
   }
 
   async componentDidMount() {
-
     this.setState({
       isLoading: true,
     });
@@ -247,11 +256,9 @@ class Categdetailssub extends React.Component {
   }
 
   get_notification = (id, titre, desc, image, url) => {
-
     notification.configure(url);
     notification.buatchannel('1');
     notification.kirimNotificationJadwal(id, titre, desc, image);
-
   };
 
   render() {
@@ -260,11 +267,10 @@ class Categdetailssub extends React.Component {
     // console.log("details perops debug")
     const data = this.state;
     return (
-      <View style={{ flex: 1, maxWidth: '100%' }}>
+      <View style={{flex: 1, maxWidth: '100%'}}>
         <ScrollView
           showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-        >
+          showsVerticalScrollIndicator={false}>
           {this.displayLoading()}
           {this.displayCategory()}
         </ScrollView>
@@ -280,7 +286,7 @@ const styles = StyleSheet.create({
     //   marginTop: StatusBar.currentHeight || 0,
   },
   item: {
-    backgroundColor: "#20232A",
+    backgroundColor: '#20232A',
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,
@@ -292,30 +298,28 @@ const styles = StyleSheet.create({
   },
   title_view: {
     height: 40,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   title_text: {
     fontSize: 20,
-    color: "#713F18",
-    textTransform: "uppercase",
+    color: '#713F18',
+    fontStyle:'italic',
   },
   title_text_under: {
     fontSize: 11,
-    color: "grey",
+    color: 'grey',
     marginLeft: 5,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   img_product: {
     height: 300,
-    width: "95%",
+    width: '95%',
     borderRadius: 3,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     margin: 10,
   },
 });
-
-
 
 export default Categdetailssub;

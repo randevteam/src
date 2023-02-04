@@ -1,6 +1,15 @@
 import React from 'react';
 
-import {View, ScrollView, Text, TouchableOpacity,StyleSheet, Modal, Touchable,Pressable} from 'react-native';
+import {
+  View,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Modal,
+  Touchable,
+  Pressable,
+} from 'react-native';
 import {FAB} from 'react-native-paper';
 import {DotsLoader} from 'react-native-indicator';
 
@@ -20,7 +29,7 @@ import styles from './style/presentation';
 import {Color} from '../helper/color';
 import SwiperComponent from '../components/presentation_pages';
 import {Button} from 'react-native-elements';
-import Cookie from 'react-native-cookie-use';
+//import Cookie from "react-native-cookie-use";
 
 //global.signBack = true
 //global.signBackName = null
@@ -36,15 +45,15 @@ class Presentation extends React.Component {
       updateState: 0,
       modalVisible: true,
       content: null,
-      tsta: ''
+      tsta: '',
     };
   }
-  setModalVisible = (visible) => {
-    this.setState({ modalVisible: visible });
-  }
-  setModalVisibleGameOver = (visible) => {
-      this.setState({ modalVisibleGameOver: visible });
-  }
+  setModalVisible = visible => {
+    this.setState({modalVisible: visible});
+  };
+  setModalVisibleGameOver = visible => {
+    this.setState({modalVisibleGameOver: visible});
+  };
 
   navigate_to_view = () => {
     this.props.navigation.reset({
@@ -52,42 +61,45 @@ class Presentation extends React.Component {
       routes: [{name: 'View'}],
     });
   };
-  readFile(){
-    var d = null
+  readFile() {
+    var d = null;
 
-      RNFS.readFile('./visite.json', 'ascii')
-        .then((res) => {
-          //console.log(res);
-           d = JSON.parse(res);
-          this.setState({ content: d.type });
-          //console.log(this.state.content)
-        })
-        .catch((err) => {
-          console.log(err.message, err.code);
-        });
+    RNFS.readFile('./visite.json', 'ascii')
+      .then(res => {
+        //console.log(res);
+        d = JSON.parse(res);
+        this.setState({content: d.type});
+        //console.log(this.state.content)
+      })
+      .catch(err => {
+        console.log(err.message, err.code);
+      });
   }
-  cookiesAccepter = ()=>{
-    this.setModalVisible(!this.state.modalVisible)
-  //  Cookie.set('https://www.passion-campagne.com/', 'PassionCamp', 'passion').then(() => console.log('success'));
-  
-  
+  cookiesAccepter = () => {
+    this.setModalVisible(!this.state.modalVisible);
+    //  Cookie.set('https://www.passion-campagne.com/', 'PassionCamp', 'passion').then(() => console.log('success'));
+
     //   CookieManager.set('http://example.com', {
-  //   name: 'nouveauCouki',
-  //   value: 'myValue',
-    
-  //   path: '/',
-  //   version: '1',
-  //   expires: '2022-12-30T12:30:00.00-05:00'
-  //   }).then((done) => {
-  //     console.log('CookieManager.set =>', done);
-  // });
-  }
+    //   name: 'nouveauCouki',
+    //   value: 'myValue',
+
+    //   path: '/',
+    //   version: '1',
+    //   expires: '2022-12-30T12:30:00.00-05:00'
+    //   }).then((done) => {
+    //     console.log('CookieManager.set =>', done);
+    // });
+  };
 
   continue_as_guest = async () => {
+    this.navigate_to_view();
     this.setState({
       isLoading: true,
     });
-    await getGuest().then(async data => {
+    /*this.setState({
+      isLoading: true,
+    });
+    await getGuest().then(async (data) => {
       if (data) {
         this.context.guest = JSON.parse(data);
         await removeGuest();
@@ -110,10 +122,10 @@ class Presentation extends React.Component {
           this.setState({
             isLoading: false,
           });
-          console.log('error ato1 ');
+          console.log("error ato1 ");
         }
       }
-    });
+    });*/
   };
 
   create_guest = async () => {
@@ -159,7 +171,7 @@ class Presentation extends React.Component {
         return (
           <TouchableOpacity
             onPress={() => {
-              this.continue_as_guest()
+              this.continue_as_guest();
             }}
             style={styles.continue_guest}>
             <Text style={styles.text_guest}>Continuez en tant qu''invité</Text>
@@ -180,15 +192,13 @@ class Presentation extends React.Component {
     });
     return check;
   };
-  fonction = async (vary) => {
-    if(vary){
-      this.setModalVisible(!this.state.modalVisible)
-      this.setState({tsta : vary})
-      
-    }else{
-      
+  fonction = async vary => {
+    if (vary) {
+      this.setModalVisible(!this.state.modalVisible);
+      this.setState({tsta: vary});
+    } else {
     }
-  }
+  };
   verify_if_customer_exist = async () => {
     var check = null;
     await getCustomer().then(data => {
@@ -200,16 +210,20 @@ class Presentation extends React.Component {
     });
     return check;
   };
-  variable = ''
+  variable = '';
   async componentDidMount() {
-    if((Cookie.get('https://www.ow.randev.ovh/', 'PassionCamp').then((cookie) => this.fonction(cookie) ))==null){
+    console.log('didmount *************');
+    /*if (
+      Cookie.get("https://www.ow.randev.ovh/", "PassionCamp").then((cookie) =>
+        this.fonction(cookie)
+      ) == null
+    ) {
       // this.setModalVisible(!this.state.modalVisible)
-      
-    }else{
-      
-    }
-    console.log(tst)
+    } else {
+    }*/
+    // console.log(tst)
     // this.readFile()
+
     try {
       await this.create_guest().then(async () => {
         try {
@@ -239,7 +253,7 @@ class Presentation extends React.Component {
     }
   }
 
-  showDetail = (data) => {
+  showDetail = data => {
     this.props.navigation.navigate('Query', {
       screen: 'Query',
       params: {
@@ -262,34 +276,30 @@ class Presentation extends React.Component {
 
   displayModal = () => {
     this.getManufacturers();
-    if(this.state.tsta){
-        
-        return(
-         
-            <Picker
-                    selectedValue={this.state.selectedValue}
-                    style={{ height: 50, width: 150,}}
-                    onValueChange = {(itemValue) =>{ 
-                        this.setState({selectedValue:itemValue})
-                    }}
-                >
-                    <Picker.Item label="Marque" value="" />
-                    { 
-                        data.map((item)=>
-                        <Picker.Item  label={item.name} value={item.id} key={item.id} />)
-                    }
-            </Picker>
-        )
-    }  
-}
+    if (this.state.tsta) {
+      return (
+        <Picker
+          selectedValue={this.state.selectedValue}
+          style={{height: 50, width: 150}}
+          onValueChange={itemValue => {
+            this.setState({selectedValue: itemValue});
+          }}>
+          <Picker.Item label="Marque" value="" />
+          {data.map(item => (
+            <Picker.Item label={item.name} value={item.id} key={item.id} />
+          ))}
+        </Picker>
+      );
+    }
+  };
 
   render() {
+    console.log('start presentation log view');
     return (
       <View
         style={{
           flex: 1,
         }}>
-       
         {/* <Modal
                     animationType="none"
                     transparent={true}
@@ -311,21 +321,7 @@ class Presentation extends React.Component {
                     </View>
           </Modal> */}
         <SwiperComponent same_category={this.showDetail} />
-        <TouchableOpacity
-          activeOpacity={0.85}
-          style={styles.fab}
-          onPress={() => {
-            if (this.context.customer) {
-              this.navigate_to_view();
-            } else {
-              this.goToSignUp();
-              //global.signBack ? global.signBackName = 'Presentation' : global.signBackName = 'View'
-            }
-          }}>
-          <Text style={{fontWeight: 'bold', color: 'grey'}}>
-            {!this.context.customer ? "S'enregistrer" : 'Continuer'}
-          </Text>
-        </TouchableOpacity>
+
         {/* <FAB
                     style={styles.fab}
                     small
@@ -340,7 +336,16 @@ class Presentation extends React.Component {
                 /> */}
         {this.isLoading()}
         {this.context.customer ? (
-          <View></View>
+          <View style={styles.have_account}>
+            <TouchableOpacity
+              onPress={() => {
+                this.goToLogin();
+              }}>
+              <Text style={styles.text_guest}>
+                Vous avez un compte? Connectez vous
+              </Text>
+            </TouchableOpacity>
+          </View>
         ) : (
           <View style={styles.have_account}>
             <Text
@@ -357,57 +362,51 @@ class Presentation extends React.Component {
   }
 }
 const styless = StyleSheet.create({
-  
   centeredView: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      marginTop: 10
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10,
   },
   modalView: {
-      backgroundColor: "white",
-      borderRadius: 20,
-      padding: 10,
-      paddingVertical: 35,
-      alignItems: "center",
-      shadowColor: "#000",
-      shadowOffset: {
-          width: 0,
-          height: 2
-      },
-      shadowOpacity: 0.25,
-      shadowRadius: 4,
-      elevation: 2,
-      width: '90%',
-      marginLeft:'5%',
-      marginRight:'5%',
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 10,
+    paddingVertical: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 2,
+    width: '90%',
+    marginLeft: '5%',
+    marginRight: '5%',
   },
   button: {
-      padding: 15,
-      margin: 12,
-      paddingVertical: 15,
-      paddingHorizontal: 60,
+    padding: 15,
+    margin: 12,
+    paddingVertical: 15,
+    paddingHorizontal: 60,
   },
   buttonOpen: {
-      backgroundColor: "green",
-      paddingHorizontal: 70,
+    backgroundColor: 'green',
+    paddingHorizontal: 70,
   },
   buttonClose: {
-      backgroundColor: "red",
+    backgroundColor: 'red',
   },
-  modalText : {
-    fontSize : 14,
-    lineHeight : 22,
-    textAlign :'left'
+  modalText: {
+    fontSize: 14,
+    lineHeight: 22,
+    textAlign: 'left',
   },
-  textStyle : {
-    color : 'white',
-    fontSize : 18
-  }
-
-
-  
-  
-  
-})
+  textStyle: {
+    color: 'white',
+    fontSize: 18,
+  },
+});
 export default Presentation;

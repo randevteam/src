@@ -1,40 +1,45 @@
 import React from 'react';
 
-import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from 'react-native-popup-menu';
 
-import { View, TouchableOpacity, Text } from 'react-native';
-import { Icon, Badge } from 'react-native-elements';
-import { Provider, Button } from 'react-native-paper';
+import {View, TouchableOpacity, Text} from 'react-native';
+import {Icon, Badge} from 'react-native-elements';
+import {Provider, Button} from 'react-native-paper';
 import setting_menu_styles from './setting_menu_styles';
-import { AuthContext } from './../../helper/context/auth-context';
-import { api_post_wishlist_, api_get_nb_cart_url } from './../../helper/api_url';
-import { fetch_url_post, fetch_url_get } from './../../helper/function/common-function/fetch';
-
+import {AuthContext} from './../../helper/context/auth-context';
+import {api_post_wishlist_, api_get_nb_cart_url} from './../../helper/api_url';
+import {
+  fetch_url_post,
+  fetch_url_get,
+} from './../../helper/function/common-function/fetch';
 
 const pkg = require('../../../package.json');
-global.statut = false
+global.statut = false;
 
 class HeaderRight extends React.Component {
   static contextType = AuthContext;
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       indicator: false,
       customer: null,
       guest: null,
-      status_: "warning"
-    }
+      status_: 'warning',
+    };
   }
 
   set_user = async () => {
     await this.setState({
       guest: this.context.guest,
       customer: this.context.customer,
-
     });
     await this.getCart();
-
-  }
+  };
 
   getCart = async () => {
     setInterval(() => {
@@ -70,43 +75,48 @@ class HeaderRight extends React.Component {
         })
         .catch(error => console.error(error));
     }, 1000);
-  }
+  };
 
   WishlistIndicator = async () => {
     var url = api_post_wishlist_ + 'SettingMenuIndicator';
     var products = null;
     fetch_url_post(url, {
-      id_customer: 8233
-    }).then((indicator) => {
-      this.setIndicator(indicator)
+      id_customer: 8233,
+    }).then(indicator => {
+      this.setIndicator(indicator);
     });
+  };
 
-
-  }
-
-  setIndicator = (indicator) => {
+  setIndicator = indicator => {
     if (indicator == true) {
       this.setState({
-        indicator: true
-      })
+        indicator: true,
+      });
     } else {
       this.setState({
-        indicator: false
-      })
+        indicator: false,
+      });
     }
-  }
+  };
 
   Indicator = () => {
     if (this.state.indicator) {
-      return (<Badge color='green' size={17} style={{ top: -20, right: 0 }}>!</Badge>)
+      return (
+        <Badge color="green" size={17} style={{top: -20, right: 0}}>
+          !
+        </Badge>
+      );
     } else {
-      return (<Badge size={17} style={{ top: -20, right: 0, display: 'none' }}>0</Badge>)
+      return (
+        <Badge size={17} style={{top: -20, right: 0, display: 'none'}}>
+          0
+        </Badge>
+      );
     }
-  }
-
+  };
 
   componentDidMount() {
-    this.WishlistIndicator()
+    this.WishlistIndicator();
     this.set_user();
   }
   render() {
@@ -115,7 +125,16 @@ class HeaderRight extends React.Component {
         <TouchableOpacity
           style={setting_menu_styles.header_right_icon_panel}
           onPress={() => this.props.navigation.navigate('Cart')}>
-          <View style={{ position: 'relative', borderRadius: 30, right: 7, top: 5, width: 10, height: 10, backgroundColor: global.statut ? 'green' : 'orange' }}></View>
+          <View
+            style={{
+              position: 'relative',
+              borderRadius: 30,
+              right: 7,
+              top: 5,
+              width: 10,
+              height: 10,
+              backgroundColor: global.statut ? 'green' : 'orange',
+            }}></View>
           <Icon type="font-awesome" name="shopping-bag" size={20} />
           {/* {console.log("cart:",this.state.cartP)} */}
 
@@ -124,7 +143,7 @@ class HeaderRight extends React.Component {
             containerStyle={{
               position: 'absolute',
               top: '20%',
-              right: '15%'
+              right: '15%',
             }}
           />
         </TouchableOpacity>
@@ -174,16 +193,15 @@ class HeaderRight extends React.Component {
                 });
               }}
               text={
-                <View
-                  style={setting_menu_styles.header_right_menu_content}>
+                <View style={setting_menu_styles.header_right_menu_content}>
                   <Icon
                     type="antdesign"
                     name="user"
                     size={20}
                     color="#747474"
-                    style={{ marginLeft: 10 }}
+                    style={{marginLeft: 10}}
                   />
-                  <Text style={{ marginLeft: 20, color: '#747474' }}>
+                  <Text style={{marginLeft: 20, color: '#747474'}}>
                     Moncompte
                   </Text>
                 </View>
@@ -197,11 +215,12 @@ class HeaderRight extends React.Component {
               style={setting_menu_styles.header_right_menu_container}
             />
 
-            <MenuOption onSelect={() => {
-              this.props.navigation.navigate('Notifications', {
-                screen: 'notifications',
-              });
-            }}
+            <MenuOption
+              onSelect={() => {
+                this.props.navigation.navigate('Notifications', {
+                  screen: 'notifications',
+                });
+              }}
               text={
                 <View style={setting_menu_styles.header_right_menu_content}>
                   <Icon
@@ -209,10 +228,11 @@ class HeaderRight extends React.Component {
                     name="bell-o"
                     size={20}
                     color="#747474"
-                    style={{ marginLeft: 10 }}
+                    style={{marginLeft: 10}}
                   />
-                  <Text style={{ marginLeft: 20, color: "#747474" }}>Notifications</Text>
-
+                  <Text style={{marginLeft: 20, color: '#747474'}}>
+                    Notifications
+                  </Text>
                 </View>
               }
               customStyles={{
@@ -231,17 +251,16 @@ class HeaderRight extends React.Component {
                 });
               }}
               text={
-                <View
-                  style={setting_menu_styles.header_right_menu_content}>
+                <View style={setting_menu_styles.header_right_menu_content}>
                   <Icon
                     type="font-awesome"
                     name="heart-o"
                     size={20}
                     color="#747474"
-                    style={{ marginLeft: 10 }}
+                    style={{marginLeft: 10}}
                   />
                   {this.Indicator()}
-                  <Text style={{ marginLeft: 20, color: '#747474' }}>
+                  <Text style={{marginLeft: 20, color: '#747474'}}>
                     Liste de souhaits
                   </Text>
                 </View>
@@ -262,16 +281,15 @@ class HeaderRight extends React.Component {
                 // });
               }}
               text={
-                <View
-                  style={setting_menu_styles.header_right_menu_content}>
+                <View style={setting_menu_styles.header_right_menu_content}>
                   <Icon
                     type="ionicon"
                     name="location-outline"
                     size={20}
                     color="#747474"
-                    style={{ marginLeft: 10 }}
+                    style={{marginLeft: 10}}
                   />
-                  <Text style={{ marginLeft: 20, color: '#747474' }}>
+                  <Text style={{marginLeft: 20, color: '#747474'}}>
                     Mes commandes
                   </Text>
                 </View>
@@ -332,7 +350,6 @@ class HeaderRight extends React.Component {
       </View>
     );
   }
-
 }
 
 export default HeaderRight;
