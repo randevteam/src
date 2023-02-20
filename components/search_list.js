@@ -27,9 +27,9 @@ class SearchList extends React.Component {
   render() {
     // console.log(this.props.selectedValue)
 
-    // console.log("--------003------");
+    // console.log('--------003------');
     // console.log(this.props.products.product);
-    // console.log("--------003------");
+    // console.log('--------003------');
 
     if (Array.isArray(this.props.products)) {
       //   let data = [];

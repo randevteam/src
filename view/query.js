@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {DotsLoader} from 'react-native-indicator';
 import {SearchBar, Icon} from 'react-native-elements';
-
+import SearchListTwo from '../components/SearchListTwo';
 import {AuthContext} from '../helper/context/auth-context';
 import {
   api_get_search_result,
@@ -46,6 +46,7 @@ class Query extends React.Component {
     this.state = {
       guest: null,
       products: [],
+      productTwo: [],
       isLoading: false,
       IdCategories: null,
       titre: null,
@@ -55,6 +56,9 @@ class Query extends React.Component {
       manufacturers: null,
       selectedValue: '',
       monsearch: '',
+      sortDirection: 'asc',
+      manufactureData: [],
+      productFiltre: [],
     };
   }
 
@@ -150,17 +154,18 @@ class Query extends React.Component {
         isLoading: false,
       });
     } else {
+      this.setState({isLoading: true});
       // console.log( api_get_search_result +  + '&language=1')
-      products = await fetch_url_get(
-        api_get_search_result +
-          this.props.route.params.data.Text +
-          '&language=1',
-      );
-      // products = await fetch_url_get(api_get_search_result + this.state.search + '&language=1' );
-      this.setState({
-        products: products,
-        isLoading: false,
-      });
+      // products = await fetch_url_get(
+      //   api_get_search_result +
+      //     this.props.route.params.data.Text +
+      //     '&language=1',
+      // );
+      // // products = await fetch_url_get(api_get_search_result + this.state.search + '&language=1' );
+      // this.setState({
+      //   products: products,
+      //   isLoading: false,
+      // });
       products = await fetch_url_get(
         api_get_search_result + this.props.route.params.data + '&language=1',
       );
@@ -168,10 +173,15 @@ class Query extends React.Component {
       // this.setState({ selectedValue: this.props.route.params.data });
 
       this.setState({
-        products: products.product,
+        productTwo: products.product.product,
+        manufactureData: products.product.product,
+        monsearch: this.props.route.params.data,
         isLoading: false,
       });
-      console.log(this.state.products.product);
+      // console.log('--------00manufacturers------');
+      // console.log(this.state.productTwo);
+      // console.log(this.state.isLoading);
+      // console.log('--------001manufacturers------');
       //      return (
       //         <SearchList products={this.state.products} navigation={this.props.navigation} selectedValue={this.state.selectedValue} />
       //         );
@@ -180,50 +190,125 @@ class Query extends React.Component {
 
   runDirectSearch = async textSearch => {
     this.setState({isLoading: true});
+    // const startCountRef = query(
+    //   ref(db, 'getAllproductsBrut/product/'),
+    //   orderByChild('name/language'),
+    //   equalTo('Chaussures'),
+    // );
+    // get(startCountRef).then(snapshot => {
+    //   var data = [];
+    //   snapshot.forEach(snapshotChild => {
+    //     data.push(snapshotChild.val());
+    //   });
+    // console.log(data);
+    // this.setState({
+    //   products: products.product,
+    //   selectedValue: textSearch,
+    //   isLoading: false,
+    // });
+    // });
     // alert(textSearch);
-    var products = null;
+    var products = [];
     products = await fetch_url_get(
       api_get_search_result + textSearch + '&language=1',
     );
 
-    // console.log("--------001------");
-    // console.log(products);
-    // console.log(this.state.isLoading)
-    // console.log("--------001------");
-
     this.setState({
-      products: products.product,
+      productTwo: products.product.product,
+      manufactureData: products.product.product,
       selectedValue: textSearch,
       isLoading: false,
     });
+
+    // console.log('--------00manufacturers------');
+    // console.log(this.state.productTwo);
+    // console.log(this.state.isLoading);
+    // console.log('--------001manufacturers------');
+
+    // this.setState({
+    //   products: resultat,
+    //   selectedValue: textSearch,
+    //   isLoading: false,
+    // });
 
     // console.log("--------002------");
     // console.log(this.state.products);
     // console.log(this.state.isLoading);
     // console.log("--------002------");
-    if (!this.state.isLoading && this.state.products) {
-      // console.log(this.state.IdCategories)
+    if (!this.state.isLoading && this.state.productTwo) {
+      // console.log('--------003------');
+      // console.log(this.state.productTwo);
+      // console.log(this.state.isLoading);
+      // console.log('--------003------');
       return (
-        <SearchList
-          products={this.state.products.product}
+        <SearchListTwo
+          products={this.state.productTwo}
           navigation={this.props.navigation}
           selectedValue={this.state.selectedValue}
         />
       );
     }
   };
+  handleSortDirectionChangeFiltre = (index, value) => {
+    const {productFiltre} = this.state;
 
-  getManufacturers = async () => {
-    var manufacturers = null;
-    manufacturers = await fetch_url_get(getProductsManufacturer);
-    this.setState({
-      manufacturers: manufacturers.manufacturer,
-    });
+    if (value === 'asc') {
+      this.setState({
+        productFiltre: productFiltre.sort((a, b) =>
+          a.name.language.localeCompare(b.produit),
+        ),
+        sortDirection: 'asc',
+      });
+    } else {
+      this.setState({
+        productFiltre: productFiltre.sort((a, b) =>
+          b.name.language.localeCompare(a.produit),
+        ),
+        sortDirection: 'desc',
+      });
+    }
+  };
+  handleSortDirectionChange = (index, value) => {
+    const {productTwo} = this.state;
+
+    if (value === 'asc') {
+      this.setState({
+        productTwo: productTwo.sort((a, b) =>
+          a.name.language.localeCompare(b.produit),
+        ),
+        sortDirection: 'asc',
+      });
+    } else {
+      this.setState({
+        productTwo: productTwo.sort((a, b) =>
+          b.name.language.localeCompare(a.produit),
+        ),
+        sortDirection: 'desc',
+      });
+    }
+  };
+
+  getManufacturers = id => {
+    const filteredProducts = this.state.productTwo.filter(
+      product => product.id_manufacturer === id,
+    );
+    this.setState({productFiltre: filteredProducts});
+    // console.log(filteredProducts);
+    // var manufacturers = null;
+    // manufacturers = await fetch_url_get(getProductsManufacturer);
+    // this.setState({
+    //   manufacturers: manufacturers.manufacturer,
+    // });
   };
   displayMarques = () => {
-    this.getManufacturers();
-    if (this.state.manufacturers) {
-      let data = this.state.manufacturers;
+    // this.getManufacturers();
+    if (this.state.manufactureData.length > 0) {
+      let newData = this.state.manufactureData.map(item => {
+        return {name: item.manufacturer_name, id: item.id_manufacturer};
+      });
+      const data = Array.from(new Set(newData.map(JSON.stringify)), JSON.parse);
+      // console.log(data);
+      const {sortDirection} = this.state;
       return (
         <View>
           <SelectDropdown
@@ -232,7 +317,8 @@ class Query extends React.Component {
             buttonStyle={{width: '96%', marginLeft: '2%', marginRight: '2%'}}
             onSelect={(selectedItem, index) => {
               //console.log(selectedItem, index);
-              this.setState({selectedValue: selectedItem.id});
+              // this.setState({selectedValue: selectedItem.id}),
+              this.getManufacturers(selectedItem.id);
             }}
             buttonTextAfterSelection={(selectedItem, index) => {
               return selectedItem.name;
@@ -241,6 +327,7 @@ class Query extends React.Component {
               return item.name;
             }}
           />
+          {this.AfficheFiltreAZ()}
         </View>
       );
     }
@@ -262,8 +349,11 @@ class Query extends React.Component {
   };
 
   displayProduct = () => {
-    if (!this.state.isLoading && this.state.products) {
-      // console.log(this.state.IdCategories)
+    if (
+      !this.state.isLoading &&
+      this.state.products &&
+      this.state.productTwo.length === 0
+    ) {
       var tpl = Object.values(this.state.products).map(data => (
         <SearchList
           products={data.associations.products.product}
@@ -272,6 +362,90 @@ class Query extends React.Component {
         />
       ));
       return tpl;
+    }
+  };
+
+  AfficheProduct = () => {
+    if (
+      !this.state.isLoading &&
+      this.state.productTwo.length &&
+      this.state.productFiltre.length === 0
+    ) {
+      return (
+        <SearchListTwo
+          products={this.state.productTwo}
+          navigation={this.props.navigation}
+          selectedValue={this.state.selectedValue}
+        />
+      );
+      // <SearchListTwo
+      //   products={this.state.productTwo}
+      //   navigation={this.props.navigation}
+      //   selectedValue={this.state.selectedValue}
+      // />
+    } else {
+      return (
+        <SearchListTwo
+          products={this.state.productFiltre}
+          navigation={this.props.navigation}
+          selectedValue={this.state.selectedValue}
+        />
+      );
+    }
+  };
+  AfficheFiltreAZ = () => {
+    const {sortDirection} = this.state;
+    if (
+      !this.state.isLoading &&
+      this.state.productTwo.length &&
+      this.state.productFiltre.length === 0
+    ) {
+      return (
+        <SelectDropdown
+          data={['A-Z', 'Z-A']}
+          onSelect={(index, value) =>
+            this.handleSortDirectionChange(index, value)
+          }
+          buttonTextAfterSelection={(selectedItem, index) => {
+            return selectedItem;
+          }}
+          rowTextForSelection={(item, index) => {
+            return item;
+          }}
+          defaultButtonText="Trier par"
+          buttonStyle={{width: '100%'}}
+          buttonTextStyle={{color: '#000'}}
+          dropdownStyle={{backgroundColor: '#fff'}}
+          dropdownTextStyle={{color: '#000'}}
+          selectedOptionIndex={sortDirection === 'asc' ? 0 : 1}
+        />
+      );
+      // <SearchListTwo
+      //   products={this.state.productTwo}
+      //   navigation={this.props.navigation}
+      //   selectedValue={this.state.selectedValue}
+      // />
+    } else {
+      return (
+        <SelectDropdown
+          data={['A-Z', 'Z-A']}
+          onSelect={(index, value) =>
+            this.handleSortDirectionChangeFiltre(index, value)
+          }
+          buttonTextAfterSelection={(selectedItem, index) => {
+            return selectedItem;
+          }}
+          rowTextForSelection={(item, index) => {
+            return item;
+          }}
+          defaultButtonText="Trier par"
+          buttonStyle={{width: '100%'}}
+          buttonTextStyle={{color: '#000'}}
+          dropdownStyle={{backgroundColor: '#fff'}}
+          dropdownTextStyle={{color: '#000'}}
+          selectedOptionIndex={sortDirection === 'asc' ? 0 : 1}
+        />
+      );
     }
   };
 
@@ -293,7 +467,7 @@ class Query extends React.Component {
 
     await this.getGuest();
     this.getProduct();
-    this.getManufacturers();
+    // this.getManufacturers();
     this.setState({
       isLoading: false,
     });
@@ -365,9 +539,33 @@ class Query extends React.Component {
               }}
             />
           </View>
-          <View>{/* {this.displayMarques()} */}</View>
+          <View>{this.displayMarques()}</View>
           <View style={{marginTop: 10}}>
+            {/* {this.AfficheFiltreAZ()} */}
+            {/* {this.displayMarques()} */}
             {this.displayLoading()}
+            {/* {this.state.productTwo && (
+              <SearchListTwo
+                products={this.state.productTwo}
+                navigation={this.props.navigation}
+                selectedValue={this.state.selectedValue}
+              />
+            )}
+            {} */}
+            {this.AfficheProduct()}
+            {/* {this.state.productFiltre ? (
+              <SearchListTwo
+                products={this.state.productFiltre}
+                navigation={this.props.navigation}
+                selectedValue={this.state.selectedValue}
+              />
+            ) : (
+              <SearchListTwo
+                products={this.state.productTwo}
+                navigation={this.props.navigation}
+                selectedValue={this.state.selectedValue}
+              />
+            )} */}
             {this.displayProduct()}
           </View>
         </ScrollView>
